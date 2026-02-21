@@ -94,7 +94,11 @@ class TimeWormApp(Adw.Application):
     def do_activate(self):
         init_db()
         self._load_css()
+        # Set app name + icon for desktop integration (dock, taskbar, window title)
+        GLib.set_application_name("TimeWorm")
+        Gtk.Window.set_default_icon_name("de.tbe.timeworm")
         win = TimeWormWindow(application=self)
+        win.set_icon_name("de.tbe.timeworm")
         win.present()
 
     def _load_css(self):
