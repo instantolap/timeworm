@@ -401,7 +401,14 @@ class TimeTrackingView(Gtk.Box):
             sub_lbl.add_css_class("caption")
             info_box.append(sub_lbl)
         else:
-            hours = 0
+            st = datetime.fromisoformat(entry['start_time'])
+            raw_hours = (datetime.now() - st).total_seconds() / 3600
+            q = entry.get('time_quantum', 0.25) or 0.25
+            hours = quantize_hours(raw_hours, q)
+            sub_lbl = Gtk.Label(label=f"{st.strftime('%H:%M')} – ⏱ läuft...", xalign=0)
+            sub_lbl.add_css_class("dim-label")
+            sub_lbl.add_css_class("caption")
+            info_box.append(sub_lbl)
         box.append(info_box)
 
         # Duration (quantized)
@@ -748,6 +755,7 @@ class TimeTrackingView(Gtk.Box):
                 description = desc_entry.get_text().strip()
                 TimeEntryRepository.start(p_ids[idx], description=description)
                 self._check_running_timer()
+                self._load_month()
 
     def _check_running_timer(self):
         running = TimeEntryRepository.get_running()

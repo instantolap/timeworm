@@ -154,6 +154,9 @@ class ReportsView(Gtk.Box):
         return None
 
     def _load_report(self):
+        if getattr(self, '_loading', False):
+            return
+        self._loading = True
         self._month_label.set_text(f"{MONTH_NAMES[self._current_month]} {self._current_year}")
         self._update_cust_filter()
 
@@ -174,6 +177,7 @@ class ReportsView(Gtk.Box):
             lbl.add_css_class("dim-label")
             lbl.set_margin_top(40)
             self._report_box.append(lbl)
+            self._loading = False
             return
 
         grand_hours = 0
@@ -246,6 +250,7 @@ class ReportsView(Gtk.Box):
         total_val.add_css_class("title-3")
         total_box.append(total_val)
         self._report_box.append(total_box)
+        self._loading = False
 
     def _draw_dot(self, area, cr, width, height, color_str):
         rgba = Gdk.RGBA()

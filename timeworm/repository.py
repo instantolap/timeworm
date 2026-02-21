@@ -211,10 +211,15 @@ class TimeEntryRepository:
     def get_entries(project_id: Optional[int] = None,
                     customer_id: Optional[int] = None,
                     start_date: Optional[str] = None,
-                    end_date: Optional[str] = None) -> list[dict]:
+                    end_date: Optional[str] = None,
+                    include_running: bool = False) -> list[dict]:
         conn = get_connection()
-        query = f"""{TimeEntryRepository._ENTRY_SELECT}
-                    WHERE te.end_time IS NOT NULL"""
+        if include_running:
+            query = f"""{TimeEntryRepository._ENTRY_SELECT}
+                        WHERE 1=1"""
+        else:
+            query = f"""{TimeEntryRepository._ENTRY_SELECT}
+                        WHERE te.end_time IS NOT NULL"""
         params = []
         if project_id:
             query += " AND te.project_id = ?"
@@ -235,7 +240,7 @@ class TimeEntryRepository:
 
     @staticmethod
     def get_entries_grouped_by_day(start_date: str, end_date: str) -> dict[str, list[dict]]:
-        entries = TimeEntryRepository.get_entries(start_date=start_date, end_date=end_date)
+        entries = TimeEntryRepository.get_entries(start_date=start_date, end_date=end_date, include_running=True)
         grouped = {}
         for entry in entries:
             day = entry['start_time'][:10]
