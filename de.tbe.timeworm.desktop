@@ -6,3 +6,4 @@ Exec=timeworm
 Icon=de.tbe.timeworm
 Categories=Utility;Office;ProjectManagement;
 Keywords=time;tracker;hours;
+StartupWMClass=de.tbe.timeworm
