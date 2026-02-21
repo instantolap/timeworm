@@ -1,0 +1,61 @@
+{
+  "manifest_version": "0.3",
+  "name": "timeworm",
+  "display_name": "TimeWorm",
+  "version": "1.0.0",
+  "description": "TimeWorm Zeiterfassung - Timer starten/stoppen, Zeiten buchen, Auswertungen",
+  "author": {
+    "name": "Tom Behrends"
+  },
+  "server": {
+    "type": "node",
+    "entry_point": "index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": [
+        "${__dirname}/index.js"
+      ]
+    }
+  },
+  "tools": [
+    {
+      "name": "tw_list_customers",
+      "description": "List all active customers"
+    },
+    {
+      "name": "tw_list_projects",
+      "description": "List all active projects, optionally filtered by customer"
+    },
+    {
+      "name": "tw_start_timer",
+      "description": "Start a live timer for a project"
+    },
+    {
+      "name": "tw_stop_timer",
+      "description": "Stop the currently running timer"
+    },
+    {
+      "name": "tw_status",
+      "description": "Show current timer status and today's entries"
+    },
+    {
+      "name": "tw_log_time",
+      "description": "Log a completed time entry (manual booking)"
+    },
+    {
+      "name": "tw_summary",
+      "description": "Get time/revenue summary for a month"
+    },
+    {
+      "name": "tw_entries",
+      "description": "List time entries for a date range"
+    }
+  ],
+  "compatibility": {
+    "platforms": ["linux"],
+    "runtimes": {
+      "node": ">=18.0.0"
+    }
+  },
+  "license": "Gonzo2"
+}
