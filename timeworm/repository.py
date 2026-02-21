@@ -1,17 +1,71 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Optional
-from .db import get_connection, init_db
+from .db import get_connection
+
+
+class CustomerRepository:
+    """CRUD operations for customers."""
+
+    @staticmethod
+    def create(name: str, color: str = '#3584e4') -> int:
+        conn = get_connection()
+        cur = conn.execute(
+            "INSERT INTO customers (name, color) VALUES (?, ?)",
+            (name, color)
+        )
+        conn.commit()
+        cid = cur.lastrowid
+        conn.close()
+        return cid
+
+    @staticmethod
+    def get_all(active_only: bool = True) -> list[dict]:
+        conn = get_connection()
+        query = "SELECT * FROM customers"
+        if active_only:
+            query += " WHERE active = 1"
+        query += " ORDER BY name"
+        rows = conn.execute(query).fetchall()
+        conn.close()
+        return [dict(r) for r in rows]
+
+    @staticmethod
+    def get_by_id(customer_id: int) -> dict:
+        conn = get_connection()
+        row = conn.execute(
+            "SELECT * FROM customers WHERE id = ?", (customer_id,)
+        ).fetchone()
+        conn.close()
+        return dict(row) if row else None
+
+    @staticmethod
+    def update(customer_id: int, **kwargs):
+        conn = get_connection()
+        sets = ", ".join(f"{k} = ?" for k in kwargs)
+        conn.execute(
+            f"UPDATE customers SET {sets} WHERE id = ?",
+            (*kwargs.values(), customer_id)
+        )
+        conn.commit()
+        conn.close()
+
+    @staticmethod
+    def delete(customer_id: int):
+        conn = get_connection()
+        conn.execute("UPDATE customers SET active = 0 WHERE id = ?", (customer_id,))
+        conn.commit()
+        conn.close()
 
 
 class ProjectRepository:
     """CRUD operations for projects."""
 
     @staticmethod
-    def create(name: str, hourly_rate: float = 0.0, color: str = '#3584e4') -> int:
+    def create(customer_id: int, name: str, hourly_rate: float = 0.0) -> int:
         conn = get_connection()
         cur = conn.execute(
-            "INSERT INTO projects (name, hourly_rate, color) VALUES (?, ?, ?)",
-            (name, hourly_rate, color)
+            "INSERT INTO projects (customer_id, name, hourly_rate) VALUES (?, ?, ?)",
+            (customer_id, name, hourly_rate)
         )
         conn.commit()
         pid = cur.lastrowid
@@ -19,22 +73,53 @@ class ProjectRepository:
         return pid
 
     @staticmethod
-    def get_all(active_only: bool = True) -> list:
+    def get_all(active_only: bool = True) -> list[dict]:
         conn = get_connection()
-        query = "SELECT * FROM projects"
+        query = """SELECT p.*, c.name as customer_name, c.color
+                   FROM projects p
+                   JOIN customers c ON p.customer_id = c.id"""
         if active_only:
-            query += " WHERE active = 1"
-        query += " ORDER BY name"
+            query += " WHERE p.active = 1"
+        query += " ORDER BY c.name, p.name"
         rows = conn.execute(query).fetchall()
         conn.close()
-        return rows
+        return [dict(r) for r in rows]
+
+    @staticmethod
+    def get_by_customer(customer_id: int, active_only: bool = True) -> list[dict]:
+        conn = get_connection()
+        query = """SELECT p.*, c.name as customer_name, c.color
+                   FROM projects p
+                   JOIN customers c ON p.customer_id = c.id
+                   WHERE p.customer_id = ?"""
+        if active_only:
+            query += " AND p.active = 1"
+        query += " ORDER BY p.name"
+        rows = conn.execute(query, (customer_id,)).fetchall()
+        conn.close()
+        return [dict(r) for r in rows]
+
+    @staticmethod
+    def get_by_id(project_id: int) -> dict:
+        conn = get_connection()
+        row = conn.execute(
+            """SELECT p.*, c.name as customer_name, c.color
+               FROM projects p
+               JOIN customers c ON p.customer_id = c.id
+               WHERE p.id = ?""",
+            (project_id,)
+        ).fetchone()
+        conn.close()
+        return dict(row) if row else None
 
     @staticmethod
     def update(project_id: int, **kwargs):
         conn = get_connection()
         sets = ", ".join(f"{k} = ?" for k in kwargs)
-        conn.execute(f"UPDATE projects SET {sets} WHERE id = ?",
-                     (*kwargs.values(), project_id))
+        conn.execute(
+            f"UPDATE projects SET {sets} WHERE id = ?",
+            (*kwargs.values(), project_id)
+        )
         conn.commit()
         conn.close()
 
@@ -48,6 +133,14 @@ class ProjectRepository:
 
 class TimeEntryRepository:
     """CRUD operations for time entries."""
+
+    _ENTRY_SELECT = """
+        SELECT te.*, p.name as project_name, p.hourly_rate,
+               c.name as customer_name, c.color, p.customer_id
+        FROM time_entries te
+        JOIN projects p ON te.project_id = p.id
+        JOIN customers c ON p.customer_id = c.id
+    """
 
     @staticmethod
     def start(project_id: int, note: str = '') -> int:
@@ -73,7 +166,6 @@ class TimeEntryRepository:
 
     @staticmethod
     def stop_running():
-        """Stop any currently running timer."""
         conn = get_connection()
         conn.execute(
             "UPDATE time_entries SET end_time = ? WHERE end_time IS NULL",
@@ -86,28 +178,42 @@ class TimeEntryRepository:
     def get_running() -> Optional[dict]:
         conn = get_connection()
         row = conn.execute(
-            """SELECT te.*, p.name as project_name, p.hourly_rate, p.color
-               FROM time_entries te
-               JOIN projects p ON te.project_id = p.id
-               WHERE te.end_time IS NULL
-               LIMIT 1"""
+            f"""{TimeEntryRepository._ENTRY_SELECT}
+                WHERE te.end_time IS NULL
+                LIMIT 1"""
         ).fetchone()
         conn.close()
         return dict(row) if row else None
 
     @staticmethod
-    def get_entries(project_id: Optional[int] = None,
-                    start_date: Optional[str] = None,
-                    end_date: Optional[str] = None) -> list:
+    def create_manual(project_id: int, start_time: str, end_time: str,
+                      note: str = '', description: str = '') -> int:
         conn = get_connection()
-        query = """SELECT te.*, p.name as project_name, p.hourly_rate, p.color
-                   FROM time_entries te
-                   JOIN projects p ON te.project_id = p.id
-                   WHERE te.end_time IS NOT NULL"""
+        cur = conn.execute(
+            """INSERT INTO time_entries (project_id, start_time, end_time, note, description)
+               VALUES (?, ?, ?, ?, ?)""",
+            (project_id, start_time, end_time, note, description)
+        )
+        conn.commit()
+        eid = cur.lastrowid
+        conn.close()
+        return eid
+
+    @staticmethod
+    def get_entries(project_id: Optional[int] = None,
+                    customer_id: Optional[int] = None,
+                    start_date: Optional[str] = None,
+                    end_date: Optional[str] = None) -> list[dict]:
+        conn = get_connection()
+        query = f"""{TimeEntryRepository._ENTRY_SELECT}
+                    WHERE te.end_time IS NOT NULL"""
         params = []
         if project_id:
             query += " AND te.project_id = ?"
             params.append(project_id)
+        if customer_id:
+            query += " AND p.customer_id = ?"
+            params.append(customer_id)
         if start_date:
             query += " AND te.start_time >= ?"
             params.append(start_date)
@@ -120,23 +226,22 @@ class TimeEntryRepository:
         return [dict(r) for r in rows]
 
     @staticmethod
-    def create_manual(project_id: int, start_time: str, end_time: str, note: str = '') -> int:
-        conn = get_connection()
-        cur = conn.execute(
-            "INSERT INTO time_entries (project_id, start_time, end_time, note) VALUES (?, ?, ?, ?)",
-            (project_id, start_time, end_time, note)
-        )
-        conn.commit()
-        eid = cur.lastrowid
-        conn.close()
-        return eid
+    def get_entries_grouped_by_day(start_date: str, end_date: str) -> dict[str, list[dict]]:
+        entries = TimeEntryRepository.get_entries(start_date=start_date, end_date=end_date)
+        grouped = {}
+        for entry in entries:
+            day = entry['start_time'][:10]
+            grouped.setdefault(day, []).append(entry)
+        return grouped
 
     @staticmethod
     def update(entry_id: int, **kwargs):
         conn = get_connection()
         sets = ", ".join(f"{k} = ?" for k in kwargs)
-        conn.execute(f"UPDATE time_entries SET {sets} WHERE id = ?",
-                     (*kwargs.values(), entry_id))
+        conn.execute(
+            f"UPDATE time_entries SET {sets} WHERE id = ?",
+            (*kwargs.values(), entry_id)
+        )
         conn.commit()
         conn.close()
 
@@ -148,21 +253,71 @@ class TimeEntryRepository:
         conn.close()
 
     @staticmethod
-    def get_summary(start_date: str, end_date: str) -> list:
-        """Get hours and earnings summary grouped by project."""
+    def duplicate(entry_id: int) -> int:
+        conn = get_connection()
+        row = conn.execute(
+            "SELECT * FROM time_entries WHERE id = ?", (entry_id,)
+        ).fetchone()
+        if not row:
+            conn.close()
+            return -1
+        entry = dict(row)
+        # Use today's date but keep original times
+        today = datetime.now().strftime('%Y-%m-%d')
+        orig_start = datetime.fromisoformat(entry['start_time'])
+        orig_end = datetime.fromisoformat(entry['end_time']) if entry['end_time'] else None
+        new_start = f"{today}T{orig_start.strftime('%H:%M:%S')}"
+        new_end = f"{today}T{orig_end.strftime('%H:%M:%S')}" if orig_end else None
+        cur = conn.execute(
+            """INSERT INTO time_entries (project_id, start_time, end_time, note, description)
+               VALUES (?, ?, ?, ?, ?)""",
+            (entry['project_id'], new_start, new_end,
+             entry['note'], entry.get('description', ''))
+        )
+        conn.commit()
+        eid = cur.lastrowid
+        conn.close()
+        return eid
+
+    @staticmethod
+    def get_summary(start_date: str, end_date: str) -> list[dict]:
         conn = get_connection()
         rows = conn.execute("""
-            SELECT p.name, p.hourly_rate, p.color,
+            SELECT p.name as project_name, p.hourly_rate, c.name as customer_name, c.color,
                    COUNT(te.id) as entry_count,
                    SUM(
                        (julianday(te.end_time) - julianday(te.start_time)) * 24
                    ) as total_hours
             FROM time_entries te
             JOIN projects p ON te.project_id = p.id
+            JOIN customers c ON p.customer_id = c.id
             WHERE te.end_time IS NOT NULL
               AND te.start_time >= ? AND te.start_time <= ?
             GROUP BY p.id
-            ORDER BY total_hours DESC
+            ORDER BY c.name, p.name
+        """, (start_date, end_date)).fetchall()
+        conn.close()
+        return [dict(r) for r in rows]
+
+    @staticmethod
+    def get_summary_by_customer(start_date: str, end_date: str) -> list[dict]:
+        conn = get_connection()
+        rows = conn.execute("""
+            SELECT c.name as customer_name, c.color,
+                   COUNT(te.id) as entry_count,
+                   SUM(
+                       (julianday(te.end_time) - julianday(te.start_time)) * 24
+                   ) as total_hours,
+                   SUM(
+                       (julianday(te.end_time) - julianday(te.start_time)) * 24 * p.hourly_rate
+                   ) as total_amount
+            FROM time_entries te
+            JOIN projects p ON te.project_id = p.id
+            JOIN customers c ON p.customer_id = c.id
+            WHERE te.end_time IS NOT NULL
+              AND te.start_time >= ? AND te.start_time <= ?
+            GROUP BY c.id
+            ORDER BY c.name
         """, (start_date, end_date)).fetchall()
         conn.close()
         return [dict(r) for r in rows]
