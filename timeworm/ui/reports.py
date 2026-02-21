@@ -145,7 +145,7 @@ class ReportsView(Gtk.Box):
 
     def _on_cust_filter_changed(self, dropdown, _pspec):
         if not self._ignore_filter_change:
-            self._load_report()
+            self._load_report(update_filter=False)
 
     def _get_selected_customer_id(self):
         idx = self._cust_filter.get_selected()
@@ -153,12 +153,13 @@ class ReportsView(Gtk.Box):
             return self._cust_filter_ids[idx]
         return None
 
-    def _load_report(self):
+    def _load_report(self, update_filter=True):
         if getattr(self, '_loading', False):
             return
         self._loading = True
         self._month_label.set_text(f"{MONTH_NAMES[self._current_month]} {self._current_year}")
-        self._update_cust_filter()
+        if update_filter:
+            self._update_cust_filter()
 
         # Clear
         child = self._report_box.get_first_child()
