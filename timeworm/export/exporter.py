@@ -12,22 +12,28 @@ from reportlab.platypus import (
     SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 )
 
-from ..repository import TimeEntryRepository
+from ..repository import TimeEntryRepository, quantize_hours
 
 
-def _get_report_data(start_date: str, end_date: str, project_id: Optional[int] = None):
+def _get_report_data(start_date: str, end_date: str,
+                     project_id: Optional[int] = None,
+                     customer_id: Optional[int] = None):
     entries = TimeEntryRepository.get_entries(
-        project_id=project_id, start_date=start_date, end_date=end_date
+        project_id=project_id, customer_id=customer_id,
+        start_date=start_date, end_date=end_date
     )
-    summary = TimeEntryRepository.get_summary(start_date, end_date)
-    customer_summary = TimeEntryRepository.get_summary_by_customer(start_date, end_date)
+    summary = TimeEntryRepository.get_summary(
+        start_date, end_date, customer_id=customer_id)
+    customer_summary = TimeEntryRepository.get_summary_by_customer(
+        start_date, end_date, customer_id=customer_id)
     return entries, summary, customer_summary
 
 
 def export_csv(filepath: str, start_date: str, end_date: str,
-               project_id: Optional[int] = None):
+               project_id: Optional[int] = None,
+               customer_id: Optional[int] = None):
     """Export time entries as semicolon-delimited CSV."""
-    entries, _, _ = _get_report_data(start_date, end_date, project_id)
+    entries, _, _ = _get_report_data(start_date, end_date, project_id, customer_id)
     with open(filepath, 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f, delimiter=';')
         writer.writerow(['Kunde', 'Projekt', 'Datum', 'Start', 'Ende',
@@ -35,7 +41,9 @@ def export_csv(filepath: str, start_date: str, end_date: str,
         for e in entries:
             start = datetime.fromisoformat(e['start_time'])
             end = datetime.fromisoformat(e['end_time'])
-            hours = (end - start).total_seconds() / 3600
+            raw_hours = (end - start).total_seconds() / 3600
+            q = e.get('time_quantum', 0.25) or 0.25
+            hours = quantize_hours(raw_hours, q)
             amount = hours * e['hourly_rate']
             writer.writerow([
                 e['customer_name'],
@@ -52,9 +60,10 @@ def export_csv(filepath: str, start_date: str, end_date: str,
 
 
 def export_excel(filepath: str, start_date: str, end_date: str,
-                 project_id: Optional[int] = None):
+                 project_id: Optional[int] = None,
+                 customer_id: Optional[int] = None):
     """Export time entries and summary as Excel workbook."""
-    entries, summary, customer_summary = _get_report_data(start_date, end_date, project_id)
+    entries, summary, customer_summary = _get_report_data(start_date, end_date, project_id, customer_id)
 
     wb = Workbook()
     header_font = Font(bold=True, color="FFFFFF")
@@ -74,7 +83,9 @@ def export_excel(filepath: str, start_date: str, end_date: str,
     for row, e in enumerate(entries, 2):
         start = datetime.fromisoformat(e['start_time'])
         end = datetime.fromisoformat(e['end_time'])
-        hours = (end - start).total_seconds() / 3600
+        raw_hours = (end - start).total_seconds() / 3600
+        q = e.get('time_quantum', 0.25) or 0.25
+        hours = quantize_hours(raw_hours, q)
         amount = hours * e['hourly_rate']
         ws.cell(row=row, column=1, value=e['customer_name'])
         ws.cell(row=row, column=2, value=e['project_name'])
@@ -142,9 +153,10 @@ def export_excel(filepath: str, start_date: str, end_date: str,
 
 
 def export_pdf(filepath: str, start_date: str, end_date: str,
-               project_id: Optional[int] = None):
+               project_id: Optional[int] = None,
+               customer_id: Optional[int] = None):
     """Export as PDF Stundennachweis."""
-    entries, summary, customer_summary = _get_report_data(start_date, end_date, project_id)
+    entries, summary, customer_summary = _get_report_data(start_date, end_date, project_id, customer_id)
 
     doc = SimpleDocTemplate(
         filepath, pagesize=A4,
@@ -227,7 +239,9 @@ def export_pdf(filepath: str, start_date: str, end_date: str,
         for e in entries:
             start = datetime.fromisoformat(e['start_time'])
             end = datetime.fromisoformat(e['end_time'])
-            hours = (end - start).total_seconds() / 3600
+            raw_hours = (end - start).total_seconds() / 3600
+            q = e.get('time_quantum', 0.25) or 0.25
+            hours = quantize_hours(raw_hours, q)
             amount = hours * e['hourly_rate']
             detail_data.append([
                 e['customer_name'],

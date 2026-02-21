@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS projects (
     customer_id INTEGER NOT NULL,
     name TEXT NOT NULL,
     hourly_rate REAL NOT NULL DEFAULT 0.0,
+    time_quantum REAL NOT NULL DEFAULT 0.25,
     active INTEGER NOT NULL DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (customer_id) REFERENCES customers(id)
@@ -90,6 +91,16 @@ def _migrate_add_customers(conn: sqlite3.Connection):
     conn.commit()
 
 
+def _migrate_add_time_quantum(conn: sqlite3.Connection):
+    """Add time_quantum column to projects if missing."""
+    proj_cols = [row[1] for row in conn.execute("PRAGMA table_info(projects)")]
+    if "time_quantum" not in proj_cols:
+        conn.execute(
+            "ALTER TABLE projects ADD COLUMN time_quantum REAL NOT NULL DEFAULT 0.25"
+        )
+        conn.commit()
+
+
 def init_db():
     """Initialize the database schema, running migrations if needed."""
     conn = get_connection()
@@ -100,6 +111,7 @@ def init_db():
     )
     if cursor.fetchone():
         _migrate_add_customers(conn)
+        _migrate_add_time_quantum(conn)
     else:
         conn.executescript(SCHEMA)
         conn.commit()

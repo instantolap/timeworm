@@ -340,11 +340,19 @@ class SettingsView(Gtk.Box):
         rate_box.append(rate_entry)
         box.append(rate_box)
 
+        quantum_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        quantum_box.append(Gtk.Label(label="Quantisierung (h):"))
+        quantum_entry = Gtk.Entry()
+        quantum_entry.set_text("0.25")
+        quantum_entry.set_max_width_chars(8)
+        quantum_box.append(quantum_entry)
+        box.append(quantum_box)
+
         dialog.set_extra_child(box)
-        dialog.connect("response", self._on_create_project, customer_id, name_entry, rate_entry)
+        dialog.connect("response", self._on_create_project, customer_id, name_entry, rate_entry, quantum_entry)
         dialog.present(self.get_root())
 
-    def _on_create_project(self, dialog, response, customer_id, name_entry, rate_entry):
+    def _on_create_project(self, dialog, response, customer_id, name_entry, rate_entry, quantum_entry):
         if response == "create":
             name = name_entry.get_text().strip()
             if not name:
@@ -353,7 +361,12 @@ class SettingsView(Gtk.Box):
                 rate = float(rate_entry.get_text().strip().replace(",", "."))
             except ValueError:
                 rate = 0.0
-            ProjectRepository.create(customer_id, name, rate)
+            try:
+                quantum = float(quantum_entry.get_text().strip().replace(",", "."))
+            except ValueError:
+                quantum = 0.25
+            pid = ProjectRepository.create(customer_id, name, rate)
+            ProjectRepository.update(pid, time_quantum=quantum)
             self._load_projects(customer_id)
 
     def _on_edit_project(self, _btn, proj):
@@ -378,11 +391,19 @@ class SettingsView(Gtk.Box):
         rate_box.append(rate_entry)
         box.append(rate_box)
 
+        quantum_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        quantum_box.append(Gtk.Label(label="Quantisierung (h):"))
+        quantum_entry = Gtk.Entry()
+        quantum_entry.set_text(str(proj.get('time_quantum', 0.25)))
+        quantum_entry.set_max_width_chars(8)
+        quantum_box.append(quantum_entry)
+        box.append(quantum_box)
+
         dialog.set_extra_child(box)
-        dialog.connect("response", self._on_save_project, proj, name_entry, rate_entry)
+        dialog.connect("response", self._on_save_project, proj, name_entry, rate_entry, quantum_entry)
         dialog.present(self.get_root())
 
-    def _on_save_project(self, dialog, response, proj, name_entry, rate_entry):
+    def _on_save_project(self, dialog, response, proj, name_entry, rate_entry, quantum_entry):
         if response == "save":
             name = name_entry.get_text().strip()
             if not name:
@@ -391,7 +412,11 @@ class SettingsView(Gtk.Box):
                 rate = float(rate_entry.get_text().strip().replace(",", "."))
             except ValueError:
                 rate = proj['hourly_rate']
-            ProjectRepository.update(proj['id'], name=name, hourly_rate=rate)
+            try:
+                quantum = float(quantum_entry.get_text().strip().replace(",", "."))
+            except ValueError:
+                quantum = proj.get('time_quantum', 0.25)
+            ProjectRepository.update(proj['id'], name=name, hourly_rate=rate, time_quantum=quantum)
             idx = self._cust_filter.get_selected()
             if idx < len(self._cust_filter_ids):
                 self._load_projects(self._cust_filter_ids[idx])

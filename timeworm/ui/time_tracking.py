@@ -3,7 +3,7 @@ gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Gtk, Adw, GLib, Gdk, Gio
 from datetime import datetime, timedelta
-from ..repository import CustomerRepository, ProjectRepository, TimeEntryRepository
+from ..repository import CustomerRepository, ProjectRepository, TimeEntryRepository, quantize_hours
 
 MONTH_NAMES = [
     "", "Januar", "Februar", "März", "April", "Mai", "Juni",
@@ -313,7 +313,9 @@ class TimeTrackingView(Gtk.Box):
             if e['end_time']:
                 st = datetime.fromisoformat(e['start_time'])
                 et = datetime.fromisoformat(e['end_time'])
-                h = (et - st).total_seconds() / 3600
+                raw_h = (et - st).total_seconds() / 3600
+                q = e.get('time_quantum', 0.25) or 0.25
+                h = quantize_hours(raw_h, q)
                 total_hours += h
                 total_amount += h * (e['hourly_rate'] or 0)
 
@@ -323,8 +325,10 @@ class TimeTrackingView(Gtk.Box):
 
         header_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         header_box.set_hexpand(True)
+        header_box.add_css_class("day-header")
         day_lbl = Gtk.Label(label=header_text, xalign=0)
         day_lbl.set_hexpand(True)
+        day_lbl.add_css_class("heading")
         header_box.append(day_lbl)
 
         amount_str = f"{total_amount:,.2f}\u2009€".replace(",", "X").replace(".", ",").replace("X", ".")
@@ -338,13 +342,14 @@ class TimeTrackingView(Gtk.Box):
         expander.set_expanded(expanded)
         expander.set_margin_start(4)
         expander.set_margin_end(4)
-        expander.set_margin_top(2)
+        expander.set_margin_top(10)
         expander.set_margin_bottom(2)
 
         # Entry rows inside
         entries_box = Gtk.ListBox()
         entries_box.set_selection_mode(Gtk.SelectionMode.SINGLE)
         entries_box.add_css_class("boxed-list")
+        entries_box.add_css_class("day-entries")
         entries_box.connect("row-selected", self._on_entry_selected)
 
         for entry in entries:
@@ -387,7 +392,9 @@ class TimeTrackingView(Gtk.Box):
         if entry['end_time']:
             st = datetime.fromisoformat(entry['start_time'])
             et = datetime.fromisoformat(entry['end_time'])
-            hours = (et - st).total_seconds() / 3600
+            raw_hours = (et - st).total_seconds() / 3600
+            q = entry.get('time_quantum', 0.25) or 0.25
+            hours = quantize_hours(raw_hours, q)
             time_str = f"{st.strftime('%H:%M')} – {et.strftime('%H:%M')}"
             sub_lbl = Gtk.Label(label=time_str, xalign=0)
             sub_lbl.add_css_class("dim-label")
@@ -397,7 +404,7 @@ class TimeTrackingView(Gtk.Box):
             hours = 0
         box.append(info_box)
 
-        # Duration
+        # Duration (quantized)
         dur_lbl = Gtk.Label(label=_format_duration(hours))
         dur_lbl.add_css_class("caption")
         box.append(dur_lbl)
@@ -540,18 +547,21 @@ class TimeTrackingView(Gtk.Box):
         try:
             sh, sm = _parse_time(self._start_entry.get_text())
             eh, em = _parse_time(self._end_entry.get_text())
-            hours = (eh * 60 + em - sh * 60 - sm) / 60
-            if hours < 0:
-                hours += 24
-            self._duration_label.set_text(_format_duration(hours))
+            raw_hours = (eh * 60 + em - sh * 60 - sm) / 60
+            if raw_hours < 0:
+                raw_hours += 24
 
-            # Get hourly rate from selected project
+            # Get hourly rate and quantum from selected project
             proj_idx = self._project_dropdown.get_selected()
             rate = 0
+            quantum = 0.25
             if proj_idx != Gtk.INVALID_LIST_POSITION and proj_idx < len(self._project_ids):
                 proj = ProjectRepository.get_by_id(self._project_ids[proj_idx])
                 if proj:
                     rate = proj['hourly_rate']
+                    quantum = proj.get('time_quantum', 0.25) or 0.25
+            hours = quantize_hours(raw_hours, quantum)
+            self._duration_label.set_text(_format_duration(hours))
             self._amount_label.set_text(_format_amount(hours, rate))
         except (ValueError, IndexError):
             self._duration_label.set_text("—")
@@ -579,7 +589,7 @@ class TimeTrackingView(Gtk.Box):
 
         start_dt = day.replace(hour=sh, minute=sm, second=0)
         end_dt = day.replace(hour=eh, minute=em, second=0)
-        if end_dt <= start_dt:
+        if end_dt < start_dt:
             end_dt += timedelta(days=1)
 
         proj_idx = self._project_dropdown.get_selected()
@@ -707,6 +717,9 @@ class TimeTrackingView(Gtk.Box):
         dialog.add_response("start", "Starten")
         dialog.set_response_appearance("start", Adw.ResponseAppearance.SUGGESTED)
 
+        # Dialog content
+        content_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+
         # Project selection dropdown
         dropdown = Gtk.DropDown()
         model = Gtk.StringList()
@@ -715,17 +728,25 @@ class TimeTrackingView(Gtk.Box):
             model.append(f"{p['name']} ({p['customer_name']})")
             p_ids.append(p['id'])
         dropdown.set_model(model)
-        dialog.set_extra_child(dropdown)
+        content_box.append(dropdown)
 
-        dialog.connect("response", self._on_start_timer_response, dropdown, p_ids)
+        # Description entry
+        desc_entry = Gtk.Entry()
+        desc_entry.set_placeholder_text("Was arbeitest du?")
+        content_box.append(desc_entry)
+
+        dialog.set_extra_child(content_box)
+
+        dialog.connect("response", self._on_start_timer_response, dropdown, p_ids, desc_entry)
         dialog.present(self.get_root())
 
-    def _on_start_timer_response(self, dialog, response, dropdown, p_ids):
+    def _on_start_timer_response(self, dialog, response, dropdown, p_ids, desc_entry):
         if response == "start":
             idx = dropdown.get_selected()
             if idx < len(p_ids):
                 TimeEntryRepository.stop_running()
-                TimeEntryRepository.start(p_ids[idx])
+                description = desc_entry.get_text().strip()
+                TimeEntryRepository.start(p_ids[idx], description=description)
                 self._check_running_timer()
 
     def _check_running_timer(self):

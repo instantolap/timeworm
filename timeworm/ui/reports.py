@@ -3,7 +3,7 @@ gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Gtk, Adw, Gdk
 from datetime import datetime
-from ..repository import TimeEntryRepository, ProjectRepository
+from ..repository import TimeEntryRepository, ProjectRepository, CustomerRepository
 
 MONTH_NAMES = [
     "", "Januar", "Februar", "März", "April", "Mai", "Juni",
@@ -27,6 +27,7 @@ class ReportsView(Gtk.Box):
     def __init__(self, get_window_fn):
         super().__init__(orientation=Gtk.Orientation.VERTICAL)
         self._get_window = get_window_fn
+        self._ignore_filter_change = False
         now = datetime.now()
         self._current_year = now.year
         self._current_month = now.month
@@ -58,6 +59,21 @@ class ReportsView(Gtk.Box):
         month_bar.append(next_btn)
 
         self.append(month_bar)
+
+        # Customer filter
+        filter_bar = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        filter_bar.set_margin_start(12)
+        filter_bar.set_margin_end(12)
+        filter_bar.set_margin_top(4)
+        filter_bar.set_margin_bottom(4)
+        filter_bar.append(Gtk.Label(label="Kunde:"))
+        self._cust_filter = Gtk.DropDown()
+        self._cust_filter_model = Gtk.StringList()
+        self._cust_filter.set_model(self._cust_filter_model)
+        self._cust_filter.connect("notify::selected", self._on_cust_filter_changed)
+        self._cust_filter_ids = []
+        filter_bar.append(self._cust_filter)
+        self.append(filter_bar)
 
         sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
         self.append(sep)
@@ -113,8 +129,33 @@ class ReportsView(Gtk.Box):
             end = f"{y:04d}-{m + 1:02d}-01T00:00:00"
         return start, end
 
+    def _update_cust_filter(self):
+        self._ignore_filter_change = True
+        customers = CustomerRepository.get_all()
+        prev_idx = self._cust_filter.get_selected()
+        self._cust_filter_ids = [None] + [c['id'] for c in customers]
+        while self._cust_filter_model.get_n_items() > 0:
+            self._cust_filter_model.remove(0)
+        self._cust_filter_model.append("Alle Kunden")
+        for c in customers:
+            self._cust_filter_model.append(c['name'])
+        if prev_idx < len(self._cust_filter_ids):
+            self._cust_filter.set_selected(prev_idx)
+        self._ignore_filter_change = False
+
+    def _on_cust_filter_changed(self, dropdown, _pspec):
+        if not self._ignore_filter_change:
+            self._load_report()
+
+    def _get_selected_customer_id(self):
+        idx = self._cust_filter.get_selected()
+        if idx < len(self._cust_filter_ids):
+            return self._cust_filter_ids[idx]
+        return None
+
     def _load_report(self):
         self._month_label.set_text(f"{MONTH_NAMES[self._current_month]} {self._current_year}")
+        self._update_cust_filter()
 
         # Clear
         child = self._report_box.get_first_child()
@@ -124,8 +165,9 @@ class ReportsView(Gtk.Box):
             child = nxt
 
         start, end = self._get_date_range()
-        customer_summary = TimeEntryRepository.get_summary_by_customer(start, end)
-        project_summary = TimeEntryRepository.get_summary(start, end)
+        customer_id = self._get_selected_customer_id()
+        customer_summary = TimeEntryRepository.get_summary_by_customer(start, end, customer_id=customer_id)
+        project_summary = TimeEntryRepository.get_summary(start, end, customer_id=customer_id)
 
         if not customer_summary:
             lbl = Gtk.Label(label="Keine Einträge in diesem Monat")
@@ -214,6 +256,7 @@ class ReportsView(Gtk.Box):
 
     def _on_export(self, _btn, fmt):
         start, end = self._get_date_range()
+        customer_id = self._get_selected_customer_id()
 
         dialog = Gtk.FileDialog()
         month_str = f"{self._current_year}-{self._current_month:02d}"
@@ -224,9 +267,9 @@ class ReportsView(Gtk.Box):
         else:
             dialog.set_initial_name(f"timeworm-{month_str}.pdf")
 
-        dialog.save(self.get_root(), None, self._on_export_file_chosen, fmt, start, end)
+        dialog.save(self.get_root(), None, self._on_export_file_chosen, fmt, start, end, customer_id)
 
-    def _on_export_file_chosen(self, dialog, result, fmt, start, end):
+    def _on_export_file_chosen(self, dialog, result, fmt, start, end, customer_id):
         try:
             gfile = dialog.save_finish(result)
             filepath = gfile.get_path()
@@ -235,11 +278,11 @@ class ReportsView(Gtk.Box):
 
         from ..export.exporter import export_csv, export_excel, export_pdf
         if fmt == "xlsx":
-            export_excel(filepath, start, end)
+            export_excel(filepath, start, end, customer_id=customer_id)
         elif fmt == "csv":
-            export_csv(filepath, start, end)
+            export_csv(filepath, start, end, customer_id=customer_id)
         else:
-            export_pdf(filepath, start, end)
+            export_pdf(filepath, start, end, customer_id=customer_id)
 
         toast = Adw.Toast(title=f"Export gespeichert: {filepath}")
         window = self.get_root()

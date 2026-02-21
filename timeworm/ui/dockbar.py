@@ -20,7 +20,7 @@ class Dockbar(Gtk.Box):
 
         items = [
             ("time-tracking", "preferences-system-time-symbolic", "Zeiterfassung"),
-            ("reports", "document-properties-symbolic", "Auswertungen"),
+            ("reports", "utilities-system-monitor-symbolic", "Auswertungen"),
             ("settings", "preferences-system-symbolic", "Konfiguration"),
         ]
 
@@ -77,5 +77,15 @@ def get_dockbar_css():
     .dockbar-button:checked {
         background-color: alpha(@accent_color, 0.2);
         color: @accent_color;
+    }
+    .day-header {
+        padding: 8px 12px;
+    }
+    .day-header .heading {
+        font-weight: bold;
+    }
+    .day-entries {
+        margin-top: 4px;
+        margin-bottom: 8px;
     }
     """

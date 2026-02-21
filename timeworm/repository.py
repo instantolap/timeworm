@@ -1,6 +1,14 @@
 from datetime import datetime
+from math import ceil
 from typing import Optional
 from .db import get_connection
+
+
+def quantize_hours(hours: float, quantum: float) -> float:
+    """Round hours up to the nearest quantum increment."""
+    if quantum <= 0 or hours <= 0:
+        return hours
+    return ceil(hours / quantum) * quantum
 
 
 class CustomerRepository:
@@ -135,7 +143,7 @@ class TimeEntryRepository:
     """CRUD operations for time entries."""
 
     _ENTRY_SELECT = """
-        SELECT te.*, p.name as project_name, p.hourly_rate,
+        SELECT te.*, p.name as project_name, p.hourly_rate, p.time_quantum,
                c.name as customer_name, c.color, p.customer_id
         FROM time_entries te
         JOIN projects p ON te.project_id = p.id
@@ -143,11 +151,11 @@ class TimeEntryRepository:
     """
 
     @staticmethod
-    def start(project_id: int, note: str = '') -> int:
+    def start(project_id: int, note: str = '', description: str = '') -> int:
         conn = get_connection()
         cur = conn.execute(
-            "INSERT INTO time_entries (project_id, start_time, note) VALUES (?, ?, ?)",
-            (project_id, datetime.now().isoformat(), note)
+            "INSERT INTO time_entries (project_id, start_time, note, description) VALUES (?, ?, ?, ?)",
+            (project_id, datetime.now().isoformat(), note, description)
         )
         conn.commit()
         eid = cur.lastrowid
@@ -280,44 +288,56 @@ class TimeEntryRepository:
         return eid
 
     @staticmethod
-    def get_summary(start_date: str, end_date: str) -> list[dict]:
-        conn = get_connection()
-        rows = conn.execute("""
-            SELECT p.name as project_name, p.hourly_rate, c.name as customer_name, c.color,
-                   COUNT(te.id) as entry_count,
-                   SUM(
-                       (julianday(te.end_time) - julianday(te.start_time)) * 24
-                   ) as total_hours
-            FROM time_entries te
-            JOIN projects p ON te.project_id = p.id
-            JOIN customers c ON p.customer_id = c.id
-            WHERE te.end_time IS NOT NULL
-              AND te.start_time >= ? AND te.start_time <= ?
-            GROUP BY p.id
-            ORDER BY c.name, p.name
-        """, (start_date, end_date)).fetchall()
-        conn.close()
-        return [dict(r) for r in rows]
+    def get_summary(start_date: str, end_date: str,
+                    customer_id: Optional[int] = None) -> list[dict]:
+        entries = TimeEntryRepository.get_entries(
+            start_date=start_date, end_date=end_date, customer_id=customer_id
+        )
+        projects = {}
+        for e in entries:
+            pid = e['project_id']
+            if pid not in projects:
+                projects[pid] = {
+                    'project_name': e['project_name'],
+                    'hourly_rate': e['hourly_rate'],
+                    'time_quantum': e.get('time_quantum', 0.25),
+                    'customer_name': e['customer_name'],
+                    'color': e['color'],
+                    'entry_count': 0,
+                    'total_hours': 0.0,
+                }
+            st = datetime.fromisoformat(e['start_time'])
+            et = datetime.fromisoformat(e['end_time'])
+            raw_hours = (et - st).total_seconds() / 3600
+            q = projects[pid]['time_quantum']
+            projects[pid]['entry_count'] += 1
+            projects[pid]['total_hours'] += quantize_hours(raw_hours, q)
+        return sorted(projects.values(),
+                      key=lambda x: (x['customer_name'], x['project_name']))
 
     @staticmethod
-    def get_summary_by_customer(start_date: str, end_date: str) -> list[dict]:
-        conn = get_connection()
-        rows = conn.execute("""
-            SELECT c.name as customer_name, c.color,
-                   COUNT(te.id) as entry_count,
-                   SUM(
-                       (julianday(te.end_time) - julianday(te.start_time)) * 24
-                   ) as total_hours,
-                   SUM(
-                       (julianday(te.end_time) - julianday(te.start_time)) * 24 * p.hourly_rate
-                   ) as total_amount
-            FROM time_entries te
-            JOIN projects p ON te.project_id = p.id
-            JOIN customers c ON p.customer_id = c.id
-            WHERE te.end_time IS NOT NULL
-              AND te.start_time >= ? AND te.start_time <= ?
-            GROUP BY c.id
-            ORDER BY c.name
-        """, (start_date, end_date)).fetchall()
-        conn.close()
-        return [dict(r) for r in rows]
+    def get_summary_by_customer(start_date: str, end_date: str,
+                                customer_id: Optional[int] = None) -> list[dict]:
+        entries = TimeEntryRepository.get_entries(
+            start_date=start_date, end_date=end_date, customer_id=customer_id
+        )
+        customers = {}
+        for e in entries:
+            cname = e['customer_name']
+            if cname not in customers:
+                customers[cname] = {
+                    'customer_name': cname,
+                    'color': e['color'],
+                    'entry_count': 0,
+                    'total_hours': 0.0,
+                    'total_amount': 0.0,
+                }
+            st = datetime.fromisoformat(e['start_time'])
+            et = datetime.fromisoformat(e['end_time'])
+            raw_hours = (et - st).total_seconds() / 3600
+            q = e.get('time_quantum', 0.25)
+            qh = quantize_hours(raw_hours, q)
+            customers[cname]['entry_count'] += 1
+            customers[cname]['total_hours'] += qh
+            customers[cname]['total_amount'] += qh * (e['hourly_rate'] or 0)
+        return sorted(customers.values(), key=lambda x: x['customer_name'])
