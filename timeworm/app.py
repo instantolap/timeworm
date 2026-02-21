@@ -1,8 +1,9 @@
 import sys
+import signal
 import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Gtk, Adw, Gdk
+from gi.repository import Gtk, Adw, Gdk, Gio, GLib
 
 from .db import init_db
 from .ui.dockbar import Dockbar, get_dockbar_css
@@ -17,9 +18,32 @@ class TimeWormWindow(Adw.ApplicationWindow):
         self.set_title("TimeWorm")
         self.set_default_size(1100, 700)
 
-        # Toast overlay wrapping everything
+        # Outer vertical box: headerbar + content
+        outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.set_content(outer)
+
+        # Header bar with window controls + app icon
+        header = Adw.HeaderBar()
+        header.set_show_end_title_buttons(True)
+        header.set_show_start_title_buttons(True)
+
+        # App icon + title in header
+        title_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        title_box.set_halign(Gtk.Align.CENTER)
+        app_icon = Gtk.Image.new_from_icon_name("de.tbe.timeworm")
+        app_icon.set_pixel_size(24)
+        title_box.append(app_icon)
+        title_label = Gtk.Label(label="TimeWorm")
+        title_label.add_css_class("title-4")
+        title_box.append(title_label)
+        header.set_title_widget(title_box)
+
+        outer.append(header)
+
+        # Toast overlay wrapping main content
         self._toast_overlay = Adw.ToastOverlay()
-        self.set_content(self._toast_overlay)
+        self._toast_overlay.set_vexpand(True)
+        outer.append(self._toast_overlay)
 
         # Main horizontal layout: dockbar | content
         main_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
@@ -85,6 +109,7 @@ class TimeWormApp(Adw.Application):
 
 
 def main():
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
     app = TimeWormApp()
     app.run(sys.argv)
 
