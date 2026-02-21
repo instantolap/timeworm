@@ -54,6 +54,8 @@ class TimeWormWindow(Adw.ApplicationWindow):
         self._stack.set_visible_child_name("time-tracking")
 
     def _on_module_switch(self, module_name):
+        if not hasattr(self, '_stack'):
+            return
         self._stack.set_visible_child_name(module_name)
         # Refresh the target view
         child = self._stack.get_visible_child()
