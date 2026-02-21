@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "timeworm"
+version = "0.1.0"
+description = "🐛 TimeWorm - frisst deine Stunden. Lightweight GTK4 time tracker."
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+    {name = "Tom Behrends"}
+]
+dependencies = [
+    "PyGObject>=3.42",
+    "openpyxl>=3.1",
+    "reportlab>=4.0",
+]
+
+[project.scripts]
+timeworm = "timeworm.app:main"
+
+[tool.setuptools.packages.find]
+include = ["timeworm*"]

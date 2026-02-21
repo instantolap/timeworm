@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=TimeWorm
+Comment=🐛 frisst deine Stunden
+Exec=timeworm
+Icon=preferences-system-time-symbolic
+Categories=Utility;Office;ProjectManagement;
+Keywords=time;tracker;hours;
