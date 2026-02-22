@@ -173,12 +173,14 @@ def export_pdf(filepath: str, start_date: str, end_date: str,
     )
     elements.append(Paragraph("Stundennachweis", title_style))
 
-    # Period
+    # Period — end_date is exclusive (first of next month), show last day of range
     start_dt = datetime.fromisoformat(start_date)
     end_dt = datetime.fromisoformat(end_date)
+    from datetime import timedelta
+    last_day = end_dt - timedelta(days=1)
     period = (
         f"Zeitraum: {start_dt.strftime('%d.%m.%Y')} \u2013 "
-        f"{end_dt.strftime('%d.%m.%Y')}"
+        f"{last_day.strftime('%d.%m.%Y')}"
     )
     elements.append(Paragraph(period, styles['Normal']))
     elements.append(Spacer(1, 8 * mm))
@@ -214,7 +216,9 @@ def export_pdf(filepath: str, start_date: str, end_date: str,
 
         sum_data.append(['Gesamt', f"{total_hours:.2f}", '', f"{total_amount:.2f}"])
 
-        col_widths = [60 * mm, 30 * mm, 25 * mm, 35 * mm]
+        # Full page width: A4=210mm - 2*20mm margins = 170mm
+        page_w = 170 * mm
+        col_widths = [page_w * 0.35, page_w * 0.18, page_w * 0.15, page_w * 0.32]
         sum_table = Table(sum_data, colWidths=col_widths)
         sum_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#2E3436')),
@@ -254,8 +258,10 @@ def export_pdf(filepath: str, start_date: str, end_date: str,
                 e.get('note', '') or ''
             ])
 
-        col_widths = [28 * mm, 28 * mm, 20 * mm, 14 * mm, 14 * mm,
-                      16 * mm, 20 * mm, 30 * mm]
+        # Full page width: A4=210mm - 2*20mm margins = 170mm
+        page_w = 170 * mm
+        col_widths = [page_w * 0.16, page_w * 0.16, page_w * 0.12, page_w * 0.08,
+                      page_w * 0.08, page_w * 0.09, page_w * 0.12, page_w * 0.19]
         detail_table = Table(detail_data, colWidths=col_widths, repeatRows=1)
         detail_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#2E3436')),
