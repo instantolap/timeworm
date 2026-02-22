@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "timeworm"
-version = "0.1.0"
+version = "1.0.0"
 description = "🐛 TimeWorm - frisst deine Stunden. Lightweight GTK4 time tracker."
 requires-python = ">=3.11"
 license = {text = "MIT"}
