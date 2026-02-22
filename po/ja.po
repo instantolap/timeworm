@@ -1,316 +1,303 @@
-# TimeWorm English Translation
+# TimeWorm Japanese Translation
 # Copyright (C) 2026 TBE
-# Tom Behrends, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: TimeWorm 1.0\n"
 "PO-Revision-Date: 2026-02-22 19:00+0100\n"
 "Last-Translator: Tom Behrends\n"
-"Language: en\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-# Months
 msgid "Januar"
-msgstr "January"
+msgstr "1月"
 
 msgid "Februar"
-msgstr "February"
+msgstr "2月"
 
 msgid "März"
-msgstr "March"
+msgstr "3月"
 
 msgid "April"
-msgstr "April"
+msgstr "4月"
 
 msgid "Mai"
-msgstr "May"
+msgstr "5月"
 
 msgid "Juni"
-msgstr "June"
+msgstr "6月"
 
 msgid "Juli"
-msgstr "July"
+msgstr "7月"
 
 msgid "August"
-msgstr "August"
+msgstr "8月"
 
 msgid "September"
-msgstr "September"
+msgstr "9月"
 
 msgid "Oktober"
-msgstr "October"
+msgstr "10月"
 
 msgid "November"
-msgstr "November"
+msgstr "11月"
 
 msgid "Dezember"
-msgstr "December"
+msgstr "12月"
 
-# Weekdays
 msgid "Mo"
-msgstr "Mon"
+msgstr "月"
 
 msgid "Di"
-msgstr "Tue"
+msgstr "火"
 
 msgid "Mi"
-msgstr "Wed"
+msgstr "水"
 
 msgid "Do"
-msgstr "Thu"
+msgstr "木"
 
 msgid "Fr"
-msgstr "Fri"
+msgstr "金"
 
 msgid "Sa"
-msgstr "Sat"
+msgstr "土"
 
 msgid "So"
-msgstr "Sun"
+msgstr "日"
 
-# Navigation
 msgid "Zeiterfassung"
-msgstr "Time Tracking"
+msgstr "タイムトラッキング"
 
 msgid "Auswertungen"
-msgstr "Reports"
+msgstr "レポート"
 
 msgid "Konfiguration"
-msgstr "Settings"
+msgstr "設定"
 
-# Fields
 msgid "Kunde"
-msgstr "Customer"
+msgstr "顧客"
 
 msgid "Projekt"
-msgstr "Project"
+msgstr "プロジェクト"
 
 msgid "Datum"
-msgstr "Date"
+msgstr "日付"
 
 msgid "Start"
-msgstr "Start"
+msgstr "開始"
 
 msgid "Ende"
-msgstr "End"
+msgstr "終了"
 
 msgid "Stunden"
-msgstr "Hours"
+msgstr "時間"
 
 msgid "€/h"
-msgstr "€/h"
+msgstr "€/時"
 
 msgid "Beschreibung"
-msgstr "Description"
+msgstr "説明"
 
 msgid "Betrag"
-msgstr "Amount"
+msgstr "金額"
 
 msgid "Betrag (€)"
-msgstr "Amount (€)"
+msgstr "金額 (€)"
 
 msgid "Dauer"
-msgstr "Duration"
+msgstr "期間"
 
 msgid "Notizen"
-msgstr "Notes"
+msgstr "メモ"
 
 msgid "Von"
-msgstr "From"
+msgstr "から"
 
 msgid "Bis"
-msgstr "To"
+msgstr "まで"
 
 msgid "Einträge"
-msgstr "Entries"
+msgstr "件"
 
-# Placeholders
 msgid "TT.MM.JJJJ"
-msgstr "DD.MM.YYYY"
+msgstr "YYYY.MM.DD"
 
 msgid "HH:MM"
 msgstr "HH:MM"
 
 msgid "Kurzbeschreibung..."
-msgstr "Short description..."
+msgstr "概要..."
 
 msgid "Was arbeitest du?"
-msgstr "What are you working on?"
+msgstr "何の作業をしていますか？"
 
 msgid "Kundenname"
-msgstr "Customer name"
+msgstr "顧客名"
 
 msgid "Projektname"
-msgstr "Project name"
+msgstr "プロジェクト名"
 
-# Buttons & Actions
 msgid "Speichern"
-msgstr "Save"
+msgstr "保存"
 
 msgid "Abbrechen"
-msgstr "Cancel"
+msgstr "キャンセル"
 
 msgid "Erstellen"
-msgstr "Create"
+msgstr "作成"
 
 msgid "Löschen"
-msgstr "Delete"
+msgstr "削除"
 
 msgid "Bearbeiten"
-msgstr "Edit"
+msgstr "編集"
 
 msgid "Duplizieren"
-msgstr "Duplicate"
+msgstr "複製"
 
 msgid "Fortsetzen"
-msgstr "Resume"
+msgstr "再開"
 
 msgid "Aktivieren"
-msgstr "Activate"
+msgstr "有効化"
 
 msgid "Deaktivieren"
-msgstr "Deactivate"
+msgstr "無効化"
 
 msgid "(deaktiviert)"
-msgstr "(deactivated)"
+msgstr "(無効)"
 
 msgid "OK"
 msgstr "OK"
 
 msgid "Starten"
-msgstr "Start"
+msgstr "開始"
 
 msgid "+ Eintrag"
-msgstr "+ Entry"
+msgstr "+ エントリー"
 
 msgid "▶ Start"
-msgstr "▶ Start"
+msgstr "▶ 開始"
 
 msgid "+ Neuer Kunde"
-msgstr "+ New Customer"
+msgstr "+ 新規顧客"
 
 msgid "+ Neues Projekt"
-msgstr "+ New Project"
+msgstr "+ 新規プロジェクト"
 
-# Dialogs
 msgid "Neuer Kunde"
-msgstr "New Customer"
+msgstr "新規顧客"
 
 msgid "Name und Farbe für den neuen Kunden:"
-msgstr "Name and color for the new customer:"
+msgstr "新しい顧客の名前と色："
 
 msgid "Farbe:"
-msgstr "Color:"
+msgstr "色："
 
 msgid "Kunde bearbeiten"
-msgstr "Edit Customer"
+msgstr "顧客を編集"
 
 msgid "Neues Projekt"
-msgstr "New Project"
+msgstr "新規プロジェクト"
 
 msgid "Name und Stundensatz:"
-msgstr "Name and hourly rate:"
+msgstr "名前と時間単価："
 
 msgid "Stundensatz (€):"
-msgstr "Hourly rate (€):"
+msgstr "時間単価 (€)："
 
 msgid "Quantisierung (h):"
-msgstr "Quantization (h):"
+msgstr "時間単位 (h)："
 
 msgid "Projekt bearbeiten"
-msgstr "Edit Project"
+msgstr "プロジェクトを編集"
 
 msgid "Kein Kunde"
-msgstr "No Customer"
+msgstr "顧客なし"
 
 msgid "Bitte erstelle zuerst einen Kunden."
-msgstr "Please create a customer first."
+msgstr "最初に顧客を作成してください。"
 
 msgid "Kein Projekt vorhanden"
-msgstr "No Project Available"
+msgstr "プロジェクトがありません"
 
 msgid "Bitte erstelle zuerst einen Kunden und ein Projekt unter Konfiguration."
-msgstr "Please create a customer and project in Settings first."
+msgstr "設定で顧客とプロジェクトを先に作成してください。"
 
 msgid "Eintrag löschen?"
-msgstr "Delete Entry?"
+msgstr "エントリーを削除しますか？"
 
 msgid "Dieser Eintrag wird unwiderruflich gelöscht."
-msgstr "This entry will be permanently deleted."
+msgstr "このエントリーは完全に削除されます。"
 
 msgid "Timer starten"
-msgstr "Start Timer"
+msgstr "タイマーを開始"
 
 msgid "Projekt für den Timer auswählen:"
-msgstr "Select project for the timer:"
+msgstr "タイマーのプロジェクトを選択："
 
 msgid "Eintrag auswählen"
-msgstr "Select an entry"
+msgstr "エントリーを選択"
 
-# Reports
 msgid "Alle Kunden"
-msgstr "All Customers"
+msgstr "すべての顧客"
 
 msgid "Kunde:"
-msgstr "Customer:"
+msgstr "顧客："
 
 msgid "Keine Einträge in diesem Monat"
-msgstr "No entries this month"
+msgstr "今月のエントリーはありません"
 
 msgid "Keine Projekte für diesen Kunden"
-msgstr "No projects for this customer"
+msgstr "この顧客のプロジェクトはありません"
 
 msgid "GESAMT"
-msgstr "TOTAL"
+msgstr "合計"
 
 msgid "Export gespeichert: {}"
-msgstr "Export saved: {}"
+msgstr "エクスポート保存済み: {}"
 
-# Export / PDF
 msgid "Zeiteinträge"
-msgstr "Time Entries"
+msgstr "タイムエントリー"
 
 msgid "Zusammenfassung"
-msgstr "Summary"
+msgstr "サマリー"
 
 msgid "Stundennachweis"
-msgstr "Timesheet"
+msgstr "タイムシート"
 
 msgid "Zeitraum"
-msgstr "Period"
+msgstr "期間"
 
 msgid "Zusammenfassung nach Kunde"
-msgstr "Summary by Customer"
+msgstr "顧客別サマリー"
 
 msgid "Kunde / Projekt"
-msgstr "Customer / Project"
+msgstr "顧客 / プロジェクト"
 
 msgid "Gesamt"
-msgstr "Total"
+msgstr "合計"
 
 msgid "Einzelnachweise"
-msgstr "Detail Records"
+msgstr "明細"
 
-# Settings
 msgid "Kunden"
-msgstr "Customers"
+msgstr "顧客"
 
-
-# Export buttons
 msgid "Excel exportieren"
-msgstr "Export Excel"
+msgstr "Excelエクスポート"
 
 msgid "CSV exportieren"
-msgstr "Export CSV"
+msgstr "CSVエクスポート"
 
 msgid "PDF exportieren"
-msgstr "Export PDF"
+msgstr "PDFエクスポート"
 
 msgid "⏹ Stop"
-msgstr "⏹ Stop"
+msgstr "⏹ 停止"
 
 msgid "Projekte"
-msgstr "Projects"
+msgstr "プロジェクト"

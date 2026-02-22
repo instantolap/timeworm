@@ -100,8 +100,8 @@ class ReportsView(Gtk.Box):
         export_bar.set_margin_bottom(8)
         export_bar.set_halign(Gtk.Align.END)
 
-        for label, fmt in [("Excel", "xlsx"), ("CSV", "csv"), ("PDF", "pdf")]:
-            btn = Gtk.Button(label=f"{label} exportieren")
+        for label, fmt in [(_("Excel exportieren"), "xlsx"), (_("CSV exportieren"), "csv"), (_("PDF exportieren"), "pdf")]:
+            btn = Gtk.Button(label=label)
             btn.connect("clicked", self._on_export, fmt)
             export_bar.append(btn)
 
@@ -223,7 +223,7 @@ class ReportsView(Gtk.Box):
                 pamount = phours * rate
                 prow = Adw.ActionRow(
                     title=f"    {proj['project_name']}",
-                    subtitle=f"    {_format_hours(phours)} × {rate:,.2f}\u2009€/h = {_format_amount(pamount)}   ({proj['entry_count']} Einträge)"
+                    subtitle=f"    {_format_hours(phours)} × {rate:,.2f}\u2009€/h = {_format_amount(pamount)}   ({proj['entry_count']} {_('Einträge')})"
                 )
                 list_box.append(prow)
 

@@ -1,316 +1,303 @@
-# TimeWorm English Translation
+# TimeWorm Simplified Chinese Translation
 # Copyright (C) 2026 TBE
-# Tom Behrends, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: TimeWorm 1.0\n"
 "PO-Revision-Date: 2026-02-22 19:00+0100\n"
 "Last-Translator: Tom Behrends\n"
-"Language: en\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-# Months
 msgid "Januar"
-msgstr "January"
+msgstr "一月"
 
 msgid "Februar"
-msgstr "February"
+msgstr "二月"
 
 msgid "März"
-msgstr "March"
+msgstr "三月"
 
 msgid "April"
-msgstr "April"
+msgstr "四月"
 
 msgid "Mai"
-msgstr "May"
+msgstr "五月"
 
 msgid "Juni"
-msgstr "June"
+msgstr "六月"
 
 msgid "Juli"
-msgstr "July"
+msgstr "七月"
 
 msgid "August"
-msgstr "August"
+msgstr "八月"
 
 msgid "September"
-msgstr "September"
+msgstr "九月"
 
 msgid "Oktober"
-msgstr "October"
+msgstr "十月"
 
 msgid "November"
-msgstr "November"
+msgstr "十一月"
 
 msgid "Dezember"
-msgstr "December"
+msgstr "十二月"
 
-# Weekdays
 msgid "Mo"
-msgstr "Mon"
+msgstr "一"
 
 msgid "Di"
-msgstr "Tue"
+msgstr "二"
 
 msgid "Mi"
-msgstr "Wed"
+msgstr "三"
 
 msgid "Do"
-msgstr "Thu"
+msgstr "四"
 
 msgid "Fr"
-msgstr "Fri"
+msgstr "五"
 
 msgid "Sa"
-msgstr "Sat"
+msgstr "六"
 
 msgid "So"
-msgstr "Sun"
+msgstr "日"
 
-# Navigation
 msgid "Zeiterfassung"
-msgstr "Time Tracking"
+msgstr "时间追踪"
 
 msgid "Auswertungen"
-msgstr "Reports"
+msgstr "报表"
 
 msgid "Konfiguration"
-msgstr "Settings"
+msgstr "设置"
 
-# Fields
 msgid "Kunde"
-msgstr "Customer"
+msgstr "客户"
 
 msgid "Projekt"
-msgstr "Project"
+msgstr "项目"
 
 msgid "Datum"
-msgstr "Date"
+msgstr "日期"
 
 msgid "Start"
-msgstr "Start"
+msgstr "开始"
 
 msgid "Ende"
-msgstr "End"
+msgstr "结束"
 
 msgid "Stunden"
-msgstr "Hours"
+msgstr "小时"
 
 msgid "€/h"
-msgstr "€/h"
+msgstr "€/小时"
 
 msgid "Beschreibung"
-msgstr "Description"
+msgstr "描述"
 
 msgid "Betrag"
-msgstr "Amount"
+msgstr "金额"
 
 msgid "Betrag (€)"
-msgstr "Amount (€)"
+msgstr "金额 (€)"
 
 msgid "Dauer"
-msgstr "Duration"
+msgstr "时长"
 
 msgid "Notizen"
-msgstr "Notes"
+msgstr "备注"
 
 msgid "Von"
-msgstr "From"
+msgstr "从"
 
 msgid "Bis"
-msgstr "To"
+msgstr "至"
 
 msgid "Einträge"
-msgstr "Entries"
+msgstr "条"
 
-# Placeholders
 msgid "TT.MM.JJJJ"
-msgstr "DD.MM.YYYY"
+msgstr "YYYY.MM.DD"
 
 msgid "HH:MM"
 msgstr "HH:MM"
 
 msgid "Kurzbeschreibung..."
-msgstr "Short description..."
+msgstr "简要描述..."
 
 msgid "Was arbeitest du?"
-msgstr "What are you working on?"
+msgstr "你在做什么？"
 
 msgid "Kundenname"
-msgstr "Customer name"
+msgstr "客户名称"
 
 msgid "Projektname"
-msgstr "Project name"
+msgstr "项目名称"
 
-# Buttons & Actions
 msgid "Speichern"
-msgstr "Save"
+msgstr "保存"
 
 msgid "Abbrechen"
-msgstr "Cancel"
+msgstr "取消"
 
 msgid "Erstellen"
-msgstr "Create"
+msgstr "创建"
 
 msgid "Löschen"
-msgstr "Delete"
+msgstr "删除"
 
 msgid "Bearbeiten"
-msgstr "Edit"
+msgstr "编辑"
 
 msgid "Duplizieren"
-msgstr "Duplicate"
+msgstr "复制"
 
 msgid "Fortsetzen"
-msgstr "Resume"
+msgstr "继续"
 
 msgid "Aktivieren"
-msgstr "Activate"
+msgstr "启用"
 
 msgid "Deaktivieren"
-msgstr "Deactivate"
+msgstr "停用"
 
 msgid "(deaktiviert)"
-msgstr "(deactivated)"
+msgstr "(已停用)"
 
 msgid "OK"
-msgstr "OK"
+msgstr "确定"
 
 msgid "Starten"
-msgstr "Start"
+msgstr "开始"
 
 msgid "+ Eintrag"
-msgstr "+ Entry"
+msgstr "+ 条目"
 
 msgid "▶ Start"
-msgstr "▶ Start"
+msgstr "▶ 开始"
 
 msgid "+ Neuer Kunde"
-msgstr "+ New Customer"
+msgstr "+ 新客户"
 
 msgid "+ Neues Projekt"
-msgstr "+ New Project"
+msgstr "+ 新项目"
 
-# Dialogs
 msgid "Neuer Kunde"
-msgstr "New Customer"
+msgstr "新客户"
 
 msgid "Name und Farbe für den neuen Kunden:"
-msgstr "Name and color for the new customer:"
+msgstr "新客户的名称和颜色："
 
 msgid "Farbe:"
-msgstr "Color:"
+msgstr "颜色："
 
 msgid "Kunde bearbeiten"
-msgstr "Edit Customer"
+msgstr "编辑客户"
 
 msgid "Neues Projekt"
-msgstr "New Project"
+msgstr "新项目"
 
 msgid "Name und Stundensatz:"
-msgstr "Name and hourly rate:"
+msgstr "名称和时薪："
 
 msgid "Stundensatz (€):"
-msgstr "Hourly rate (€):"
+msgstr "时薪 (€)："
 
 msgid "Quantisierung (h):"
-msgstr "Quantization (h):"
+msgstr "时间单位 (h)："
 
 msgid "Projekt bearbeiten"
-msgstr "Edit Project"
+msgstr "编辑项目"
 
 msgid "Kein Kunde"
-msgstr "No Customer"
+msgstr "无客户"
 
 msgid "Bitte erstelle zuerst einen Kunden."
-msgstr "Please create a customer first."
+msgstr "请先创建客户。"
 
 msgid "Kein Projekt vorhanden"
-msgstr "No Project Available"
+msgstr "无可用项目"
 
 msgid "Bitte erstelle zuerst einen Kunden und ein Projekt unter Konfiguration."
-msgstr "Please create a customer and project in Settings first."
+msgstr "请先在设置中创建客户和项目。"
 
 msgid "Eintrag löschen?"
-msgstr "Delete Entry?"
+msgstr "删除条目？"
 
 msgid "Dieser Eintrag wird unwiderruflich gelöscht."
-msgstr "This entry will be permanently deleted."
+msgstr "此条目将被永久删除。"
 
 msgid "Timer starten"
-msgstr "Start Timer"
+msgstr "启动计时器"
 
 msgid "Projekt für den Timer auswählen:"
-msgstr "Select project for the timer:"
+msgstr "选择计时项目："
 
 msgid "Eintrag auswählen"
-msgstr "Select an entry"
+msgstr "选择条目"
 
-# Reports
 msgid "Alle Kunden"
-msgstr "All Customers"
+msgstr "所有客户"
 
 msgid "Kunde:"
-msgstr "Customer:"
+msgstr "客户："
 
 msgid "Keine Einträge in diesem Monat"
-msgstr "No entries this month"
+msgstr "本月无条目"
 
 msgid "Keine Projekte für diesen Kunden"
-msgstr "No projects for this customer"
+msgstr "此客户无项目"
 
 msgid "GESAMT"
-msgstr "TOTAL"
+msgstr "总计"
 
 msgid "Export gespeichert: {}"
-msgstr "Export saved: {}"
+msgstr "导出已保存: {}"
 
-# Export / PDF
 msgid "Zeiteinträge"
-msgstr "Time Entries"
+msgstr "时间条目"
 
 msgid "Zusammenfassung"
-msgstr "Summary"
+msgstr "摘要"
 
 msgid "Stundennachweis"
-msgstr "Timesheet"
+msgstr "工时表"
 
 msgid "Zeitraum"
-msgstr "Period"
+msgstr "时间段"
 
 msgid "Zusammenfassung nach Kunde"
-msgstr "Summary by Customer"
+msgstr "按客户汇总"
 
 msgid "Kunde / Projekt"
-msgstr "Customer / Project"
+msgstr "客户 / 项目"
 
 msgid "Gesamt"
-msgstr "Total"
+msgstr "总计"
 
 msgid "Einzelnachweise"
-msgstr "Detail Records"
+msgstr "明细记录"
 
-# Settings
 msgid "Kunden"
-msgstr "Customers"
+msgstr "客户"
 
-
-# Export buttons
 msgid "Excel exportieren"
-msgstr "Export Excel"
+msgstr "导出Excel"
 
 msgid "CSV exportieren"
-msgstr "Export CSV"
+msgstr "导出CSV"
 
 msgid "PDF exportieren"
-msgstr "Export PDF"
+msgstr "导出PDF"
 
 msgid "⏹ Stop"
-msgstr "⏹ Stop"
+msgstr "⏹ 停止"
 
 msgid "Projekte"
-msgstr "Projects"
+msgstr "项目"

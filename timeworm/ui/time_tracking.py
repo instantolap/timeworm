@@ -841,13 +841,13 @@ class TimeTrackingView(Gtk.Box):
     def _check_running_timer(self):
         running = TimeEntryRepository.get_running()
         if running:
-            self._timer_btn.set_label("⏹ Stop")
+            self._timer_btn.set_label(_("⏹ Stop"))
             self._start_timer_ui(running)
         else:
             self._stop_timer_ui()
 
     def _start_timer_ui(self, running):
-        self._timer_btn.set_label("⏹ Stop")
+        self._timer_btn.set_label(_("⏹ Stop"))
         self._running_entry = running
         self._update_timer_display()
         if self._timer_id:
@@ -855,7 +855,7 @@ class TimeTrackingView(Gtk.Box):
         self._timer_id = GLib.timeout_add_seconds(1, self._tick_timer)
 
     def _stop_timer_ui(self):
-        self._timer_btn.set_label("▶ Start")
+        self._timer_btn.set_label(_("▶ Start"))
         self._timer_label.set_text("")
         if self._timer_id:
             GLib.source_remove(self._timer_id)

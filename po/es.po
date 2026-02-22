@@ -1,316 +1,303 @@
-# TimeWorm English Translation
+# TimeWorm Spanish Translation
 # Copyright (C) 2026 TBE
-# Tom Behrends, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: TimeWorm 1.0\n"
 "PO-Revision-Date: 2026-02-22 19:00+0100\n"
 "Last-Translator: Tom Behrends\n"
-"Language: en\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-# Months
 msgid "Januar"
-msgstr "January"
+msgstr "Enero"
 
 msgid "Februar"
-msgstr "February"
+msgstr "Febrero"
 
 msgid "März"
-msgstr "March"
+msgstr "Marzo"
 
 msgid "April"
-msgstr "April"
+msgstr "Abril"
 
 msgid "Mai"
-msgstr "May"
+msgstr "Mayo"
 
 msgid "Juni"
-msgstr "June"
+msgstr "Junio"
 
 msgid "Juli"
-msgstr "July"
+msgstr "Julio"
 
 msgid "August"
-msgstr "August"
+msgstr "Agosto"
 
 msgid "September"
-msgstr "September"
+msgstr "Septiembre"
 
 msgid "Oktober"
-msgstr "October"
+msgstr "Octubre"
 
 msgid "November"
-msgstr "November"
+msgstr "Noviembre"
 
 msgid "Dezember"
-msgstr "December"
+msgstr "Diciembre"
 
-# Weekdays
 msgid "Mo"
-msgstr "Mon"
+msgstr "Lun"
 
 msgid "Di"
-msgstr "Tue"
+msgstr "Mar"
 
 msgid "Mi"
-msgstr "Wed"
+msgstr "Mié"
 
 msgid "Do"
-msgstr "Thu"
+msgstr "Jue"
 
 msgid "Fr"
-msgstr "Fri"
+msgstr "Vie"
 
 msgid "Sa"
-msgstr "Sat"
+msgstr "Sáb"
 
 msgid "So"
-msgstr "Sun"
+msgstr "Dom"
 
-# Navigation
 msgid "Zeiterfassung"
-msgstr "Time Tracking"
+msgstr "Control de tiempo"
 
 msgid "Auswertungen"
-msgstr "Reports"
+msgstr "Informes"
 
 msgid "Konfiguration"
-msgstr "Settings"
+msgstr "Configuración"
 
-# Fields
 msgid "Kunde"
-msgstr "Customer"
+msgstr "Cliente"
 
 msgid "Projekt"
-msgstr "Project"
+msgstr "Proyecto"
 
 msgid "Datum"
-msgstr "Date"
+msgstr "Fecha"
 
 msgid "Start"
-msgstr "Start"
+msgstr "Inicio"
 
 msgid "Ende"
-msgstr "End"
+msgstr "Fin"
 
 msgid "Stunden"
-msgstr "Hours"
+msgstr "Horas"
 
 msgid "€/h"
 msgstr "€/h"
 
 msgid "Beschreibung"
-msgstr "Description"
+msgstr "Descripción"
 
 msgid "Betrag"
-msgstr "Amount"
+msgstr "Importe"
 
 msgid "Betrag (€)"
-msgstr "Amount (€)"
+msgstr "Importe (€)"
 
 msgid "Dauer"
-msgstr "Duration"
+msgstr "Duración"
 
 msgid "Notizen"
-msgstr "Notes"
+msgstr "Notas"
 
 msgid "Von"
-msgstr "From"
+msgstr "Desde"
 
 msgid "Bis"
-msgstr "To"
+msgstr "Hasta"
 
 msgid "Einträge"
-msgstr "Entries"
+msgstr "Entradas"
 
-# Placeholders
 msgid "TT.MM.JJJJ"
-msgstr "DD.MM.YYYY"
+msgstr "DD.MM.AAAA"
 
 msgid "HH:MM"
 msgstr "HH:MM"
 
 msgid "Kurzbeschreibung..."
-msgstr "Short description..."
+msgstr "Descripción breve..."
 
 msgid "Was arbeitest du?"
-msgstr "What are you working on?"
+msgstr "¿En qué estás trabajando?"
 
 msgid "Kundenname"
-msgstr "Customer name"
+msgstr "Nombre del cliente"
 
 msgid "Projektname"
-msgstr "Project name"
+msgstr "Nombre del proyecto"
 
-# Buttons & Actions
 msgid "Speichern"
-msgstr "Save"
+msgstr "Guardar"
 
 msgid "Abbrechen"
-msgstr "Cancel"
+msgstr "Cancelar"
 
 msgid "Erstellen"
-msgstr "Create"
+msgstr "Crear"
 
 msgid "Löschen"
-msgstr "Delete"
+msgstr "Eliminar"
 
 msgid "Bearbeiten"
-msgstr "Edit"
+msgstr "Editar"
 
 msgid "Duplizieren"
-msgstr "Duplicate"
+msgstr "Duplicar"
 
 msgid "Fortsetzen"
-msgstr "Resume"
+msgstr "Reanudar"
 
 msgid "Aktivieren"
-msgstr "Activate"
+msgstr "Activar"
 
 msgid "Deaktivieren"
-msgstr "Deactivate"
+msgstr "Desactivar"
 
 msgid "(deaktiviert)"
-msgstr "(deactivated)"
+msgstr "(desactivado)"
 
 msgid "OK"
 msgstr "OK"
 
 msgid "Starten"
-msgstr "Start"
+msgstr "Iniciar"
 
 msgid "+ Eintrag"
-msgstr "+ Entry"
+msgstr "+ Entrada"
 
 msgid "▶ Start"
-msgstr "▶ Start"
+msgstr "▶ Iniciar"
 
 msgid "+ Neuer Kunde"
-msgstr "+ New Customer"
+msgstr "+ Nuevo cliente"
 
 msgid "+ Neues Projekt"
-msgstr "+ New Project"
+msgstr "+ Nuevo proyecto"
 
-# Dialogs
 msgid "Neuer Kunde"
-msgstr "New Customer"
+msgstr "Nuevo cliente"
 
 msgid "Name und Farbe für den neuen Kunden:"
-msgstr "Name and color for the new customer:"
+msgstr "Nombre y color del nuevo cliente:"
 
 msgid "Farbe:"
 msgstr "Color:"
 
 msgid "Kunde bearbeiten"
-msgstr "Edit Customer"
+msgstr "Editar cliente"
 
 msgid "Neues Projekt"
-msgstr "New Project"
+msgstr "Nuevo proyecto"
 
 msgid "Name und Stundensatz:"
-msgstr "Name and hourly rate:"
+msgstr "Nombre y tarifa por hora:"
 
 msgid "Stundensatz (€):"
-msgstr "Hourly rate (€):"
+msgstr "Tarifa por hora (€):"
 
 msgid "Quantisierung (h):"
-msgstr "Quantization (h):"
+msgstr "Cuantificación (h):"
 
 msgid "Projekt bearbeiten"
-msgstr "Edit Project"
+msgstr "Editar proyecto"
 
 msgid "Kein Kunde"
-msgstr "No Customer"
+msgstr "Sin cliente"
 
 msgid "Bitte erstelle zuerst einen Kunden."
-msgstr "Please create a customer first."
+msgstr "Por favor, crea primero un cliente."
 
 msgid "Kein Projekt vorhanden"
-msgstr "No Project Available"
+msgstr "No hay proyecto disponible"
 
 msgid "Bitte erstelle zuerst einen Kunden und ein Projekt unter Konfiguration."
-msgstr "Please create a customer and project in Settings first."
+msgstr "Por favor, crea primero un cliente y un proyecto en la configuración."
 
 msgid "Eintrag löschen?"
-msgstr "Delete Entry?"
+msgstr "¿Eliminar entrada?"
 
 msgid "Dieser Eintrag wird unwiderruflich gelöscht."
-msgstr "This entry will be permanently deleted."
+msgstr "Esta entrada se eliminará permanentemente."
 
 msgid "Timer starten"
-msgstr "Start Timer"
+msgstr "Iniciar temporizador"
 
 msgid "Projekt für den Timer auswählen:"
-msgstr "Select project for the timer:"
+msgstr "Seleccionar proyecto para el temporizador:"
 
 msgid "Eintrag auswählen"
-msgstr "Select an entry"
+msgstr "Seleccionar una entrada"
 
-# Reports
 msgid "Alle Kunden"
-msgstr "All Customers"
+msgstr "Todos los clientes"
 
 msgid "Kunde:"
-msgstr "Customer:"
+msgstr "Cliente:"
 
 msgid "Keine Einträge in diesem Monat"
-msgstr "No entries this month"
+msgstr "Sin entradas este mes"
 
 msgid "Keine Projekte für diesen Kunden"
-msgstr "No projects for this customer"
+msgstr "Sin proyectos para este cliente"
 
 msgid "GESAMT"
 msgstr "TOTAL"
 
 msgid "Export gespeichert: {}"
-msgstr "Export saved: {}"
+msgstr "Exportación guardada: {}"
 
-# Export / PDF
 msgid "Zeiteinträge"
-msgstr "Time Entries"
+msgstr "Entradas de tiempo"
 
 msgid "Zusammenfassung"
-msgstr "Summary"
+msgstr "Resumen"
 
 msgid "Stundennachweis"
-msgstr "Timesheet"
+msgstr "Hoja de horas"
 
 msgid "Zeitraum"
-msgstr "Period"
+msgstr "Período"
 
 msgid "Zusammenfassung nach Kunde"
-msgstr "Summary by Customer"
+msgstr "Resumen por cliente"
 
 msgid "Kunde / Projekt"
-msgstr "Customer / Project"
+msgstr "Cliente / Proyecto"
 
 msgid "Gesamt"
 msgstr "Total"
 
 msgid "Einzelnachweise"
-msgstr "Detail Records"
+msgstr "Registros detallados"
 
-# Settings
 msgid "Kunden"
-msgstr "Customers"
+msgstr "Clientes"
 
-
-# Export buttons
 msgid "Excel exportieren"
-msgstr "Export Excel"
+msgstr "Exportar Excel"
 
 msgid "CSV exportieren"
-msgstr "Export CSV"
+msgstr "Exportar CSV"
 
 msgid "PDF exportieren"
-msgstr "Export PDF"
+msgstr "Exportar PDF"
 
 msgid "⏹ Stop"
-msgstr "⏹ Stop"
+msgstr "⏹ Detener"
 
 msgid "Projekte"
-msgstr "Projects"
+msgstr "Proyectos"

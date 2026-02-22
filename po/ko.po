@@ -1,316 +1,303 @@
-# TimeWorm English Translation
+# TimeWorm Korean Translation
 # Copyright (C) 2026 TBE
-# Tom Behrends, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: TimeWorm 1.0\n"
 "PO-Revision-Date: 2026-02-22 19:00+0100\n"
 "Last-Translator: Tom Behrends\n"
-"Language: en\n"
+"Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-# Months
 msgid "Januar"
-msgstr "January"
+msgstr "1월"
 
 msgid "Februar"
-msgstr "February"
+msgstr "2월"
 
 msgid "März"
-msgstr "March"
+msgstr "3월"
 
 msgid "April"
-msgstr "April"
+msgstr "4월"
 
 msgid "Mai"
-msgstr "May"
+msgstr "5월"
 
 msgid "Juni"
-msgstr "June"
+msgstr "6월"
 
 msgid "Juli"
-msgstr "July"
+msgstr "7월"
 
 msgid "August"
-msgstr "August"
+msgstr "8월"
 
 msgid "September"
-msgstr "September"
+msgstr "9월"
 
 msgid "Oktober"
-msgstr "October"
+msgstr "10월"
 
 msgid "November"
-msgstr "November"
+msgstr "11월"
 
 msgid "Dezember"
-msgstr "December"
+msgstr "12월"
 
-# Weekdays
 msgid "Mo"
-msgstr "Mon"
+msgstr "월"
 
 msgid "Di"
-msgstr "Tue"
+msgstr "화"
 
 msgid "Mi"
-msgstr "Wed"
+msgstr "수"
 
 msgid "Do"
-msgstr "Thu"
+msgstr "목"
 
 msgid "Fr"
-msgstr "Fri"
+msgstr "금"
 
 msgid "Sa"
-msgstr "Sat"
+msgstr "토"
 
 msgid "So"
-msgstr "Sun"
+msgstr "일"
 
-# Navigation
 msgid "Zeiterfassung"
-msgstr "Time Tracking"
+msgstr "시간 추적"
 
 msgid "Auswertungen"
-msgstr "Reports"
+msgstr "보고서"
 
 msgid "Konfiguration"
-msgstr "Settings"
+msgstr "설정"
 
-# Fields
 msgid "Kunde"
-msgstr "Customer"
+msgstr "고객"
 
 msgid "Projekt"
-msgstr "Project"
+msgstr "프로젝트"
 
 msgid "Datum"
-msgstr "Date"
+msgstr "날짜"
 
 msgid "Start"
-msgstr "Start"
+msgstr "시작"
 
 msgid "Ende"
-msgstr "End"
+msgstr "종료"
 
 msgid "Stunden"
-msgstr "Hours"
+msgstr "시간"
 
 msgid "€/h"
-msgstr "€/h"
+msgstr "€/시간"
 
 msgid "Beschreibung"
-msgstr "Description"
+msgstr "설명"
 
 msgid "Betrag"
-msgstr "Amount"
+msgstr "금액"
 
 msgid "Betrag (€)"
-msgstr "Amount (€)"
+msgstr "금액 (€)"
 
 msgid "Dauer"
-msgstr "Duration"
+msgstr "기간"
 
 msgid "Notizen"
-msgstr "Notes"
+msgstr "메모"
 
 msgid "Von"
-msgstr "From"
+msgstr "부터"
 
 msgid "Bis"
-msgstr "To"
+msgstr "까지"
 
 msgid "Einträge"
-msgstr "Entries"
+msgstr "건"
 
-# Placeholders
 msgid "TT.MM.JJJJ"
-msgstr "DD.MM.YYYY"
+msgstr "YYYY.MM.DD"
 
 msgid "HH:MM"
 msgstr "HH:MM"
 
 msgid "Kurzbeschreibung..."
-msgstr "Short description..."
+msgstr "간단한 설명..."
 
 msgid "Was arbeitest du?"
-msgstr "What are you working on?"
+msgstr "무슨 작업을 하고 있나요?"
 
 msgid "Kundenname"
-msgstr "Customer name"
+msgstr "고객 이름"
 
 msgid "Projektname"
-msgstr "Project name"
+msgstr "프로젝트 이름"
 
-# Buttons & Actions
 msgid "Speichern"
-msgstr "Save"
+msgstr "저장"
 
 msgid "Abbrechen"
-msgstr "Cancel"
+msgstr "취소"
 
 msgid "Erstellen"
-msgstr "Create"
+msgstr "생성"
 
 msgid "Löschen"
-msgstr "Delete"
+msgstr "삭제"
 
 msgid "Bearbeiten"
-msgstr "Edit"
+msgstr "편집"
 
 msgid "Duplizieren"
-msgstr "Duplicate"
+msgstr "복제"
 
 msgid "Fortsetzen"
-msgstr "Resume"
+msgstr "재개"
 
 msgid "Aktivieren"
-msgstr "Activate"
+msgstr "활성화"
 
 msgid "Deaktivieren"
-msgstr "Deactivate"
+msgstr "비활성화"
 
 msgid "(deaktiviert)"
-msgstr "(deactivated)"
+msgstr "(비활성)"
 
 msgid "OK"
-msgstr "OK"
+msgstr "확인"
 
 msgid "Starten"
-msgstr "Start"
+msgstr "시작"
 
 msgid "+ Eintrag"
-msgstr "+ Entry"
+msgstr "+ 항목"
 
 msgid "▶ Start"
-msgstr "▶ Start"
+msgstr "▶ 시작"
 
 msgid "+ Neuer Kunde"
-msgstr "+ New Customer"
+msgstr "+ 새 고객"
 
 msgid "+ Neues Projekt"
-msgstr "+ New Project"
+msgstr "+ 새 프로젝트"
 
-# Dialogs
 msgid "Neuer Kunde"
-msgstr "New Customer"
+msgstr "새 고객"
 
 msgid "Name und Farbe für den neuen Kunden:"
-msgstr "Name and color for the new customer:"
+msgstr "새 고객의 이름과 색상:"
 
 msgid "Farbe:"
-msgstr "Color:"
+msgstr "색상:"
 
 msgid "Kunde bearbeiten"
-msgstr "Edit Customer"
+msgstr "고객 편집"
 
 msgid "Neues Projekt"
-msgstr "New Project"
+msgstr "새 프로젝트"
 
 msgid "Name und Stundensatz:"
-msgstr "Name and hourly rate:"
+msgstr "이름 및 시간당 요금:"
 
 msgid "Stundensatz (€):"
-msgstr "Hourly rate (€):"
+msgstr "시간당 요금 (€):"
 
 msgid "Quantisierung (h):"
-msgstr "Quantization (h):"
+msgstr "시간 단위 (h):"
 
 msgid "Projekt bearbeiten"
-msgstr "Edit Project"
+msgstr "프로젝트 편집"
 
 msgid "Kein Kunde"
-msgstr "No Customer"
+msgstr "고객 없음"
 
 msgid "Bitte erstelle zuerst einen Kunden."
-msgstr "Please create a customer first."
+msgstr "먼저 고객을 생성해 주세요."
 
 msgid "Kein Projekt vorhanden"
-msgstr "No Project Available"
+msgstr "프로젝트 없음"
 
 msgid "Bitte erstelle zuerst einen Kunden und ein Projekt unter Konfiguration."
-msgstr "Please create a customer and project in Settings first."
+msgstr "설정에서 먼저 고객과 프로젝트를 생성해 주세요."
 
 msgid "Eintrag löschen?"
-msgstr "Delete Entry?"
+msgstr "항목을 삭제하시겠습니까?"
 
 msgid "Dieser Eintrag wird unwiderruflich gelöscht."
-msgstr "This entry will be permanently deleted."
+msgstr "이 항목은 영구적으로 삭제됩니다."
 
 msgid "Timer starten"
-msgstr "Start Timer"
+msgstr "타이머 시작"
 
 msgid "Projekt für den Timer auswählen:"
-msgstr "Select project for the timer:"
+msgstr "타이머 프로젝트 선택:"
 
 msgid "Eintrag auswählen"
-msgstr "Select an entry"
+msgstr "항목 선택"
 
-# Reports
 msgid "Alle Kunden"
-msgstr "All Customers"
+msgstr "모든 고객"
 
 msgid "Kunde:"
-msgstr "Customer:"
+msgstr "고객:"
 
 msgid "Keine Einträge in diesem Monat"
-msgstr "No entries this month"
+msgstr "이번 달 항목 없음"
 
 msgid "Keine Projekte für diesen Kunden"
-msgstr "No projects for this customer"
+msgstr "이 고객의 프로젝트 없음"
 
 msgid "GESAMT"
-msgstr "TOTAL"
+msgstr "합계"
 
 msgid "Export gespeichert: {}"
-msgstr "Export saved: {}"
+msgstr "내보내기 저장됨: {}"
 
-# Export / PDF
 msgid "Zeiteinträge"
-msgstr "Time Entries"
+msgstr "시간 항목"
 
 msgid "Zusammenfassung"
-msgstr "Summary"
+msgstr "요약"
 
 msgid "Stundennachweis"
-msgstr "Timesheet"
+msgstr "근무 시간표"
 
 msgid "Zeitraum"
-msgstr "Period"
+msgstr "기간"
 
 msgid "Zusammenfassung nach Kunde"
-msgstr "Summary by Customer"
+msgstr "고객별 요약"
 
 msgid "Kunde / Projekt"
-msgstr "Customer / Project"
+msgstr "고객 / 프로젝트"
 
 msgid "Gesamt"
-msgstr "Total"
+msgstr "합계"
 
 msgid "Einzelnachweise"
-msgstr "Detail Records"
+msgstr "상세 기록"
 
-# Settings
 msgid "Kunden"
-msgstr "Customers"
+msgstr "고객"
 
-
-# Export buttons
 msgid "Excel exportieren"
-msgstr "Export Excel"
+msgstr "Excel 내보내기"
 
 msgid "CSV exportieren"
-msgstr "Export CSV"
+msgstr "CSV 내보내기"
 
 msgid "PDF exportieren"
-msgstr "Export PDF"
+msgstr "PDF 내보내기"
 
 msgid "⏹ Stop"
-msgstr "⏹ Stop"
+msgstr "⏹ 중지"
 
 msgid "Projekte"
-msgstr "Projects"
+msgstr "프로젝트"

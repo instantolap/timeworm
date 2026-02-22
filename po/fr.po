@@ -1,104 +1,99 @@
-# TimeWorm English Translation
+# TimeWorm French Translation
 # Copyright (C) 2026 TBE
-# Tom Behrends, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: TimeWorm 1.0\n"
 "PO-Revision-Date: 2026-02-22 19:00+0100\n"
 "Last-Translator: Tom Behrends\n"
-"Language: en\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-# Months
 msgid "Januar"
-msgstr "January"
+msgstr "Janvier"
 
 msgid "Februar"
-msgstr "February"
+msgstr "Février"
 
 msgid "März"
-msgstr "March"
+msgstr "Mars"
 
 msgid "April"
-msgstr "April"
+msgstr "Avril"
 
 msgid "Mai"
-msgstr "May"
+msgstr "Mai"
 
 msgid "Juni"
-msgstr "June"
+msgstr "Juin"
 
 msgid "Juli"
-msgstr "July"
+msgstr "Juillet"
 
 msgid "August"
-msgstr "August"
+msgstr "Août"
 
 msgid "September"
-msgstr "September"
+msgstr "Septembre"
 
 msgid "Oktober"
-msgstr "October"
+msgstr "Octobre"
 
 msgid "November"
-msgstr "November"
+msgstr "Novembre"
 
 msgid "Dezember"
-msgstr "December"
+msgstr "Décembre"
 
-# Weekdays
 msgid "Mo"
-msgstr "Mon"
+msgstr "Lun"
 
 msgid "Di"
-msgstr "Tue"
+msgstr "Mar"
 
 msgid "Mi"
-msgstr "Wed"
+msgstr "Mer"
 
 msgid "Do"
-msgstr "Thu"
+msgstr "Jeu"
 
 msgid "Fr"
-msgstr "Fri"
+msgstr "Ven"
 
 msgid "Sa"
-msgstr "Sat"
+msgstr "Sam"
 
 msgid "So"
-msgstr "Sun"
+msgstr "Dim"
 
-# Navigation
 msgid "Zeiterfassung"
-msgstr "Time Tracking"
+msgstr "Suivi du temps"
 
 msgid "Auswertungen"
-msgstr "Reports"
+msgstr "Rapports"
 
 msgid "Konfiguration"
-msgstr "Settings"
+msgstr "Configuration"
 
-# Fields
 msgid "Kunde"
-msgstr "Customer"
+msgstr "Client"
 
 msgid "Projekt"
-msgstr "Project"
+msgstr "Projet"
 
 msgid "Datum"
 msgstr "Date"
 
 msgid "Start"
-msgstr "Start"
+msgstr "Début"
 
 msgid "Ende"
-msgstr "End"
+msgstr "Fin"
 
 msgid "Stunden"
-msgstr "Hours"
+msgstr "Heures"
 
 msgid "€/h"
 msgstr "€/h"
@@ -107,210 +102,202 @@ msgid "Beschreibung"
 msgstr "Description"
 
 msgid "Betrag"
-msgstr "Amount"
+msgstr "Montant"
 
 msgid "Betrag (€)"
-msgstr "Amount (€)"
+msgstr "Montant (€)"
 
 msgid "Dauer"
-msgstr "Duration"
+msgstr "Durée"
 
 msgid "Notizen"
 msgstr "Notes"
 
 msgid "Von"
-msgstr "From"
+msgstr "De"
 
 msgid "Bis"
-msgstr "To"
+msgstr "À"
 
 msgid "Einträge"
-msgstr "Entries"
+msgstr "Entrées"
 
-# Placeholders
 msgid "TT.MM.JJJJ"
-msgstr "DD.MM.YYYY"
+msgstr "JJ.MM.AAAA"
 
 msgid "HH:MM"
 msgstr "HH:MM"
 
 msgid "Kurzbeschreibung..."
-msgstr "Short description..."
+msgstr "Description courte..."
 
 msgid "Was arbeitest du?"
-msgstr "What are you working on?"
+msgstr "Sur quoi travailles-tu ?"
 
 msgid "Kundenname"
-msgstr "Customer name"
+msgstr "Nom du client"
 
 msgid "Projektname"
-msgstr "Project name"
+msgstr "Nom du projet"
 
-# Buttons & Actions
 msgid "Speichern"
-msgstr "Save"
+msgstr "Enregistrer"
 
 msgid "Abbrechen"
-msgstr "Cancel"
+msgstr "Annuler"
 
 msgid "Erstellen"
-msgstr "Create"
+msgstr "Créer"
 
 msgid "Löschen"
-msgstr "Delete"
+msgstr "Supprimer"
 
 msgid "Bearbeiten"
-msgstr "Edit"
+msgstr "Modifier"
 
 msgid "Duplizieren"
-msgstr "Duplicate"
+msgstr "Dupliquer"
 
 msgid "Fortsetzen"
-msgstr "Resume"
+msgstr "Reprendre"
 
 msgid "Aktivieren"
-msgstr "Activate"
+msgstr "Activer"
 
 msgid "Deaktivieren"
-msgstr "Deactivate"
+msgstr "Désactiver"
 
 msgid "(deaktiviert)"
-msgstr "(deactivated)"
+msgstr "(désactivé)"
 
 msgid "OK"
 msgstr "OK"
 
 msgid "Starten"
-msgstr "Start"
+msgstr "Démarrer"
 
 msgid "+ Eintrag"
-msgstr "+ Entry"
+msgstr "+ Entrée"
 
 msgid "▶ Start"
-msgstr "▶ Start"
+msgstr "▶ Démarrer"
 
 msgid "+ Neuer Kunde"
-msgstr "+ New Customer"
+msgstr "+ Nouveau client"
 
 msgid "+ Neues Projekt"
-msgstr "+ New Project"
+msgstr "+ Nouveau projet"
 
-# Dialogs
 msgid "Neuer Kunde"
-msgstr "New Customer"
+msgstr "Nouveau client"
 
 msgid "Name und Farbe für den neuen Kunden:"
-msgstr "Name and color for the new customer:"
+msgstr "Nom et couleur du nouveau client :"
 
 msgid "Farbe:"
-msgstr "Color:"
+msgstr "Couleur :"
 
 msgid "Kunde bearbeiten"
-msgstr "Edit Customer"
+msgstr "Modifier le client"
 
 msgid "Neues Projekt"
-msgstr "New Project"
+msgstr "Nouveau projet"
 
 msgid "Name und Stundensatz:"
-msgstr "Name and hourly rate:"
+msgstr "Nom et tarif horaire :"
 
 msgid "Stundensatz (€):"
-msgstr "Hourly rate (€):"
+msgstr "Tarif horaire (€) :"
 
 msgid "Quantisierung (h):"
-msgstr "Quantization (h):"
+msgstr "Quantification (h) :"
 
 msgid "Projekt bearbeiten"
-msgstr "Edit Project"
+msgstr "Modifier le projet"
 
 msgid "Kein Kunde"
-msgstr "No Customer"
+msgstr "Aucun client"
 
 msgid "Bitte erstelle zuerst einen Kunden."
-msgstr "Please create a customer first."
+msgstr "Veuillez d'abord créer un client."
 
 msgid "Kein Projekt vorhanden"
-msgstr "No Project Available"
+msgstr "Aucun projet disponible"
 
 msgid "Bitte erstelle zuerst einen Kunden und ein Projekt unter Konfiguration."
-msgstr "Please create a customer and project in Settings first."
+msgstr "Veuillez d'abord créer un client et un projet dans la configuration."
 
 msgid "Eintrag löschen?"
-msgstr "Delete Entry?"
+msgstr "Supprimer l'entrée ?"
 
 msgid "Dieser Eintrag wird unwiderruflich gelöscht."
-msgstr "This entry will be permanently deleted."
+msgstr "Cette entrée sera définitivement supprimée."
 
 msgid "Timer starten"
-msgstr "Start Timer"
+msgstr "Démarrer le minuteur"
 
 msgid "Projekt für den Timer auswählen:"
-msgstr "Select project for the timer:"
+msgstr "Sélectionner un projet pour le minuteur :"
 
 msgid "Eintrag auswählen"
-msgstr "Select an entry"
+msgstr "Sélectionner une entrée"
 
-# Reports
 msgid "Alle Kunden"
-msgstr "All Customers"
+msgstr "Tous les clients"
 
 msgid "Kunde:"
-msgstr "Customer:"
+msgstr "Client :"
 
 msgid "Keine Einträge in diesem Monat"
-msgstr "No entries this month"
+msgstr "Aucune entrée ce mois-ci"
 
 msgid "Keine Projekte für diesen Kunden"
-msgstr "No projects for this customer"
+msgstr "Aucun projet pour ce client"
 
 msgid "GESAMT"
 msgstr "TOTAL"
 
 msgid "Export gespeichert: {}"
-msgstr "Export saved: {}"
+msgstr "Export enregistré : {}"
 
-# Export / PDF
 msgid "Zeiteinträge"
-msgstr "Time Entries"
+msgstr "Entrées de temps"
 
 msgid "Zusammenfassung"
-msgstr "Summary"
+msgstr "Résumé"
 
 msgid "Stundennachweis"
-msgstr "Timesheet"
+msgstr "Relevé d'heures"
 
 msgid "Zeitraum"
-msgstr "Period"
+msgstr "Période"
 
 msgid "Zusammenfassung nach Kunde"
-msgstr "Summary by Customer"
+msgstr "Résumé par client"
 
 msgid "Kunde / Projekt"
-msgstr "Customer / Project"
+msgstr "Client / Projet"
 
 msgid "Gesamt"
 msgstr "Total"
 
 msgid "Einzelnachweise"
-msgstr "Detail Records"
+msgstr "Détails"
 
-# Settings
 msgid "Kunden"
-msgstr "Customers"
+msgstr "Clients"
 
-
-# Export buttons
 msgid "Excel exportieren"
-msgstr "Export Excel"
+msgstr "Exporter Excel"
 
 msgid "CSV exportieren"
-msgstr "Export CSV"
+msgstr "Exporter CSV"
 
 msgid "PDF exportieren"
-msgstr "Export PDF"
+msgstr "Exporter PDF"
 
 msgid "⏹ Stop"
-msgstr "⏹ Stop"
+msgstr "⏹ Arrêter"
 
 msgid "Projekte"
-msgstr "Projects"
+msgstr "Projets"

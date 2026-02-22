@@ -61,7 +61,7 @@ class SettingsView(Gtk.Box):
         cust_scroll.set_child(self._customer_list)
         cust_page.append(cust_scroll)
 
-        self._stack.add_titled(cust_page, "customers", "Kunden")
+        self._stack.add_titled(cust_page, "customers", _("Kunden"))
 
         # --- Project tab ---
         proj_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
@@ -100,7 +100,7 @@ class SettingsView(Gtk.Box):
         proj_scroll.set_child(self._project_list)
         proj_page.append(proj_scroll)
 
-        self._stack.add_titled(proj_page, "projects", "Projekte")
+        self._stack.add_titled(proj_page, "projects", _("Projekte"))
 
     # --- Customer CRUD ---
     def _load_customers(self):
