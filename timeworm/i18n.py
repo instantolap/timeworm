@@ -18,3 +18,8 @@ except locale.Error:
 
 _translation = gettext.translation(DOMAIN, localedir=str(_locale_dir), fallback=True)
 _ = _translation.gettext
+
+
+def setup_i18n():
+    """Initialize i18n (called from app.py). Already set up on import, this is a no-op."""
+    pass
