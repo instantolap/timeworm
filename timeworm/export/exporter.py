@@ -186,7 +186,18 @@ def export_pdf(filepath: str, start_date: str, end_date: str,
     # --- Summary by customer ---
     if customer_summary:
         elements.append(Paragraph("Zusammenfassung nach Kunde", styles['Heading2']))
-        sum_data = [['Kunde / Projekt', 'Stunden', '\u20ac/h', 'Betrag (\u20ac)']]
+
+        sum_cell = ParagraphStyle('SumCell', parent=styles['Normal'],
+                                   fontSize=8, leading=10)
+        sum_cell_bold = ParagraphStyle('SumCellBold', parent=sum_cell,
+                                        fontName='Helvetica-Bold')
+        sum_hdr = ParagraphStyle('SumHdr', parent=sum_cell_bold,
+                                  textColor=colors.white)
+
+        sum_data = [[Paragraph('Kunde / Projekt', sum_hdr),
+                     Paragraph('Stunden', sum_hdr),
+                     Paragraph('\u20ac/h', sum_hdr),
+                     Paragraph('Betrag (\u20ac)', sum_hdr)]]
         total_hours = 0.0
         total_amount = 0.0
 
@@ -200,19 +211,19 @@ def export_pdf(filepath: str, start_date: str, end_date: str,
             camount = cust['total_amount'] or 0
             total_hours += chours
             total_amount += camount
-            sum_data.append([cname, f"{chours:.2f}", '', f"{camount:.2f}"])
+            sum_data.append([Paragraph(cname, sum_cell_bold), Paragraph(f"{chours:.2f}", sum_cell_bold), Paragraph('', sum_cell), Paragraph(f"{camount:.2f}", sum_cell_bold)])
 
             for proj in projects_by_customer.get(cname, []):
                 phours = proj['total_hours'] or 0
                 pamount = phours * proj['hourly_rate']
                 sum_data.append([
-                    f"    {proj['project_name']}",
-                    f"{phours:.2f}",
-                    f"{proj['hourly_rate']:.2f}",
-                    f"{pamount:.2f}"
+                    Paragraph(f"    {proj['project_name']}", sum_cell),
+                    Paragraph(f"{phours:.2f}", sum_cell),
+                    Paragraph(f"{proj['hourly_rate']:.2f}", sum_cell),
+                    Paragraph(f"{pamount:.2f}", sum_cell),
                 ])
 
-        sum_data.append(['Gesamt', f"{total_hours:.2f}", '', f"{total_amount:.2f}"])
+        sum_data.append([Paragraph('Gesamt', sum_cell_bold), Paragraph(f"{total_hours:.2f}", sum_cell_bold), Paragraph('', sum_cell), Paragraph(f"{total_amount:.2f}", sum_cell_bold)])
 
         # Full page width: A4=210mm - 2*20mm margins = 170mm
         page_w = 170 * mm
@@ -221,14 +232,13 @@ def export_pdf(filepath: str, start_date: str, end_date: str,
         sum_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#2E3436')),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTNAME', (0, -1), (-1, -1), 'Helvetica-Bold'),
             ('ALIGN', (1, 0), (-1, -1), 'RIGHT'),
             ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
             ('ROWBACKGROUNDS', (0, 1), (-1, -2),
              [colors.white, colors.HexColor('#F5F5F5')]),
             ('TOPPADDING', (0, 0), (-1, -1), 3),
             ('BOTTOMPADDING', (0, 0), (-1, -1), 3),
+            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
         ]))
         elements.append(sum_table)
         elements.append(Spacer(1, 8 * mm))
@@ -236,8 +246,24 @@ def export_pdf(filepath: str, start_date: str, end_date: str,
     # --- Detail table ---
     if entries:
         elements.append(Paragraph("Einzelnachweise", styles['Heading2']))
-        detail_data = [['Kunde', 'Projekt', 'Datum', 'Von', 'Bis',
-                        'Stunden', 'Betrag (\u20ac)', 'Beschreibung']]
+
+        # Cell style for wrapping text
+        cell_style = ParagraphStyle('CellWrap', parent=styles['Normal'],
+                                     fontSize=7, leading=9)
+        cell_style_bold = ParagraphStyle('CellWrapBold', parent=cell_style,
+                                          fontName='Helvetica-Bold',
+                                          textColor=colors.white)
+
+        detail_data = [[
+            Paragraph('Kunde', cell_style_bold),
+            Paragraph('Projekt', cell_style_bold),
+            Paragraph('Datum', cell_style_bold),
+            Paragraph('Von', cell_style_bold),
+            Paragraph('Bis', cell_style_bold),
+            Paragraph('Stunden', cell_style_bold),
+            Paragraph('Betrag (€)', cell_style_bold),
+            Paragraph('Beschreibung', cell_style_bold),
+        ]]
         for e in entries:
             start = datetime.fromisoformat(e['start_time'])
             end = datetime.fromisoformat(e['end_time'])
@@ -246,32 +272,35 @@ def export_pdf(filepath: str, start_date: str, end_date: str,
             hours = quantize_hours(raw_hours, q)
             amount = hours * e['hourly_rate']
             detail_data.append([
-                e['customer_name'],
-                e['project_name'],
-                start.strftime('%d.%m.%Y'),
-                start.strftime('%H:%M'),
-                end.strftime('%H:%M'),
-                f"{hours:.2f}",
-                f"{amount:.2f}",
-                e.get('description', '') or ''
+                Paragraph(e['customer_name'], cell_style),
+                Paragraph(e['project_name'], cell_style),
+                Paragraph(start.strftime('%d.%m.%Y'), cell_style),
+                Paragraph(start.strftime('%H:%M'), cell_style),
+                Paragraph(end.strftime('%H:%M'), cell_style),
+                Paragraph(f"{hours:.2f}", cell_style),
+                Paragraph(f"{amount:.2f}", cell_style),
+                Paragraph(e.get('description', '') or '', cell_style),
             ])
 
         # Full page width: A4=210mm - 2*20mm margins = 170mm
+        # Fixed cols: Datum(18mm) Von(12mm) Bis(12mm) Stunden(14mm) Betrag(18mm) = 74mm
+        # Flexible: Kunde + Projekt + Beschreibung share remaining 96mm
         page_w = 170 * mm
-        col_widths = [page_w * 0.16, page_w * 0.16, page_w * 0.12, page_w * 0.08,
-                      page_w * 0.08, page_w * 0.09, page_w * 0.12, page_w * 0.19]
+        fixed = 74 * mm
+        flex = page_w - fixed
+        col_widths = [flex * 0.28, flex * 0.28, 18*mm, 12*mm, 12*mm,
+                      14*mm, 18*mm, flex * 0.44]
         detail_table = Table(detail_data, colWidths=col_widths, repeatRows=1)
         detail_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#2E3436')),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, -1), 7),
             ('ALIGN', (3, 0), (6, -1), 'RIGHT'),
             ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
             ('ROWBACKGROUNDS', (0, 1), (-1, -1),
              [colors.white, colors.HexColor('#F5F5F5')]),
             ('TOPPADDING', (0, 0), (-1, -1), 2),
             ('BOTTOMPADDING', (0, 0), (-1, -1), 2),
+            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
         ]))
         elements.append(detail_table)
 
