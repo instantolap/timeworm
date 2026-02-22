@@ -1,9 +1,9 @@
 import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Gtk, Adw, Gdk
+from gi.repository import Gtk, Adw, Gdk, Gio
 from datetime import datetime
-from ..repository import TimeEntryRepository, ProjectRepository, CustomerRepository
+from ..repository import TimeEntryRepository, ProjectRepository, CustomerRepository, SettingsRepository
 
 MONTH_NAMES = [
     "", "Januar", "Februar", "März", "April", "Mai", "Juni",
@@ -273,6 +273,11 @@ class ReportsView(Gtk.Box):
         else:
             dialog.set_initial_name(f"timeworm-{month_str}.pdf")
 
+        # Restore last export folder
+        last_folder = SettingsRepository.get("export_folder")
+        if last_folder:
+            dialog.set_initial_folder(Gio.File.new_for_path(last_folder))
+
         dialog.save(self.get_root(), None, self._on_export_file_chosen, fmt, start, end, customer_id)
 
     def _on_export_file_chosen(self, dialog, result, fmt, start, end, customer_id):
@@ -281,6 +286,10 @@ class ReportsView(Gtk.Box):
             filepath = gfile.get_path()
         except Exception:
             return
+
+        # Remember export folder
+        import os
+        SettingsRepository.set("export_folder", os.path.dirname(filepath))
 
         from ..export.exporter import export_csv, export_excel, export_pdf
         if fmt == "xlsx":

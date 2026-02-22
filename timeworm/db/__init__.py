@@ -37,6 +37,11 @@ CREATE TABLE IF NOT EXISTS time_entries (
 CREATE INDEX IF NOT EXISTS idx_entries_project ON time_entries(project_id);
 CREATE INDEX IF NOT EXISTS idx_entries_start ON time_entries(start_time);
 CREATE INDEX IF NOT EXISTS idx_projects_customer ON projects(customer_id);
+
+CREATE TABLE IF NOT EXISTS settings (
+    key TEXT PRIMARY KEY,
+    value TEXT
+);
 """
 
 
@@ -116,4 +121,7 @@ def init_db():
         conn.executescript(SCHEMA)
         conn.commit()
 
+    # Ensure settings table exists (for both new + migrated DBs)
+    conn.execute("CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT)")
+    conn.commit()
     conn.close()

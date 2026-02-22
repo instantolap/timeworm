@@ -4,6 +4,24 @@ from typing import Optional
 from .db import get_connection
 
 
+class SettingsRepository:
+    """Simple key-value settings store."""
+
+    @staticmethod
+    def get(key: str, default: str = None) -> str | None:
+        conn = get_connection()
+        row = conn.execute("SELECT value FROM settings WHERE key = ?", (key,)).fetchone()
+        conn.close()
+        return row['value'] if row else default
+
+    @staticmethod
+    def set(key: str, value: str):
+        conn = get_connection()
+        conn.execute("INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)", (key, value))
+        conn.commit()
+        conn.close()
+
+
 def quantize_hours(hours: float, quantum: float) -> float:
     """Round hours up to the nearest quantum increment."""
     if quantum <= 0 or hours <= 0:
