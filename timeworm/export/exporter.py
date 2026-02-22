@@ -37,7 +37,7 @@ def export_csv(filepath: str, start_date: str, end_date: str,
     with open(filepath, 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f, delimiter=';')
         writer.writerow(['Kunde', 'Projekt', 'Datum', 'Start', 'Ende',
-                         'Stunden', '€/h', 'Betrag', 'Notiz', 'Beschreibung'])
+                         'Stunden', '€/h', 'Betrag', 'Beschreibung'])
         for e in entries:
             start = datetime.fromisoformat(e['start_time'])
             end = datetime.fromisoformat(e['end_time'])
@@ -54,7 +54,6 @@ def export_csv(filepath: str, start_date: str, end_date: str,
                 f"{hours:.2f}",
                 f"{e['hourly_rate']:.2f}",
                 f"{amount:.2f}",
-                e.get('note', ''),
                 e.get('description', ''),
             ])
 
@@ -73,7 +72,7 @@ def export_excel(filepath: str, start_date: str, end_date: str,
     ws = wb.active
     ws.title = "Zeiteinträge"
     headers = ['Kunde', 'Projekt', 'Datum', 'Start', 'Ende',
-               'Stunden', '€/h', 'Betrag (€)', 'Notiz', 'Beschreibung']
+               'Stunden', '€/h', 'Betrag (€)', 'Beschreibung']
     for col, h in enumerate(headers, 1):
         cell = ws.cell(row=1, column=col, value=h)
         cell.font = header_font
@@ -95,8 +94,7 @@ def export_excel(filepath: str, start_date: str, end_date: str,
         ws.cell(row=row, column=6, value=round(hours, 2))
         ws.cell(row=row, column=7, value=e['hourly_rate'])
         ws.cell(row=row, column=8, value=round(amount, 2))
-        ws.cell(row=row, column=9, value=e.get('note', ''))
-        ws.cell(row=row, column=10, value=e.get('description', ''))
+        ws.cell(row=row, column=9, value=e.get('description', ''))
 
     for col in ws.columns:
         ws.column_dimensions[col[0].column_letter].width = 16
@@ -239,7 +237,7 @@ def export_pdf(filepath: str, start_date: str, end_date: str,
     if entries:
         elements.append(Paragraph("Einzelnachweise", styles['Heading2']))
         detail_data = [['Kunde', 'Projekt', 'Datum', 'Von', 'Bis',
-                        'Stunden', 'Betrag (\u20ac)', 'Notiz']]
+                        'Stunden', 'Betrag (\u20ac)', 'Beschreibung']]
         for e in entries:
             start = datetime.fromisoformat(e['start_time'])
             end = datetime.fromisoformat(e['end_time'])
@@ -255,7 +253,7 @@ def export_pdf(filepath: str, start_date: str, end_date: str,
                 end.strftime('%H:%M'),
                 f"{hours:.2f}",
                 f"{amount:.2f}",
-                e.get('note', '') or ''
+                e.get('description', '') or ''
             ])
 
         # Full page width: A4=210mm - 2*20mm margins = 170mm
