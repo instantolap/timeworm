@@ -31,7 +31,7 @@ class TimeWormWindow(Adw.ApplicationWindow):
         # App icon + title in header
         title_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         title_box.set_halign(Gtk.Align.CENTER)
-        app_icon = Gtk.Image.new_from_icon_name("de.tbe.timeworm")
+        app_icon = Gtk.Image.new_from_icon_name("com.instantolap.timeworm")
         app_icon.set_pixel_size(24)
         title_box.append(app_icon)
         title_label = Gtk.Label(label="TimeWorm")
@@ -90,16 +90,16 @@ class TimeWormWindow(Adw.ApplicationWindow):
 
 class TimeWormApp(Adw.Application):
     def __init__(self):
-        super().__init__(application_id="de.tbe.timeworm")
+        super().__init__(application_id="com.instantolap.timeworm")
 
     def do_activate(self):
         init_db()
         self._load_css()
         # Set app name + icon for desktop integration (dock, taskbar, window title)
         GLib.set_application_name("TimeWorm")
-        Gtk.Window.set_default_icon_name("de.tbe.timeworm")
+        Gtk.Window.set_default_icon_name("com.instantolap.timeworm")
         win = TimeWormWindow(application=self)
-        win.set_icon_name("de.tbe.timeworm")
+        win.set_icon_name("com.instantolap.timeworm")
         win.present()
 
     def _load_css(self):

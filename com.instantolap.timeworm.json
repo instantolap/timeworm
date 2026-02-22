@@ -1,5 +1,5 @@
 {
-    "app-id": "de.tbe.timeworm",
+    "app-id": "com.instantolap.timeworm",
     "runtime": "org.gnome.Platform",
     "runtime-version": "47",
     "sdk": "org.gnome.Sdk",
@@ -30,9 +30,9 @@
             "buildsystem": "simple",
             "build-commands": [
                 "pip3 install --prefix=/app --no-deps .",
-                "install -Dm644 data/icons/hicolor/scalable/apps/de.tbe.timeworm.svg /app/share/icons/hicolor/scalable/apps/de.tbe.timeworm.svg",
-                "install -Dm644 de.tbe.timeworm.desktop /app/share/applications/de.tbe.timeworm.desktop",
-                "install -Dm644 de.tbe.timeworm.metainfo.xml /app/share/metainfo/de.tbe.timeworm.metainfo.xml",
+                "install -Dm644 data/icons/hicolor/scalable/apps/com.instantolap.timeworm.svg /app/share/icons/hicolor/scalable/apps/com.instantolap.timeworm.svg",
+                "install -Dm644 com.instantolap.timeworm.desktop /app/share/applications/com.instantolap.timeworm.desktop",
+                "install -Dm644 com.instantolap.timeworm.metainfo.xml /app/share/metainfo/com.instantolap.timeworm.metainfo.xml",
                 "mkdir -p /app/share/locale",
                 "cp -r po/locale/* /app/share/locale/"
             ],

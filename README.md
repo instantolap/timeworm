@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="data/icons/de.tbe.timeworm.svg" width="128" height="128" alt="TimeWorm Logo">
+  <img src="data/icons/com.instantolap.timeworm.svg" width="128" height="128" alt="TimeWorm Logo">
 </p>
 
 <h1 align="center">TimeWorm 🐛</h1>
@@ -101,7 +101,7 @@ timeworm
 
 ```bash
 # Create desktop entry
-cp de.tbe.timeworm.desktop ~/.local/share/applications/
+cp com.instantolap.timeworm.desktop ~/.local/share/applications/
 # Edit Exec= path to point to your venv:
 # Exec=/path/to/timeworm/.venv/bin/timeworm
 ```
@@ -109,8 +109,8 @@ cp de.tbe.timeworm.desktop ~/.local/share/applications/
 ### Flatpak (coming soon)
 
 ```bash
-flatpak install flathub de.tbe.timeworm
-flatpak run de.tbe.timeworm
+flatpak install flathub com.instantolap.timeworm
+flatpak run com.instantolap.timeworm
 ```
 
 ## Data Storage
@@ -144,9 +144,9 @@ timeworm/
 │   ├── generate_translations.py  # Build all translations
 │   └── locale/             # Compiled .mo files
 ├── data/icons/             # App icon (SVG)
-├── de.tbe.timeworm.json    # Flatpak manifest
-├── de.tbe.timeworm.desktop # Desktop entry
-└── de.tbe.timeworm.metainfo.xml  # AppStream metadata
+├── com.instantolap.timeworm.json    # Flatpak manifest
+├── com.instantolap.timeworm.desktop # Desktop entry
+└── com.instantolap.timeworm.metainfo.xml  # AppStream metadata
 ```
 
 ## MCP Integration

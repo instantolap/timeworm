@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>de.tbe.timeworm</id>
+  <id>com.instantolap.timeworm</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MIT</project_license>
   <name>TimeWorm</name>
@@ -19,9 +19,9 @@
       <li>Export to Excel, CSV and PDF</li>
     </ul>
   </description>
-  <launchable type="desktop-id">de.tbe.timeworm.desktop</launchable>
+  <launchable type="desktop-id">com.instantolap.timeworm.desktop</launchable>
   <url type="homepage">https://github.com/tombehrends/timeworm</url>
-  <developer id="de.tbe">
+  <developer id="com.instantolap">
     <name>Tom Behrends</name>
   </developer>
   <content_rating type="oars-1.1"/>
