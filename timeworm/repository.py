@@ -78,20 +78,31 @@ class CustomerRepository:
     @staticmethod
     def delete(customer_id: int):
         conn = get_connection()
-        conn.execute("UPDATE customers SET active = 0 WHERE id = ?", (customer_id,))
+        conn.execute("DELETE FROM customers WHERE id = ?", (customer_id,))
         conn.commit()
         conn.close()
+
+    @staticmethod
+    def has_entries(customer_id: int) -> bool:
+        """Check if customer has any time entries (via projects)."""
+        conn = get_connection()
+        row = conn.execute(
+            "SELECT COUNT(*) FROM time_entries te JOIN projects p ON te.project_id = p.id WHERE p.customer_id = ?",
+            (customer_id,)
+        ).fetchone()
+        conn.close()
+        return row[0] > 0
 
 
 class ProjectRepository:
     """CRUD operations for projects."""
 
     @staticmethod
-    def create(customer_id: int, name: str, hourly_rate: float = 0.0) -> int:
+    def create(customer_id: int, name: str, hourly_rate: float = 0.0, currency: str = '€') -> int:
         conn = get_connection()
         cur = conn.execute(
-            "INSERT INTO projects (customer_id, name, hourly_rate) VALUES (?, ?, ?)",
-            (customer_id, name, hourly_rate)
+            "INSERT INTO projects (customer_id, name, hourly_rate, currency) VALUES (?, ?, ?, ?)",
+            (customer_id, name, hourly_rate, currency)
         )
         conn.commit()
         pid = cur.lastrowid
@@ -161,7 +172,7 @@ class TimeEntryRepository:
     """CRUD operations for time entries."""
 
     _ENTRY_SELECT = """
-        SELECT te.*, p.name as project_name, p.hourly_rate, p.time_quantum,
+        SELECT te.*, p.name as project_name, p.hourly_rate, p.time_quantum, p.currency,
                c.name as customer_name, c.color, p.customer_id
         FROM time_entries te
         JOIN projects p ON te.project_id = p.id
@@ -324,6 +335,7 @@ class TimeEntryRepository:
                     'project_name': e['project_name'],
                     'hourly_rate': e['hourly_rate'],
                     'time_quantum': e.get('time_quantum', 0.25),
+                    'currency': e.get('currency', '€'),
                     'customer_name': e['customer_name'],
                     'color': e['color'],
                     'entry_count': 0,

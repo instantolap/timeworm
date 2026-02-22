@@ -23,11 +23,13 @@ def _format_duration(hours):
     return f"{m}min"
 
 
-def _format_amount(hours, rate):
+from ..formatting import format_currency, format_hours as fmt_hours, format_decimal, format_date, format_time, format_rate, parse_date
+
+
+def _format_amount(hours, rate, currency='€'):
     if hours is None:
-        return "0,00\u2009€"
-    amount = hours * rate
-    return f"{amount:,.2f}\u2009€".replace(",", "X").replace(".", ",").replace("X", ".")
+        return format_currency(0, currency)
+    return format_currency(hours * rate, currency)
 
 
 def _parse_time(time_str):
@@ -374,7 +376,7 @@ class TimeTrackingView(Gtk.Box):
     def _add_day_expander(self, day_key, entries, expanded=False):
         dt = datetime.fromisoformat(day_key)
         weekday = WEEKDAY_NAMES[dt.weekday()]
-        date_str = dt.strftime('%d.%m.%Y')
+        date_str = format_date(dt)
 
         total_hours = 0
         total_amount = 0
@@ -386,11 +388,28 @@ class TimeTrackingView(Gtk.Box):
                 q = e.get('time_quantum', 0.25) or 0.25
                 h = quantize_hours(raw_h, q)
                 total_hours += h
-                total_amount += h * (e['hourly_rate'] or 0)
+                cur = e.get('currency', '€')
+                amt = h * (e['hourly_rate'] or 0)
+                total_amount += amt
+                currency_totals = getattr(self, '_cur_totals', {})
+                # Track per-currency for this day
+                if not hasattr(self, '_day_cur'):
+                    self._day_cur = {}
+                self._day_cur.setdefault(cur, 0)
+                self._day_cur[cur] += amt
+
+        # Format amount(s) - group by currency if multiple
+        if not hasattr(self, '_day_cur') or not self._day_cur:
+            amount_parts = format_currency(0)
+        elif len(self._day_cur) == 1:
+            cur, amt = next(iter(self._day_cur.items()))
+            amount_parts = format_currency(amt, cur)
+        else:
+            amount_parts = "  ".join(format_currency(amt, cur) for cur, amt in self._day_cur.items())
+        self._day_cur = {}
 
         # Header label
         header_text = f"{weekday}, {date_str}"
-        summary_text = _format_duration(total_hours) + "  " + _format_amount(total_hours, total_amount / total_hours if total_hours > 0 else 0)
 
         header_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         header_box.set_hexpand(True)
@@ -400,8 +419,7 @@ class TimeTrackingView(Gtk.Box):
         day_lbl.add_css_class("heading")
         header_box.append(day_lbl)
 
-        amount_str = f"{total_amount:,.2f}\u2009€".replace(",", "X").replace(".", ",").replace("X", ".")
-        sum_lbl = Gtk.Label(label=f"{_format_duration(total_hours)}   {amount_str}")
+        sum_lbl = Gtk.Label(label=f"{_format_duration(total_hours)}   {amount_parts}")
         sum_lbl.add_css_class("caption")
         header_box.append(sum_lbl)
 
@@ -474,7 +492,7 @@ class TimeTrackingView(Gtk.Box):
             raw_hours = (datetime.now() - st).total_seconds() / 3600
             q = entry.get('time_quantum', 0.25) or 0.25
             hours = quantize_hours(raw_hours, q)
-            sub_lbl = Gtk.Label(label=f"{st.strftime('%H:%M')} – ⏱ läuft...", xalign=0)
+            sub_lbl = Gtk.Label(label=f"{st.strftime('%H:%M')} – ⏱ {_('läuft...')}", xalign=0)
             sub_lbl.add_css_class("dim-label")
             sub_lbl.add_css_class("caption")
             info_box.append(sub_lbl)
@@ -583,7 +601,7 @@ class TimeTrackingView(Gtk.Box):
 
         # Date + times
         st = datetime.fromisoformat(entry['start_time'])
-        self._date_entry.set_text(st.strftime('%d.%m.%Y'))
+        self._date_entry.set_text(format_date(st))
         self._calendar.select_day(GLib.DateTime.new_local(st.year, st.month, st.day, 0, 0, 0))
         self._start_entry.set_text(st.strftime('%H:%M'))
 
@@ -643,14 +661,16 @@ class TimeTrackingView(Gtk.Box):
             proj_idx = self._project_dropdown.get_selected()
             rate = 0
             quantum = 0.25
+            currency = '€'
             if proj_idx != Gtk.INVALID_LIST_POSITION and proj_idx < len(self._project_ids):
                 proj = ProjectRepository.get_by_id(self._project_ids[proj_idx])
                 if proj:
                     rate = proj['hourly_rate']
                     quantum = proj.get('time_quantum', 0.25) or 0.25
+                    currency = proj.get('currency', '€')
             hours = quantize_hours(raw_hours, quantum)
             self._duration_label.set_text(_format_duration(hours))
-            self._amount_label.set_text(_format_amount(hours, rate))
+            self._amount_label.set_text(_format_amount(hours, rate, currency))
         except (ValueError, IndexError):
             self._duration_label.set_text("—")
             self._amount_label.set_text("—")
@@ -663,7 +683,7 @@ class TimeTrackingView(Gtk.Box):
         # Parse date
         date_text = self._date_entry.get_text().strip()
         try:
-            day = datetime.strptime(date_text, '%d.%m.%Y')
+            day = parse_date(date_text)
         except ValueError:
             return
 

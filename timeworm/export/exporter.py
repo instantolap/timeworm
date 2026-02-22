@@ -2,6 +2,7 @@ import csv
 from datetime import datetime
 from typing import Optional
 from ..i18n import _
+from ..formatting import format_date, format_decimal, format_currency, format_rate
 
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment
@@ -38,23 +39,24 @@ def export_csv(filepath: str, start_date: str, end_date: str,
     with open(filepath, 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f, delimiter=';')
         writer.writerow([_('Kunde'), _('Projekt'), _('Datum'), _('Start'), _('Ende'),
-                         _('Stunden'), _('€/h'), _('Betrag'), _('Beschreibung')])
+                         _('Stunden'), _('Satz'), _('Betrag'), _('Beschreibung')])
         for e in entries:
             start = datetime.fromisoformat(e['start_time'])
             end = datetime.fromisoformat(e['end_time'])
             raw_hours = (end - start).total_seconds() / 3600
             q = e.get('time_quantum', 0.25) or 0.25
             hours = quantize_hours(raw_hours, q)
+            cur = e.get('currency', '€')
             amount = hours * e['hourly_rate']
             writer.writerow([
                 e['customer_name'],
                 e['project_name'],
-                start.strftime('%d.%m.%Y'),
+                format_date(start),
                 start.strftime('%H:%M'),
                 end.strftime('%H:%M'),
                 f"{hours:.2f}",
-                f"{e['hourly_rate']:.2f}",
-                f"{amount:.2f}",
+                f"{e['hourly_rate']:.2f} {cur}",
+                f"{amount:.2f} {cur}",
                 e.get('description', ''),
             ])
 
@@ -73,7 +75,7 @@ def export_excel(filepath: str, start_date: str, end_date: str,
     ws = wb.active
     ws.title = _("Zeiteinträge")
     headers = [_('Kunde'), _('Projekt'), _('Datum'), _('Start'), _('Ende'),
-               _('Stunden'), _('€/h'), _('Betrag (€)'), _('Beschreibung')]
+               _('Stunden'), _('Satz'), _('Betrag'), _('Beschreibung')]
     for col, h in enumerate(headers, 1):
         cell = ws.cell(row=1, column=col, value=h)
         cell.font = header_font
@@ -89,7 +91,7 @@ def export_excel(filepath: str, start_date: str, end_date: str,
         amount = hours * e['hourly_rate']
         ws.cell(row=row, column=1, value=e['customer_name'])
         ws.cell(row=row, column=2, value=e['project_name'])
-        ws.cell(row=row, column=3, value=start.strftime('%d.%m.%Y'))
+        ws.cell(row=row, column=3, value=format_date(start))
         ws.cell(row=row, column=4, value=start.strftime('%H:%M'))
         ws.cell(row=row, column=5, value=end.strftime('%H:%M'))
         ws.cell(row=row, column=6, value=round(hours, 2))
@@ -102,7 +104,7 @@ def export_excel(filepath: str, start_date: str, end_date: str,
 
     # --- Summary sheet ---
     ws2 = wb.create_sheet(_("Zusammenfassung"))
-    sum_headers = [_('Kunde'), _('Projekt'), _('Stunden'), _('€/h'), _('Betrag (€)'), _('Einträge')]
+    sum_headers = [_('Kunde'), _('Projekt'), _('Stunden'), _('Satz'), _('Betrag'), _('Einträge')]
     for col, h in enumerate(sum_headers, 1):
         cell = ws2.cell(row=1, column=col, value=h)
         cell.font = header_font
@@ -178,8 +180,8 @@ def export_pdf(filepath: str, start_date: str, end_date: str,
     from datetime import timedelta
     last_day = end_dt - timedelta(days=1)
     period = (
-        _("Zeitraum") + ": " + f"{start_dt.strftime('%d.%m.%Y')} \u2013 "
-        f"{last_day.strftime('%d.%m.%Y')}"
+        _("Zeitraum") + ": " + f"{format_date(start_dt)} \u2013 "
+        f"{format_date(last_day)}"
     )
     elements.append(Paragraph(period, styles['Normal']))
     elements.append(Spacer(1, 8 * mm))
@@ -198,33 +200,53 @@ def export_pdf(filepath: str, start_date: str, end_date: str,
         sum_data = [[Paragraph(_('Kunde / Projekt'), sum_hdr),
                      Paragraph(_('Stunden'), sum_hdr),
                      Paragraph('\u20ac/h', sum_hdr),
-                     Paragraph('Betrag (\u20ac)', sum_hdr)]]
+                     Paragraph(_('Betrag'), sum_hdr)]]
         total_hours = 0.0
         total_amount = 0.0
+        currency_totals = {}
 
         projects_by_customer = {}
         for s in summary:
             projects_by_customer.setdefault(s['customer_name'], []).append(s)
 
+        # Group customer amounts by currency for summary
         for cust in customer_summary:
             cname = cust['customer_name']
             chours = cust['total_hours'] or 0
-            camount = cust['total_amount'] or 0
             total_hours += chours
-            total_amount += camount
-            sum_data.append([Paragraph(cname, sum_cell_bold), Paragraph(f"{chours:.2f}", sum_cell_bold), Paragraph('', sum_cell), Paragraph(f"{camount:.2f}", sum_cell_bold)])
+            # Calculate customer total with currency
+            cust_amounts = {}
+            for proj in projects_by_customer.get(cname, []):
+                cur = proj.get('currency', '€')
+                phours = proj['total_hours'] or 0
+                pamount = phours * proj['hourly_rate']
+                cust_amounts.setdefault(cur, 0)
+                cust_amounts[cur] += pamount
+            camount_str = "  ".join(format_currency(amt, cur) for cur, amt in cust_amounts.items()) if cust_amounts else format_currency(0)
+            sum_data.append([Paragraph(cname, sum_cell_bold), Paragraph(format_decimal(chours), sum_cell_bold), Paragraph('', sum_cell), Paragraph(camount_str, sum_cell_bold)])
 
             for proj in projects_by_customer.get(cname, []):
                 phours = proj['total_hours'] or 0
+                cur = proj.get('currency', '€')
                 pamount = phours * proj['hourly_rate']
                 sum_data.append([
                     Paragraph(f"    {proj['project_name']}", sum_cell),
-                    Paragraph(f"{phours:.2f}", sum_cell),
-                    Paragraph(f"{proj['hourly_rate']:.2f}", sum_cell),
-                    Paragraph(f"{pamount:.2f}", sum_cell),
+                    Paragraph(format_decimal(phours), sum_cell),
+                    Paragraph(format_rate(proj['hourly_rate'], cur), sum_cell),
+                    Paragraph(format_currency(pamount, cur), sum_cell),
                 ])
+                # Track totals by currency
+                currency_totals.setdefault(cur, {'hours': 0, 'amount': 0})
+                currency_totals[cur]['hours'] += phours
+                currency_totals[cur]['amount'] += pamount
 
-        sum_data.append([Paragraph(_('Gesamt'), sum_cell_bold), Paragraph(f"{total_hours:.2f}", sum_cell_bold), Paragraph('', sum_cell), Paragraph(f"{total_amount:.2f}", sum_cell_bold)])
+        # Grand total - one row per currency
+        if len(currency_totals) == 1:
+            cur, totals = next(iter(currency_totals.items()))
+            sum_data.append([Paragraph(_('Gesamt'), sum_cell_bold), Paragraph(format_decimal(totals['hours']), sum_cell_bold), Paragraph('', sum_cell), Paragraph(format_currency(totals['amount'], cur), sum_cell_bold)])
+        else:
+            for cur, totals in currency_totals.items():
+                sum_data.append([Paragraph(f"{_('Gesamt')} {cur}", sum_cell_bold), Paragraph(format_decimal(totals['hours']), sum_cell_bold), Paragraph('', sum_cell), Paragraph(format_currency(totals['amount'], cur), sum_cell_bold)])
 
         # Full page width: A4=210mm - 2*20mm margins = 170mm
         page_w = 170 * mm
@@ -262,7 +284,7 @@ def export_pdf(filepath: str, start_date: str, end_date: str,
             Paragraph(_('Von'), cell_style_bold),
             Paragraph(_('Bis'), cell_style_bold),
             Paragraph(_('Stunden'), cell_style_bold),
-            Paragraph(_('Betrag (€)'), cell_style_bold),
+            Paragraph(_('Betrag'), cell_style_bold),
             Paragraph(_('Beschreibung'), cell_style_bold),
         ]]
         for e in entries:
@@ -271,26 +293,27 @@ def export_pdf(filepath: str, start_date: str, end_date: str,
             raw_hours = (end - start).total_seconds() / 3600
             q = e.get('time_quantum', 0.25) or 0.25
             hours = quantize_hours(raw_hours, q)
+            cur = e.get('currency', '€')
             amount = hours * e['hourly_rate']
             detail_data.append([
                 Paragraph(e['customer_name'], cell_style),
                 Paragraph(e['project_name'], cell_style),
-                Paragraph(start.strftime('%d.%m.%Y'), cell_style),
+                Paragraph(format_date(start), cell_style),
                 Paragraph(start.strftime('%H:%M'), cell_style),
                 Paragraph(end.strftime('%H:%M'), cell_style),
-                Paragraph(f"{hours:.2f}", cell_style),
-                Paragraph(f"{amount:.2f}", cell_style),
+                Paragraph(format_decimal(hours), cell_style),
+                Paragraph(format_currency(amount, cur), cell_style),
                 Paragraph(e.get('description', '') or '', cell_style),
             ])
 
         # Full page width: A4=210mm - 2*20mm margins = 170mm
-        # Fixed cols: Datum(18mm) Von(12mm) Bis(12mm) Stunden(14mm) Betrag(18mm) = 74mm
-        # Flexible: Kunde + Projekt + Beschreibung share remaining 96mm
+        # Fixed cols: Datum(18mm) Von(12mm) Bis(12mm) Stunden(14mm) Betrag(22mm) = 78mm
+        # Flexible: Kunde + Projekt + Beschreibung share remaining 92mm
         page_w = 170 * mm
-        fixed = 74 * mm
+        fixed = 78 * mm
         flex = page_w - fixed
         col_widths = [flex * 0.28, flex * 0.28, 18*mm, 12*mm, 12*mm,
-                      14*mm, 18*mm, flex * 0.44]
+                      14*mm, 22*mm, flex * 0.44]
         detail_table = Table(detail_data, colWidths=col_widths, repeatRows=1)
         detail_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#2E3436')),

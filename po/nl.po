@@ -104,6 +104,18 @@ msgstr "Beschrijving"
 msgid "Betrag"
 msgstr "Bedrag"
 
+msgid "Löschen"
+msgstr "Verwijderen"
+
+msgid "Wirklich löschen?"
+msgstr "Echt verwijderen?"
+
+msgid "Endgültig löschen"
+msgstr "Definitief verwijderen"
+
+msgid "Kunde löschen"
+msgstr "Klant verwijderen"
+
 msgid "Betrag (€)"
 msgstr "Bedrag (€)"
 
@@ -148,9 +160,6 @@ msgstr "Annuleren"
 
 msgid "Erstellen"
 msgstr "Aanmaken"
-
-msgid "Löschen"
-msgstr "Verwijderen"
 
 msgid "Bearbeiten"
 msgstr "Bewerken"
@@ -206,7 +215,7 @@ msgstr "Nieuw project"
 msgid "Name und Stundensatz:"
 msgstr "Naam en uurtarief:"
 
-msgid "Stundensatz (€):"
+msgid "Stundensatz:"
 msgstr "Uurtarief (€):"
 
 msgid "Quantisierung (h):"
@@ -301,3 +310,9 @@ msgstr "⏹ Stop"
 
 msgid "Projekte"
 msgstr "Projecten"
+
+msgid "läuft..."
+msgstr "loopt..."
+
+msgid "Satz"
+msgstr "Tarief"

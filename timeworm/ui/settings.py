@@ -2,7 +2,9 @@ import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Gtk, Adw, Gdk
+from ..formatting import format_rate
 from ..repository import CustomerRepository, ProjectRepository
+from ..db import get_connection
 from ..i18n import _
 
 
@@ -104,7 +106,7 @@ class SettingsView(Gtk.Box):
 
     # --- Customer CRUD ---
     def _load_customers(self):
-        customers = CustomerRepository.get_all(active_only=False)
+        customers = CustomerRepository.get_all()
 
         # Clear list
         child = self._customer_list.get_first_child()
@@ -115,9 +117,6 @@ class SettingsView(Gtk.Box):
 
         for cust in customers:
             row = Adw.ActionRow(title=cust['name'])
-            if not cust['active']:
-                row.set_subtitle("(deaktiviert)")
-                row.add_css_class("dim-label")
 
             # Color indicator
             color_dot = Gtk.DrawingArea()
@@ -133,22 +132,14 @@ class SettingsView(Gtk.Box):
             edit_btn.connect("clicked", self._on_edit_customer, cust)
             row.add_suffix(edit_btn)
 
-            # Toggle active button
-            if cust['active']:
-                del_btn = Gtk.Button(icon_name="user-trash-symbolic")
-                del_btn.set_valign(Gtk.Align.CENTER)
-                del_btn.set_has_frame(False)
-                del_btn.add_css_class("error")
-                del_btn.set_tooltip_text(_("Deaktivieren"))
-                del_btn.connect("clicked", self._on_deactivate_customer, cust['id'])
-                row.add_suffix(del_btn)
-            else:
-                act_btn = Gtk.Button(icon_name="view-reveal-symbolic")
-                act_btn.set_valign(Gtk.Align.CENTER)
-                act_btn.set_has_frame(False)
-                act_btn.set_tooltip_text(_("Aktivieren"))
-                act_btn.connect("clicked", self._on_activate_customer, cust['id'])
-                row.add_suffix(act_btn)
+            # Delete button (always visible)
+            del_btn = Gtk.Button(icon_name="user-trash-symbolic")
+            del_btn.set_valign(Gtk.Align.CENTER)
+            del_btn.set_has_frame(False)
+            del_btn.add_css_class("error")
+            del_btn.set_tooltip_text(_("Löschen"))
+            del_btn.connect("clicked", self._on_delete_customer, cust)
+            row.add_suffix(del_btn)
 
             self._customer_list.append(row)
 
@@ -196,7 +187,12 @@ class SettingsView(Gtk.Box):
                 return
             rgba = color_btn.get_rgba()
             color = f"#{int(rgba.red*255):02x}{int(rgba.green*255):02x}{int(rgba.blue*255):02x}"
-            CustomerRepository.create(name, color)
+            try:
+                CustomerRepository.create(name, color)
+            except Exception:
+                toast = Adw.Toast(title=_("Kundenname existiert bereits"))
+                self.get_root().add_toast(toast)
+                return
             self._load_customers()
 
     def _on_edit_customer(self, _btn, cust):
@@ -236,13 +232,43 @@ class SettingsView(Gtk.Box):
             CustomerRepository.update(cust_id, name=name, color=color)
             self._load_customers()
 
-    def _on_deactivate_customer(self, _btn, cust_id):
-        CustomerRepository.delete(cust_id)
-        self._load_customers()
+    def _on_delete_customer(self, _btn, cust):
+        has_entries = CustomerRepository.has_entries(cust['id'])
+        if has_entries:
+            dialog = Adw.AlertDialog(
+                heading=_("Kunde löschen"),
+                body=_("Dieser Kunde hat Zeiteinträge. Beim Löschen gehen alle zugehörigen Projekte und Einträge verloren."),
+            )
+            dialog.add_response("cancel", _("Abbrechen"))
+            dialog.add_response("delete", _("Endgültig löschen"))
+            dialog.set_response_appearance("delete", Adw.ResponseAppearance.DESTRUCTIVE)
+            dialog.connect("response", self._on_confirm_delete_customer, cust['id'])
+            dialog.present(self.get_root())
+        else:
+            # No entries - delete directly with simple confirm
+            dialog = Adw.AlertDialog(
+                heading=_("Kunde löschen"),
+                body=f"{cust['name']} – {_('Wirklich löschen?')}",
+            )
+            dialog.add_response("cancel", _("Abbrechen"))
+            dialog.add_response("delete", _("Löschen"))
+            dialog.set_response_appearance("delete", Adw.ResponseAppearance.DESTRUCTIVE)
+            dialog.connect("response", self._on_confirm_delete_customer, cust['id'])
+            dialog.present(self.get_root())
 
-    def _on_activate_customer(self, _btn, cust_id):
-        CustomerRepository.update(cust_id, active=1)
-        self._load_customers()
+    def _on_confirm_delete_customer(self, dialog, response, cust_id):
+        if response == "delete":
+            # Delete all projects and entries for this customer
+            conn = get_connection()
+            project_ids = [r[0] for r in conn.execute("SELECT id FROM projects WHERE customer_id = ?", (cust_id,)).fetchall()]
+            for pid in project_ids:
+                conn.execute("DELETE FROM time_entries WHERE project_id = ?", (pid,))
+            conn.execute("DELETE FROM projects WHERE customer_id = ?", (cust_id,))
+            conn.commit()
+            conn.close()
+            CustomerRepository.delete(cust_id)
+            self._load_customers()
+            self._load_projects()
 
     # --- Project CRUD ---
     def _update_cust_filter(self):
@@ -280,7 +306,7 @@ class SettingsView(Gtk.Box):
             return
 
         for proj in projects:
-            rate_str = f"{proj['hourly_rate']:,.2f}\u2009€/h".replace(",", "X").replace(".", ",").replace("X", ".")
+            rate_str = format_rate(proj['hourly_rate'], proj.get('currency', '€'))
             row = Adw.ActionRow(title=proj['name'], subtitle=rate_str)
             if not proj['active']:
                 row.add_suffix(Gtk.Label(label=_("(deaktiviert)")))
@@ -334,11 +360,19 @@ class SettingsView(Gtk.Box):
         box.append(name_entry)
 
         rate_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
-        rate_box.append(Gtk.Label(label=_("Stundensatz (€):")))
+        rate_box.append(Gtk.Label(label=_("Stundensatz:")))
         rate_entry = Gtk.Entry()
         rate_entry.set_text("0.00")
         rate_entry.set_max_width_chars(8)
         rate_box.append(rate_entry)
+
+        currencies = ["€", "$", "¥", "£", "CHF", "kr"]
+        currency_model = Gtk.StringList()
+        for c in currencies:
+            currency_model.append(c)
+        currency_dropdown = Gtk.DropDown(model=currency_model)
+        currency_dropdown.set_selected(0)
+        rate_box.append(currency_dropdown)
         box.append(rate_box)
 
         quantum_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
@@ -350,10 +384,10 @@ class SettingsView(Gtk.Box):
         box.append(quantum_box)
 
         dialog.set_extra_child(box)
-        dialog.connect("response", self._on_create_project, customer_id, name_entry, rate_entry, quantum_entry)
+        dialog.connect("response", self._on_create_project, customer_id, name_entry, rate_entry, quantum_entry, currency_dropdown, currencies)
         dialog.present(self.get_root())
 
-    def _on_create_project(self, dialog, response, customer_id, name_entry, rate_entry, quantum_entry):
+    def _on_create_project(self, dialog, response, customer_id, name_entry, rate_entry, quantum_entry, currency_dropdown, currencies):
         if response == "create":
             name = name_entry.get_text().strip()
             if not name:
@@ -366,7 +400,8 @@ class SettingsView(Gtk.Box):
                 quantum = float(quantum_entry.get_text().strip().replace(",", "."))
             except ValueError:
                 quantum = 0.25
-            pid = ProjectRepository.create(customer_id, name, rate)
+            currency = currencies[currency_dropdown.get_selected()]
+            pid = ProjectRepository.create(customer_id, name, rate, currency)
             ProjectRepository.update(pid, time_quantum=quantum)
             self._load_projects(customer_id)
 
@@ -385,11 +420,21 @@ class SettingsView(Gtk.Box):
         box.append(name_entry)
 
         rate_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
-        rate_box.append(Gtk.Label(label=_("Stundensatz (€):")))
+        rate_box.append(Gtk.Label(label=_("Stundensatz:")))
         rate_entry = Gtk.Entry()
         rate_entry.set_text(str(proj['hourly_rate']))
         rate_entry.set_max_width_chars(8)
         rate_box.append(rate_entry)
+
+        currencies = ["€", "$", "¥", "£", "CHF", "kr"]
+        currency_model = Gtk.StringList()
+        for c in currencies:
+            currency_model.append(c)
+        currency_dropdown = Gtk.DropDown(model=currency_model)
+        cur_val = proj.get('currency', '€')
+        if cur_val in currencies:
+            currency_dropdown.set_selected(currencies.index(cur_val))
+        rate_box.append(currency_dropdown)
         box.append(rate_box)
 
         quantum_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
@@ -401,10 +446,10 @@ class SettingsView(Gtk.Box):
         box.append(quantum_box)
 
         dialog.set_extra_child(box)
-        dialog.connect("response", self._on_save_project, proj, name_entry, rate_entry, quantum_entry)
+        dialog.connect("response", self._on_save_project, proj, name_entry, rate_entry, quantum_entry, currency_dropdown, currencies)
         dialog.present(self.get_root())
 
-    def _on_save_project(self, dialog, response, proj, name_entry, rate_entry, quantum_entry):
+    def _on_save_project(self, dialog, response, proj, name_entry, rate_entry, quantum_entry, currency_dropdown, currencies):
         if response == "save":
             name = name_entry.get_text().strip()
             if not name:
@@ -417,7 +462,8 @@ class SettingsView(Gtk.Box):
                 quantum = float(quantum_entry.get_text().strip().replace(",", "."))
             except ValueError:
                 quantum = proj.get('time_quantum', 0.25)
-            ProjectRepository.update(proj['id'], name=name, hourly_rate=rate, time_quantum=quantum)
+            currency = currencies[currency_dropdown.get_selected()]
+            ProjectRepository.update(proj['id'], name=name, hourly_rate=rate, time_quantum=quantum, currency=currency)
             idx = self._cust_filter.get_selected()
             if idx < len(self._cust_filter_ids):
                 self._load_projects(self._cust_filter_ids[idx])

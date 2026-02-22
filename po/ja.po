@@ -104,6 +104,18 @@ msgstr "説明"
 msgid "Betrag"
 msgstr "金額"
 
+msgid "Löschen"
+msgstr "削除"
+
+msgid "Wirklich löschen?"
+msgstr "本当に削除しますか？"
+
+msgid "Endgültig löschen"
+msgstr "完全に削除"
+
+msgid "Kunde löschen"
+msgstr "顧客を削除"
+
 msgid "Betrag (€)"
 msgstr "金額 (€)"
 
@@ -148,9 +160,6 @@ msgstr "キャンセル"
 
 msgid "Erstellen"
 msgstr "作成"
-
-msgid "Löschen"
-msgstr "削除"
 
 msgid "Bearbeiten"
 msgstr "編集"
@@ -206,7 +215,7 @@ msgstr "新規プロジェクト"
 msgid "Name und Stundensatz:"
 msgstr "名前と時間単価："
 
-msgid "Stundensatz (€):"
+msgid "Stundensatz:"
 msgstr "時間単価 (€)："
 
 msgid "Quantisierung (h):"
@@ -301,3 +310,9 @@ msgstr "⏹ 停止"
 
 msgid "Projekte"
 msgstr "プロジェクト"
+
+msgid "läuft..."
+msgstr "計測中..."
+
+msgid "Satz"
+msgstr "単価"

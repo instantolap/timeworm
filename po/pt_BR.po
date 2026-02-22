@@ -104,6 +104,18 @@ msgstr "Descrição"
 msgid "Betrag"
 msgstr "Valor"
 
+msgid "Löschen"
+msgstr "Excluir"
+
+msgid "Wirklich löschen?"
+msgstr "Realmente excluir?"
+
+msgid "Endgültig löschen"
+msgstr "Excluir permanentemente"
+
+msgid "Kunde löschen"
+msgstr "Excluir cliente"
+
 msgid "Betrag (€)"
 msgstr "Valor (€)"
 
@@ -148,9 +160,6 @@ msgstr "Cancelar"
 
 msgid "Erstellen"
 msgstr "Criar"
-
-msgid "Löschen"
-msgstr "Excluir"
 
 msgid "Bearbeiten"
 msgstr "Editar"
@@ -206,7 +215,7 @@ msgstr "Novo projeto"
 msgid "Name und Stundensatz:"
 msgstr "Nome e valor por hora:"
 
-msgid "Stundensatz (€):"
+msgid "Stundensatz:"
 msgstr "Valor por hora (€):"
 
 msgid "Quantisierung (h):"
@@ -301,3 +310,9 @@ msgstr "⏹ Parar"
 
 msgid "Projekte"
 msgstr "Projetos"
+
+msgid "läuft..."
+msgstr "em andamento..."
+
+msgid "Satz"
+msgstr "Taxa"

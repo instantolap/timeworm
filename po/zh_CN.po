@@ -104,6 +104,18 @@ msgstr "描述"
 msgid "Betrag"
 msgstr "金额"
 
+msgid "Löschen"
+msgstr "删除"
+
+msgid "Wirklich löschen?"
+msgstr "确定要删除吗？"
+
+msgid "Endgültig löschen"
+msgstr "永久删除"
+
+msgid "Kunde löschen"
+msgstr "删除客户"
+
 msgid "Betrag (€)"
 msgstr "金额 (€)"
 
@@ -148,9 +160,6 @@ msgstr "取消"
 
 msgid "Erstellen"
 msgstr "创建"
-
-msgid "Löschen"
-msgstr "删除"
 
 msgid "Bearbeiten"
 msgstr "编辑"
@@ -206,7 +215,7 @@ msgstr "新项目"
 msgid "Name und Stundensatz:"
 msgstr "名称和时薪："
 
-msgid "Stundensatz (€):"
+msgid "Stundensatz:"
 msgstr "时薪 (€)："
 
 msgid "Quantisierung (h):"
@@ -301,3 +310,9 @@ msgstr "⏹ 停止"
 
 msgid "Projekte"
 msgstr "项目"
+
+msgid "läuft..."
+msgstr "计时中..."
+
+msgid "Satz"
+msgstr "单价"

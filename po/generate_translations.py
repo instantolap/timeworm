@@ -24,7 +24,7 @@ TRANSLATIONS = {
             # Fields
             "Kunde": "Client", "Projekt": "Projet", "Datum": "Date",
             "Start": "Début", "Ende": "Fin", "Stunden": "Heures",
-            "€/h": "€/h", "Beschreibung": "Description", "Betrag": "Montant",
+            "€/h": "€/h", "Beschreibung": "Description", "Betrag": "Montant", "Löschen": "Supprimer", "Wirklich löschen?": "Vraiment supprimer ?", "Endgültig löschen": "Supprimer définitivement", "Kunde löschen": "Supprimer le client",
             "Betrag (€)": "Montant (€)", "Dauer": "Durée", "Notizen": "Notes",
             "Von": "De", "Bis": "À", "Einträge": "Entrées",
             # Placeholders
@@ -47,7 +47,7 @@ TRANSLATIONS = {
             "Farbe:": "Couleur :", "Kunde bearbeiten": "Modifier le client",
             "Neues Projekt": "Nouveau projet",
             "Name und Stundensatz:": "Nom et tarif horaire :",
-            "Stundensatz (€):": "Tarif horaire (€) :",
+            "Stundensatz:": "Tarif horaire (€) :",
             "Quantisierung (h):": "Quantification (h) :",
             "Projekt bearbeiten": "Modifier le projet",
             "Kein Kunde": "Aucun client",
@@ -78,7 +78,7 @@ TRANSLATIONS = {
             "Excel exportieren": "Exporter Excel",
             "CSV exportieren": "Exporter CSV",
             "PDF exportieren": "Exporter PDF",
-            "⏹ Stop": "⏹ Arrêter", "Projekte": "Projets",
+            "⏹ Stop": "⏹ Arrêter", "Projekte": "Projets", "läuft...": "en cours...", "Satz": "Taux", "Betrag": "Montant",
         }
     },
     "es": {
@@ -94,7 +94,7 @@ TRANSLATIONS = {
             "Konfiguration": "Configuración",
             "Kunde": "Cliente", "Projekt": "Proyecto", "Datum": "Fecha",
             "Start": "Inicio", "Ende": "Fin", "Stunden": "Horas",
-            "€/h": "€/h", "Beschreibung": "Descripción", "Betrag": "Importe",
+            "€/h": "€/h", "Beschreibung": "Descripción", "Betrag": "Importe", "Löschen": "Eliminar", "Wirklich löschen?": "¿Realmente eliminar?", "Endgültig löschen": "Eliminar permanentemente", "Kunde löschen": "Eliminar cliente",
             "Betrag (€)": "Importe (€)", "Dauer": "Duración", "Notizen": "Notas",
             "Von": "Desde", "Bis": "Hasta", "Einträge": "Entradas",
             "TT.MM.JJJJ": "DD.MM.AAAA", "HH:MM": "HH:MM",
@@ -114,7 +114,7 @@ TRANSLATIONS = {
             "Farbe:": "Color:", "Kunde bearbeiten": "Editar cliente",
             "Neues Projekt": "Nuevo proyecto",
             "Name und Stundensatz:": "Nombre y tarifa por hora:",
-            "Stundensatz (€):": "Tarifa por hora (€):",
+            "Stundensatz:": "Tarifa por hora (€):",
             "Quantisierung (h):": "Cuantificación (h):",
             "Projekt bearbeiten": "Editar proyecto",
             "Kein Kunde": "Sin cliente",
@@ -138,7 +138,7 @@ TRANSLATIONS = {
             "Kunde / Projekt": "Cliente / Proyecto", "Gesamt": "Total",
             "Einzelnachweise": "Registros detallados", "Kunden": "Clientes",
             "Excel exportieren": "Exportar Excel", "CSV exportieren": "Exportar CSV", "PDF exportieren": "Exportar PDF",
-            "⏹ Stop": "⏹ Detener", "Projekte": "Proyectos",
+            "⏹ Stop": "⏹ Detener", "Projekte": "Proyectos", "läuft...": "en curso...", "Satz": "Tarifa", "Betrag": "Importe",
         }
     },
     "pt_BR": {
@@ -154,7 +154,7 @@ TRANSLATIONS = {
             "Konfiguration": "Configurações",
             "Kunde": "Cliente", "Projekt": "Projeto", "Datum": "Data",
             "Start": "Início", "Ende": "Fim", "Stunden": "Horas",
-            "€/h": "€/h", "Beschreibung": "Descrição", "Betrag": "Valor",
+            "€/h": "€/h", "Beschreibung": "Descrição", "Betrag": "Valor", "Löschen": "Excluir", "Wirklich löschen?": "Realmente excluir?", "Endgültig löschen": "Excluir permanentemente", "Kunde löschen": "Excluir cliente",
             "Betrag (€)": "Valor (€)", "Dauer": "Duração", "Notizen": "Notas",
             "Von": "De", "Bis": "Até", "Einträge": "Entradas",
             "TT.MM.JJJJ": "DD.MM.AAAA", "HH:MM": "HH:MM",
@@ -174,7 +174,7 @@ TRANSLATIONS = {
             "Farbe:": "Cor:", "Kunde bearbeiten": "Editar cliente",
             "Neues Projekt": "Novo projeto",
             "Name und Stundensatz:": "Nome e valor por hora:",
-            "Stundensatz (€):": "Valor por hora (€):",
+            "Stundensatz:": "Valor por hora (€):",
             "Quantisierung (h):": "Quantização (h):",
             "Projekt bearbeiten": "Editar projeto",
             "Kein Kunde": "Nenhum cliente",
@@ -198,7 +198,7 @@ TRANSLATIONS = {
             "Kunde / Projekt": "Cliente / Projeto", "Gesamt": "Total",
             "Einzelnachweise": "Registros detalhados", "Kunden": "Clientes",
             "Excel exportieren": "Exportar Excel", "CSV exportieren": "Exportar CSV", "PDF exportieren": "Exportar PDF",
-            "⏹ Stop": "⏹ Parar", "Projekte": "Projetos",
+            "⏹ Stop": "⏹ Parar", "Projekte": "Projetos", "läuft...": "em andamento...", "Satz": "Taxa", "Betrag": "Valor",
         }
     },
     "nl": {
@@ -214,7 +214,7 @@ TRANSLATIONS = {
             "Konfiguration": "Instellingen",
             "Kunde": "Klant", "Projekt": "Project", "Datum": "Datum",
             "Start": "Start", "Ende": "Einde", "Stunden": "Uren",
-            "€/h": "€/u", "Beschreibung": "Beschrijving", "Betrag": "Bedrag",
+            "€/h": "€/u", "Beschreibung": "Beschrijving", "Betrag": "Bedrag", "Löschen": "Verwijderen", "Wirklich löschen?": "Echt verwijderen?", "Endgültig löschen": "Definitief verwijderen", "Kunde löschen": "Klant verwijderen",
             "Betrag (€)": "Bedrag (€)", "Dauer": "Duur", "Notizen": "Notities",
             "Von": "Van", "Bis": "Tot", "Einträge": "Invoeren",
             "TT.MM.JJJJ": "DD.MM.JJJJ", "HH:MM": "UU:MM",
@@ -234,7 +234,7 @@ TRANSLATIONS = {
             "Farbe:": "Kleur:", "Kunde bearbeiten": "Klant bewerken",
             "Neues Projekt": "Nieuw project",
             "Name und Stundensatz:": "Naam en uurtarief:",
-            "Stundensatz (€):": "Uurtarief (€):",
+            "Stundensatz:": "Uurtarief (€):",
             "Quantisierung (h):": "Kwantisering (u):",
             "Projekt bearbeiten": "Project bewerken",
             "Kein Kunde": "Geen klant",
@@ -258,7 +258,7 @@ TRANSLATIONS = {
             "Kunde / Projekt": "Klant / Project", "Gesamt": "Totaal",
             "Einzelnachweise": "Detailoverzicht", "Kunden": "Klanten",
             "Excel exportieren": "Excel exporteren", "CSV exportieren": "CSV exporteren", "PDF exportieren": "PDF exporteren",
-            "⏹ Stop": "⏹ Stop", "Projekte": "Projecten",
+            "⏹ Stop": "⏹ Stop", "Projekte": "Projecten", "läuft...": "loopt...", "Satz": "Tarief", "Betrag": "Bedrag",
         }
     },
     "ja": {
@@ -274,7 +274,7 @@ TRANSLATIONS = {
             "Konfiguration": "設定",
             "Kunde": "顧客", "Projekt": "プロジェクト", "Datum": "日付",
             "Start": "開始", "Ende": "終了", "Stunden": "時間",
-            "€/h": "€/時", "Beschreibung": "説明", "Betrag": "金額",
+            "€/h": "€/時", "Beschreibung": "説明", "Betrag": "金額", "Löschen": "削除", "Wirklich löschen?": "本当に削除しますか？", "Endgültig löschen": "完全に削除", "Kunde löschen": "顧客を削除",
             "Betrag (€)": "金額 (€)", "Dauer": "期間", "Notizen": "メモ",
             "Von": "から", "Bis": "まで", "Einträge": "件",
             "TT.MM.JJJJ": "YYYY.MM.DD", "HH:MM": "HH:MM",
@@ -294,7 +294,7 @@ TRANSLATIONS = {
             "Farbe:": "色：", "Kunde bearbeiten": "顧客を編集",
             "Neues Projekt": "新規プロジェクト",
             "Name und Stundensatz:": "名前と時間単価：",
-            "Stundensatz (€):": "時間単価 (€)：",
+            "Stundensatz:": "時間単価 (€)：",
             "Quantisierung (h):": "時間単位 (h)：",
             "Projekt bearbeiten": "プロジェクトを編集",
             "Kein Kunde": "顧客なし",
@@ -318,7 +318,7 @@ TRANSLATIONS = {
             "Kunde / Projekt": "顧客 / プロジェクト", "Gesamt": "合計",
             "Einzelnachweise": "明細", "Kunden": "顧客",
             "Excel exportieren": "Excelエクスポート", "CSV exportieren": "CSVエクスポート", "PDF exportieren": "PDFエクスポート",
-            "⏹ Stop": "⏹ 停止", "Projekte": "プロジェクト",
+            "⏹ Stop": "⏹ 停止", "Projekte": "プロジェクト", "läuft...": "計測中...", "Satz": "単価", "Betrag": "金額",
         }
     },
     "ko": {
@@ -334,7 +334,7 @@ TRANSLATIONS = {
             "Konfiguration": "설정",
             "Kunde": "고객", "Projekt": "프로젝트", "Datum": "날짜",
             "Start": "시작", "Ende": "종료", "Stunden": "시간",
-            "€/h": "€/시간", "Beschreibung": "설명", "Betrag": "금액",
+            "€/h": "€/시간", "Beschreibung": "설명", "Betrag": "금액", "Löschen": "삭제", "Wirklich löschen?": "정말 삭제하시겠습니까?", "Endgültig löschen": "영구 삭제", "Kunde löschen": "고객 삭제",
             "Betrag (€)": "금액 (€)", "Dauer": "기간", "Notizen": "메모",
             "Von": "부터", "Bis": "까지", "Einträge": "건",
             "TT.MM.JJJJ": "YYYY.MM.DD", "HH:MM": "HH:MM",
@@ -354,7 +354,7 @@ TRANSLATIONS = {
             "Farbe:": "색상:", "Kunde bearbeiten": "고객 편집",
             "Neues Projekt": "새 프로젝트",
             "Name und Stundensatz:": "이름 및 시간당 요금:",
-            "Stundensatz (€):": "시간당 요금 (€):",
+            "Stundensatz:": "시간당 요금 (€):",
             "Quantisierung (h):": "시간 단위 (h):",
             "Projekt bearbeiten": "프로젝트 편집",
             "Kein Kunde": "고객 없음",
@@ -378,7 +378,7 @@ TRANSLATIONS = {
             "Kunde / Projekt": "고객 / 프로젝트", "Gesamt": "합계",
             "Einzelnachweise": "상세 기록", "Kunden": "고객",
             "Excel exportieren": "Excel 내보내기", "CSV exportieren": "CSV 내보내기", "PDF exportieren": "PDF 내보내기",
-            "⏹ Stop": "⏹ 중지", "Projekte": "프로젝트",
+            "⏹ Stop": "⏹ 중지", "Projekte": "프로젝트", "läuft...": "진행 중...", "Satz": "단가", "Betrag": "금액",
         }
     },
     "zh_CN": {
@@ -394,7 +394,7 @@ TRANSLATIONS = {
             "Konfiguration": "设置",
             "Kunde": "客户", "Projekt": "项目", "Datum": "日期",
             "Start": "开始", "Ende": "结束", "Stunden": "小时",
-            "€/h": "€/小时", "Beschreibung": "描述", "Betrag": "金额",
+            "€/h": "€/小时", "Beschreibung": "描述", "Betrag": "金额", "Löschen": "删除", "Wirklich löschen?": "确定要删除吗？", "Endgültig löschen": "永久删除", "Kunde löschen": "删除客户",
             "Betrag (€)": "金额 (€)", "Dauer": "时长", "Notizen": "备注",
             "Von": "从", "Bis": "至", "Einträge": "条",
             "TT.MM.JJJJ": "YYYY.MM.DD", "HH:MM": "HH:MM",
@@ -414,7 +414,7 @@ TRANSLATIONS = {
             "Farbe:": "颜色：", "Kunde bearbeiten": "编辑客户",
             "Neues Projekt": "新项目",
             "Name und Stundensatz:": "名称和时薪：",
-            "Stundensatz (€):": "时薪 (€)：",
+            "Stundensatz:": "时薪 (€)：",
             "Quantisierung (h):": "时间单位 (h)：",
             "Projekt bearbeiten": "编辑项目",
             "Kein Kunde": "无客户",
@@ -438,7 +438,7 @@ TRANSLATIONS = {
             "Kunde / Projekt": "客户 / 项目", "Gesamt": "总计",
             "Einzelnachweise": "明细记录", "Kunden": "客户",
             "Excel exportieren": "导出Excel", "CSV exportieren": "导出CSV", "PDF exportieren": "导出PDF",
-            "⏹ Stop": "⏹ 停止", "Projekte": "项目",
+            "⏹ Stop": "⏹ 停止", "Projekte": "项目", "läuft...": "计时中...", "Satz": "单价", "Betrag": "金额",
         }
     },
 }

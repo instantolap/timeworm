@@ -109,7 +109,6 @@ msgstr "Description"
 msgid "Betrag"
 msgstr "Amount"
 
-msgid "Betrag (€)"
 msgstr "Amount (€)"
 
 msgid "Dauer"
@@ -214,8 +213,8 @@ msgstr "New Project"
 msgid "Name und Stundensatz:"
 msgstr "Name and hourly rate:"
 
-msgid "Stundensatz (€):"
-msgstr "Hourly rate (€):"
+msgid "Stundensatz:"
+msgstr "Hourly rate:"
 
 msgid "Quantisierung (h):"
 msgstr "Quantization (h):"
@@ -314,3 +313,30 @@ msgstr "⏹ Stop"
 
 msgid "Projekte"
 msgstr "Projects"
+
+msgid "läuft..."
+msgstr "running..."
+
+msgid "Satz"
+msgstr "Rate"
+
+msgid "Betrag"
+msgstr "Amount"
+
+msgid "Löschen"
+msgstr "Delete"
+
+msgid "Wirklich löschen?"
+msgstr "Really delete?"
+
+msgid "Dieser Kunde hat Zeiteinträge. Beim Löschen gehen alle zugehörigen Projekte und Einträge verloren."
+msgstr "This customer has time entries. Deleting will permanently remove all associated projects and entries."
+
+msgid "Endgültig löschen"
+msgstr "Delete permanently"
+
+msgid "Kunde löschen"
+msgstr "Delete customer"
+
+msgid "Kundenname existiert bereits"
+msgstr "Customer name already exists"

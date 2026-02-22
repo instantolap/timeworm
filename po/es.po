@@ -104,6 +104,18 @@ msgstr "Descripción"
 msgid "Betrag"
 msgstr "Importe"
 
+msgid "Löschen"
+msgstr "Eliminar"
+
+msgid "Wirklich löschen?"
+msgstr "¿Realmente eliminar?"
+
+msgid "Endgültig löschen"
+msgstr "Eliminar permanentemente"
+
+msgid "Kunde löschen"
+msgstr "Eliminar cliente"
+
 msgid "Betrag (€)"
 msgstr "Importe (€)"
 
@@ -148,9 +160,6 @@ msgstr "Cancelar"
 
 msgid "Erstellen"
 msgstr "Crear"
-
-msgid "Löschen"
-msgstr "Eliminar"
 
 msgid "Bearbeiten"
 msgstr "Editar"
@@ -206,7 +215,7 @@ msgstr "Nuevo proyecto"
 msgid "Name und Stundensatz:"
 msgstr "Nombre y tarifa por hora:"
 
-msgid "Stundensatz (€):"
+msgid "Stundensatz:"
 msgstr "Tarifa por hora (€):"
 
 msgid "Quantisierung (h):"
@@ -301,3 +310,9 @@ msgstr "⏹ Detener"
 
 msgid "Projekte"
 msgstr "Proyectos"
+
+msgid "läuft..."
+msgstr "en curso..."
+
+msgid "Satz"
+msgstr "Tarifa"

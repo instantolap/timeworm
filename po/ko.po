@@ -104,6 +104,18 @@ msgstr "설명"
 msgid "Betrag"
 msgstr "금액"
 
+msgid "Löschen"
+msgstr "삭제"
+
+msgid "Wirklich löschen?"
+msgstr "정말 삭제하시겠습니까?"
+
+msgid "Endgültig löschen"
+msgstr "영구 삭제"
+
+msgid "Kunde löschen"
+msgstr "고객 삭제"
+
 msgid "Betrag (€)"
 msgstr "금액 (€)"
 
@@ -148,9 +160,6 @@ msgstr "취소"
 
 msgid "Erstellen"
 msgstr "생성"
-
-msgid "Löschen"
-msgstr "삭제"
 
 msgid "Bearbeiten"
 msgstr "편집"
@@ -206,7 +215,7 @@ msgstr "새 프로젝트"
 msgid "Name und Stundensatz:"
 msgstr "이름 및 시간당 요금:"
 
-msgid "Stundensatz (€):"
+msgid "Stundensatz:"
 msgstr "시간당 요금 (€):"
 
 msgid "Quantisierung (h):"
@@ -301,3 +310,9 @@ msgstr "⏹ 중지"
 
 msgid "Projekte"
 msgstr "프로젝트"
+
+msgid "läuft..."
+msgstr "진행 중..."
+
+msgid "Satz"
+msgstr "단가"

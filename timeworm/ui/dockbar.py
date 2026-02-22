@@ -11,7 +11,6 @@ class Dockbar(Gtk.Box):
     def __init__(self, on_switch):
         super().__init__(orientation=Gtk.Orientation.VERTICAL, spacing=4)
         self.set_size_request(52, -1)
-        self.set_valign(Gtk.Align.START)
         self.set_margin_top(8)
         self.set_margin_bottom(8)
         self.add_css_class("dockbar")
@@ -19,13 +18,12 @@ class Dockbar(Gtk.Box):
         self._buttons = {}
         self._on_switch = on_switch
 
-        items = [
+        top_items = [
             ("time-tracking", "preferences-system-time-symbolic", _("Zeiterfassung")),
             ("reports", "utilities-system-monitor-symbolic", _("Auswertungen")),
-            ("settings", "preferences-system-symbolic", _("Konfiguration")),
         ]
 
-        for name, icon, tooltip in items:
+        for name, icon, tooltip in top_items:
             btn = Gtk.ToggleButton()
             btn.set_icon_name(icon)
             btn.set_tooltip_text(tooltip)
@@ -36,6 +34,23 @@ class Dockbar(Gtk.Box):
             btn.connect("toggled", self._on_toggled, name)
             self._buttons[name] = btn
             self.append(btn)
+
+        # Spacer pushes settings to bottom
+        spacer = Gtk.Box()
+        spacer.set_vexpand(True)
+        self.append(spacer)
+
+        # Settings button at bottom
+        btn = Gtk.ToggleButton()
+        btn.set_icon_name("preferences-system-symbolic")
+        btn.set_tooltip_text(_("Konfiguration"))
+        btn.set_has_frame(False)
+        btn.add_css_class("dockbar-button")
+        btn.set_size_request(44, 44)
+        btn.set_halign(Gtk.Align.CENTER)
+        btn.connect("toggled", self._on_toggled, "settings")
+        self._buttons["settings"] = btn
+        self.append(btn)
 
         # Activate first button
         self._buttons["time-tracking"].set_active(True)

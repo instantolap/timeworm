@@ -5,6 +5,7 @@ from gi.repository import Gtk, Adw, Gdk, Gio
 from datetime import datetime
 from ..repository import TimeEntryRepository, ProjectRepository, CustomerRepository, SettingsRepository
 from ..i18n import _
+from ..formatting import format_currency, format_hours, format_decimal, format_date, format_rate
 
 MONTH_NAMES = [
     "", _("Januar"), _("Februar"), _("März"), _("April"), _("Mai"), _("Juni"),
@@ -13,13 +14,13 @@ MONTH_NAMES = [
 
 
 def _format_amount(amount):
-    return f"{amount:,.2f}\u2009€".replace(",", "X").replace(".", ",").replace("X", ".")
+    return format_currency(amount)
 
 
 def _format_hours(hours):
     if hours is None:
-        return "0,0h"
-    return f"{hours:,.1f}h".replace(".", ",")
+        return format_hours(0)
+    return format_hours(hours)
 
 
 class ReportsView(Gtk.Box):
@@ -195,15 +196,32 @@ class ReportsView(Gtk.Box):
         list_box.set_selection_mode(Gtk.SelectionMode.NONE)
         list_box.add_css_class("boxed-list")
 
+        currency_totals = {}  # {currency: {'hours': 0, 'amount': 0}}
+
         for cust in customer_summary:
             cname = cust['customer_name']
             chours = cust['total_hours'] or 0
-            camount = cust['total_amount'] or 0
             grand_hours += chours
-            grand_amount += camount
+
+            # Group customer amounts by currency
+            cust_currency_amounts = {}
+            for proj in projects_by_customer.get(cname, []):
+                cur = proj.get('currency', '€')
+                phours = proj['total_hours'] or 0
+                rate = proj['hourly_rate'] or 0
+                pamount = phours * rate
+                cust_currency_amounts.setdefault(cur, 0)
+                cust_currency_amounts[cur] += pamount
+                currency_totals.setdefault(cur, {'hours': 0, 'amount': 0})
+                currency_totals[cur]['hours'] += phours
+                currency_totals[cur]['amount'] += pamount
+
+            # Format customer subtitle with currency-aware amounts
+            cust_amounts_str = "  ".join(format_currency(amt, cur) for cur, amt in cust_currency_amounts.items())
+            camount_str = f"{_format_hours(chours)}   {cust_amounts_str}" if cust_currency_amounts else _format_hours(chours)
 
             # Customer header row
-            cust_row = Adw.ActionRow(title=cname, subtitle=f"{_format_hours(chours)}   {_format_amount(camount)}")
+            cust_row = Adw.ActionRow(title=cname, subtitle=camount_str)
             cust_row.add_css_class("title-4")
 
             # Color indicator
@@ -220,10 +238,11 @@ class ReportsView(Gtk.Box):
             for proj in projects_by_customer.get(cname, []):
                 phours = proj['total_hours'] or 0
                 rate = proj['hourly_rate'] or 0
+                cur = proj.get('currency', '€')
                 pamount = phours * rate
                 prow = Adw.ActionRow(
                     title=f"    {proj['project_name']}",
-                    subtitle=f"    {_format_hours(phours)} × {rate:,.2f}\u2009€/h = {_format_amount(pamount)}   ({proj['entry_count']} {_('Einträge')})"
+                    subtitle=f"    {_format_hours(phours)} × {format_rate(rate, cur)} = {format_currency(pamount, cur)}   ({proj['entry_count']} {_('Einträge')})"
                 )
                 list_box.append(prow)
 
@@ -241,16 +260,22 @@ class ReportsView(Gtk.Box):
 
         self._report_box.append(list_box)
 
-        # Grand total
-        total_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        # Grand total - one line per currency
+        total_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
         total_box.set_margin_top(12)
-        total_lbl = Gtk.Label(label=_("GESAMT"), xalign=0)
-        total_lbl.add_css_class("title-3")
-        total_lbl.set_hexpand(True)
-        total_box.append(total_lbl)
-        total_val = Gtk.Label(label=f"{_format_hours(grand_hours)}   {_format_amount(grand_amount)}")
-        total_val.add_css_class("title-3")
-        total_box.append(total_val)
+
+        for cur, totals in currency_totals.items():
+            row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+            lbl_text = _("GESAMT") if len(currency_totals) == 1 else f"{_('GESAMT')} {cur}"
+            total_lbl = Gtk.Label(label=lbl_text, xalign=0)
+            total_lbl.add_css_class("title-3")
+            total_lbl.set_hexpand(True)
+            row.append(total_lbl)
+            total_val = Gtk.Label(label=f"{_format_hours(totals['hours'])}   {format_currency(totals['amount'], cur)}")
+            total_val.add_css_class("title-3")
+            row.append(total_val)
+            total_box.append(row)
+
         self._report_box.append(total_box)
         self._loading = False
 

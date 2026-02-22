@@ -104,6 +104,18 @@ msgstr "Description"
 msgid "Betrag"
 msgstr "Montant"
 
+msgid "Löschen"
+msgstr "Supprimer"
+
+msgid "Wirklich löschen?"
+msgstr "Vraiment supprimer ?"
+
+msgid "Endgültig löschen"
+msgstr "Supprimer définitivement"
+
+msgid "Kunde löschen"
+msgstr "Supprimer le client"
+
 msgid "Betrag (€)"
 msgstr "Montant (€)"
 
@@ -148,9 +160,6 @@ msgstr "Annuler"
 
 msgid "Erstellen"
 msgstr "Créer"
-
-msgid "Löschen"
-msgstr "Supprimer"
 
 msgid "Bearbeiten"
 msgstr "Modifier"
@@ -206,7 +215,7 @@ msgstr "Nouveau projet"
 msgid "Name und Stundensatz:"
 msgstr "Nom et tarif horaire :"
 
-msgid "Stundensatz (€):"
+msgid "Stundensatz:"
 msgstr "Tarif horaire (€) :"
 
 msgid "Quantisierung (h):"
@@ -301,3 +310,9 @@ msgstr "⏹ Arrêter"
 
 msgid "Projekte"
 msgstr "Projets"
+
+msgid "läuft..."
+msgstr "en cours..."
+
+msgid "Satz"
+msgstr "Taux"
