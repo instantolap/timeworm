@@ -198,11 +198,24 @@ class TimeTrackingView(Gtk.Box):
         self._project_ids = []
         self._detail_box.append(self._project_dropdown)
 
-        # Date
+        # Date with calendar picker
         self._detail_box.append(Gtk.Label(label="Datum", xalign=0))
+        date_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=4)
         self._date_entry = Gtk.Entry()
         self._date_entry.set_placeholder_text("TT.MM.JJJJ")
-        self._detail_box.append(self._date_entry)
+        self._date_entry.set_hexpand(True)
+        date_box.append(self._date_entry)
+
+        self._calendar = Gtk.Calendar()
+        self._calendar.connect("day-selected", self._on_calendar_day_selected)
+        cal_popover = Gtk.Popover()
+        cal_popover.set_child(self._calendar)
+        cal_btn = Gtk.MenuButton()
+        cal_btn.set_icon_name("x-office-calendar-symbolic")
+        cal_btn.set_popover(cal_popover)
+        cal_btn.set_has_frame(False)
+        date_box.append(cal_btn)
+        self._detail_box.append(date_box)
 
         # Start / End in a row
         time_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
@@ -515,6 +528,7 @@ class TimeTrackingView(Gtk.Box):
         # Date + times
         st = datetime.fromisoformat(entry['start_time'])
         self._date_entry.set_text(st.strftime('%d.%m.%Y'))
+        self._calendar.select_day(GLib.DateTime.new_local(st.year, st.month, st.day, 0, 0, 0))
         self._start_entry.set_text(st.strftime('%H:%M'))
 
         if entry['end_time']:
@@ -544,6 +558,10 @@ class TimeTrackingView(Gtk.Box):
         idx = dropdown.get_selected()
         if idx < len(self._customer_ids):
             self._refresh_project_dropdown(self._customer_ids[idx])
+
+    def _on_calendar_day_selected(self, calendar):
+        dt = calendar.get_date()
+        self._date_entry.set_text(f"{dt.get_day_of_month():02d}.{dt.get_month():02d}.{dt.get_year():04d}")
 
     def _on_time_changed(self, _entry):
         if self._ignore_detail_changes:
