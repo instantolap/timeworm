@@ -366,7 +366,7 @@ class SettingsView(Gtk.Box):
         rate_entry.set_max_width_chars(8)
         rate_box.append(rate_entry)
 
-        currencies = ["€", "$", "¥", "£", "CHF", "kr"]
+        currencies = ["€", "$", "¥", "£", "₩", "CHF", "kr", "R$"]
         currency_model = Gtk.StringList()
         for c in currencies:
             currency_model.append(c)
@@ -426,7 +426,7 @@ class SettingsView(Gtk.Box):
         rate_entry.set_max_width_chars(8)
         rate_box.append(rate_entry)
 
-        currencies = ["€", "$", "¥", "£", "CHF", "kr"]
+        currencies = ["€", "$", "¥", "£", "₩", "CHF", "kr", "R$"]
         currency_model = Gtk.StringList()
         for c in currencies:
             currency_model.append(c)

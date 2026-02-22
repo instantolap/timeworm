@@ -49,7 +49,7 @@ No cloud. No subscription. No electron. Just a native Linux app that does one th
 - **Smart file naming** — `timeworm-2026-02.pdf` with remembered export folder
 
 ### 💰 Flexible Billing
-- **Per-project currency** — €, $, ¥, £, CHF, kr
+- **Per-project currency** — `€` `$` `¥` `£` `₩` `CHF` `kr` `R$`
 - **Per-project hourly rate** — Different rates for different work
 - **Time quantization** — Round to 15min, 30min, 1h, or any custom interval
 - **Locale-aware formatting** — German: `1.234,56 €` · English: `€1,234.56` · Japanese: `2026/02/22`
