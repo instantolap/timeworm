@@ -562,6 +562,10 @@ class TimeTrackingView(Gtk.Box):
     def _on_calendar_day_selected(self, calendar):
         dt = calendar.get_date()
         self._date_entry.set_text(f"{dt.get_day_of_month():02d}.{dt.get_month():02d}.{dt.get_year():04d}")
+        # Close the popover
+        popover = calendar.get_parent()
+        if isinstance(popover, Gtk.Popover):
+            popover.popdown()
 
     def _on_time_changed(self, _entry):
         if self._ignore_detail_changes:
