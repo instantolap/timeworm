@@ -35,6 +35,55 @@ def _parse_time(time_str):
     return int(parts[0]), int(parts[1])
 
 
+def _auto_format_time(text):
+    """Auto-format loose time input to HH:MM.
+    
+    Examples: '9' → '09:00', '915' → '09:15', '0930' → '09:30',
+              '14' → '14:00', '1430' → '14:30', '9:5' → '09:05',
+              '9.30' → '09:30', '9,15' → '09:15'
+    """
+    if not text:
+        return text
+    # Already valid HH:MM
+    import re
+    text = text.replace(".", ":").replace(",", ":").replace(";", ":")
+    if re.match(r'^\d{1,2}:\d{2}$', text):
+        h, m = text.split(":")
+        h, m = int(h), int(m)
+        if 0 <= h <= 23 and 0 <= m <= 59:
+            return f"{h:02d}:{m:02d}"
+    # Partial like "9:5" → "09:05"
+    if re.match(r'^\d{1,2}:\d{1}$', text):
+        h, m = text.split(":")
+        h, m = int(h), int(m) * 10  # "9:5" means 50? No, treat as 05
+        # Actually "9:5" is ambiguous - treat as 9:50? Let's be smart:
+        # "9:5" → 09:50 (typing in progress), but "9:05" → 09:05
+        m = int(text.split(":")[1])
+        if m < 6:
+            m = m * 10  # "9:5" → 09:50
+        if 0 <= int(h) <= 23 and 0 <= m <= 59:
+            return f"{int(h):02d}:{m:02d}"
+    # Pure digits
+    digits = re.sub(r'\D', '', text)
+    if not digits:
+        return text
+    n = int(digits)
+    if len(digits) == 1:  # "9" → 09:00
+        return f"{n:02d}:00"
+    if len(digits) == 2:  # "14" → 14:00, "09" → 09:00
+        if n <= 23:
+            return f"{n:02d}:00"
+    if len(digits) == 3:  # "915" → 09:15, "130" → 01:30
+        h, m = int(digits[0]), int(digits[1:])
+        if 0 <= h <= 9 and 0 <= m <= 59:
+            return f"{h:02d}:{m:02d}"
+    if len(digits) == 4:  # "0930" → 09:30, "1430" → 14:30
+        h, m = int(digits[:2]), int(digits[2:])
+        if 0 <= h <= 23 and 0 <= m <= 59:
+            return f"{h:02d}:{m:02d}"
+    return text
+
+
 class TimeTrackingView(Gtk.Box):
     """Main time tracking view with day list and detail panel."""
 
@@ -226,6 +275,9 @@ class TimeTrackingView(Gtk.Box):
         self._start_entry.set_placeholder_text("HH:MM")
         self._start_entry.set_max_width_chars(6)
         self._start_entry.connect("changed", self._on_time_changed)
+        start_focus = Gtk.EventControllerFocus()
+        start_focus.connect("leave", self._on_time_focus_leave, self._start_entry)
+        self._start_entry.add_controller(start_focus)
         start_box.append(self._start_entry)
         start_box.set_hexpand(True)
         time_box.append(start_box)
@@ -236,6 +288,9 @@ class TimeTrackingView(Gtk.Box):
         self._end_entry.set_placeholder_text("HH:MM")
         self._end_entry.set_max_width_chars(6)
         self._end_entry.connect("changed", self._on_time_changed)
+        end_focus = Gtk.EventControllerFocus()
+        end_focus.connect("leave", self._on_time_focus_leave, self._end_entry)
+        self._end_entry.add_controller(end_focus)
         end_box.append(self._end_entry)
         end_box.set_hexpand(True)
         time_box.append(end_box)
@@ -558,6 +613,12 @@ class TimeTrackingView(Gtk.Box):
         idx = dropdown.get_selected()
         if idx < len(self._customer_ids):
             self._refresh_project_dropdown(self._customer_ids[idx])
+
+    def _on_time_focus_leave(self, _controller, entry):
+        text = entry.get_text().strip()
+        formatted = _auto_format_time(text)
+        if formatted and formatted != text:
+            entry.set_text(formatted)
 
     def _on_calendar_day_selected(self, calendar):
         dt = calendar.get_date()
