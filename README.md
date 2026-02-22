@@ -5,7 +5,6 @@
 <h1 align="center">TimeWorm 🐛</h1>
 
 <p align="center">
-  <em>Frisst deine Stunden.</em><br>
   A lightweight, native GTK4/Adwaita time tracker for freelancers and small teams.
 </p>
 
@@ -18,7 +17,9 @@
 
 ---
 
-![TimeWorm Screenshot](screenshots/timeworm-main.png)
+<p align="center">
+  <img src="screenshots/timeworm-main.png" width="800" alt="TimeWorm Screenshot">
+</p>
 
 ## What is TimeWorm?
 
@@ -151,22 +152,19 @@ timeworm/
 
 ## MCP Integration
 
-TimeWorm includes a [Model Context Protocol](https://modelcontextprotocol.io/) server that enables AI assistants to interact with your time tracking data via natural language:
+TimeWorm includes a [Model Context Protocol](https://modelcontextprotocol.io/) server that enables AI assistants to interact with your time tracking data:
 
 ```bash
-# Install MCP server
-cd mcp-server && npm install
-
-# Add to Claude Desktop config
-# See mcp-server/README.md for details
+cd mcp && pip install -e .
 ```
 
 **Available MCP tools:**
-- `start_timer` — Start tracking time on a project
-- `stop_timer` — Stop current timer
-- `add_entry` — Add a manual time entry
-- `get_entries` — Query entries by date range
-- `get_summary` — Get monthly/project summaries
+- `tw_start_timer` / `tw_stop_timer` — Start and stop tracking
+- `tw_log_time` — Add a manual time entry
+- `tw_entries` — Query entries by date range
+- `tw_summary` — Get monthly/project summaries
+- `tw_list_customers` / `tw_list_projects` — Browse data
+- `tw_status` — Check running timer
 
 ## Contributing
 
@@ -193,6 +191,6 @@ MIT License — see [LICENSE](LICENSE) for details.
 ---
 
 <p align="center">
-  <strong>TimeWorm</strong> — frisst deine Stunden 🐛<br>
+  <strong>TimeWorm</strong> 🐛<br>
   Made with ❤️ in Hamburg
 </p>

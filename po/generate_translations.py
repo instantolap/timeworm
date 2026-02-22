@@ -454,7 +454,7 @@ def generate_po(lang_code, lang_data):
         'msgstr ""',
         '"Project-Id-Version: TimeWorm 1.0\\n"',
         '"PO-Revision-Date: 2026-02-22 19:00+0100\\n"',
-        '"Last-Translator: Tom Behrends\\n"',
+        '"Last-Translator: Thomas Behrends\\n"',
         f'"Language: {lang_code}\\n"',
         '"MIME-Version: 1.0\\n"',
         '"Content-Type: text/plain; charset=UTF-8\\n"',

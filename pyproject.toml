@@ -9,7 +9,7 @@ description = "🐛 TimeWorm - frisst deine Stunden. Lightweight GTK4 time track
 requires-python = ">=3.11"
 license = {text = "MIT"}
 authors = [
-    {name = "Tom Behrends"}
+    {name = "Thomas Behrends"}
 ]
 dependencies = [
     "PyGObject>=3.42",

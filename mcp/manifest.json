@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "description": "TimeWorm Zeiterfassung - Timer starten/stoppen, Zeiten buchen, Auswertungen",
   "author": {
-    "name": "Tom Behrends"
+    "name": "Thomas Behrends"
   },
   "server": {
     "type": "node",
