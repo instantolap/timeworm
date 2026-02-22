@@ -208,11 +208,11 @@ class TimeTrackingView(Gtk.Box):
 
         self._calendar = Gtk.Calendar()
         self._calendar.connect("day-selected", self._on_calendar_day_selected)
-        cal_popover = Gtk.Popover()
-        cal_popover.set_child(self._calendar)
+        self._cal_popover = Gtk.Popover()
+        self._cal_popover.set_child(self._calendar)
         cal_btn = Gtk.MenuButton()
         cal_btn.set_icon_name("x-office-calendar-symbolic")
-        cal_btn.set_popover(cal_popover)
+        cal_btn.set_popover(self._cal_popover)
         cal_btn.set_has_frame(False)
         date_box.append(cal_btn)
         self._detail_box.append(date_box)
@@ -562,10 +562,7 @@ class TimeTrackingView(Gtk.Box):
     def _on_calendar_day_selected(self, calendar):
         dt = calendar.get_date()
         self._date_entry.set_text(f"{dt.get_day_of_month():02d}.{dt.get_month():02d}.{dt.get_year():04d}")
-        # Close the popover
-        popover = calendar.get_parent()
-        if isinstance(popover, Gtk.Popover):
-            popover.popdown()
+        self._cal_popover.popdown()
 
     def _on_time_changed(self, _entry):
         if self._ignore_detail_changes:
