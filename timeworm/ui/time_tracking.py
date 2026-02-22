@@ -4,12 +4,13 @@ gi.require_version('Adw', '1')
 from gi.repository import Gtk, Adw, GLib, Gdk, Gio
 from datetime import datetime, timedelta
 from ..repository import CustomerRepository, ProjectRepository, TimeEntryRepository, quantize_hours
+from ..i18n import _
 
 MONTH_NAMES = [
-    "", "Januar", "Februar", "März", "April", "Mai", "Juni",
-    "Juli", "August", "September", "Oktober", "November", "Dezember"
+    "", _("Januar"), _("Februar"), _("März"), _("April"), _("Mai"), _("Juni"),
+    _("Juli"), _("August"), _("September"), _("Oktober"), _("November"), _("Dezember")
 ]
-WEEKDAY_NAMES = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
+WEEKDAY_NAMES = [_("Mo"), _("Di"), _("Mi"), _("Do"), _("Fr"), _("Sa"), _("So")]
 
 
 def _format_duration(hours):
@@ -104,12 +105,12 @@ class TimeTrackingView(Gtk.Box):
         toolbar.set_margin_top(6)
         toolbar.set_margin_bottom(6)
 
-        add_btn = Gtk.Button(label="+ Eintrag")
+        add_btn = Gtk.Button(label=_("+ Eintrag"))
         add_btn.add_css_class("suggested-action")
         add_btn.connect("clicked", self._on_add_entry)
         toolbar.append(add_btn)
 
-        self._timer_btn = Gtk.Button(label="▶ Start")
+        self._timer_btn = Gtk.Button(label=_("▶ Start"))
         self._timer_btn.connect("clicked", self._on_timer_toggle)
         toolbar.append(self._timer_btn)
 
@@ -185,7 +186,7 @@ class TimeTrackingView(Gtk.Box):
         outer.set_size_request(300, -1)
 
         # Placeholder when nothing selected
-        self._placeholder = Gtk.Label(label="Eintrag auswählen")
+        self._placeholder = Gtk.Label(label=_("Eintrag auswählen"))
         self._placeholder.set_vexpand(True)
         self._placeholder.add_css_class("dim-label")
         self._placeholder.add_css_class("title-3")
@@ -204,7 +205,7 @@ class TimeTrackingView(Gtk.Box):
         action_bar = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         action_bar.set_halign(Gtk.Align.END)
 
-        save_btn = Gtk.Button(label="Speichern")
+        save_btn = Gtk.Button(label=_("Speichern"))
         save_btn.add_css_class("suggested-action")
         save_btn.connect("clicked", self._on_save_detail)
         action_bar.append(save_btn)
@@ -216,13 +217,13 @@ class TimeTrackingView(Gtk.Box):
         self._detail_box.append(action_bar)
 
         # Description
-        self._detail_box.append(Gtk.Label(label="Beschreibung", xalign=0))
+        self._detail_box.append(Gtk.Label(label=_("Beschreibung"), xalign=0))
         self._desc_entry = Gtk.Entry()
-        self._desc_entry.set_placeholder_text("Kurzbeschreibung...")
+        self._desc_entry.set_placeholder_text(_("Kurzbeschreibung..."))
         self._detail_box.append(self._desc_entry)
 
         # Note
-        self._detail_box.append(Gtk.Label(label="Notizen", xalign=0))
+        self._detail_box.append(Gtk.Label(label=_("Notizen"), xalign=0))
         self._note_view = Gtk.TextView()
         self._note_view.set_wrap_mode(Gtk.WrapMode.WORD)
         self._note_view.set_size_request(-1, 80)
@@ -231,7 +232,7 @@ class TimeTrackingView(Gtk.Box):
         self._detail_box.append(note_frame)
 
         # Customer dropdown
-        self._detail_box.append(Gtk.Label(label="Kunde", xalign=0))
+        self._detail_box.append(Gtk.Label(label=_("Kunde"), xalign=0))
         self._customer_dropdown = Gtk.DropDown()
         self._customer_model = Gtk.StringList()
         self._customer_dropdown.set_model(self._customer_model)
@@ -240,7 +241,7 @@ class TimeTrackingView(Gtk.Box):
         self._detail_box.append(self._customer_dropdown)
 
         # Project dropdown
-        self._detail_box.append(Gtk.Label(label="Projekt", xalign=0))
+        self._detail_box.append(Gtk.Label(label=_("Projekt"), xalign=0))
         self._project_dropdown = Gtk.DropDown()
         self._project_model = Gtk.StringList()
         self._project_dropdown.set_model(self._project_model)
@@ -248,10 +249,10 @@ class TimeTrackingView(Gtk.Box):
         self._detail_box.append(self._project_dropdown)
 
         # Date with calendar picker
-        self._detail_box.append(Gtk.Label(label="Datum", xalign=0))
+        self._detail_box.append(Gtk.Label(label=_("Datum"), xalign=0))
         date_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=4)
         self._date_entry = Gtk.Entry()
-        self._date_entry.set_placeholder_text("TT.MM.JJJJ")
+        self._date_entry.set_placeholder_text(_("TT.MM.JJJJ"))
         self._date_entry.set_hexpand(True)
         date_box.append(self._date_entry)
 
@@ -270,9 +271,9 @@ class TimeTrackingView(Gtk.Box):
         time_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
 
         start_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
-        start_box.append(Gtk.Label(label="Start", xalign=0))
+        start_box.append(Gtk.Label(label=_("Start"), xalign=0))
         self._start_entry = Gtk.Entry()
-        self._start_entry.set_placeholder_text("HH:MM")
+        self._start_entry.set_placeholder_text(_("HH:MM"))
         self._start_entry.set_max_width_chars(6)
         self._start_entry.connect("changed", self._on_time_changed)
         start_focus = Gtk.EventControllerFocus()
@@ -283,9 +284,9 @@ class TimeTrackingView(Gtk.Box):
         time_box.append(start_box)
 
         end_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
-        end_box.append(Gtk.Label(label="Ende", xalign=0))
+        end_box.append(Gtk.Label(label=_("Ende"), xalign=0))
         self._end_entry = Gtk.Entry()
-        self._end_entry.set_placeholder_text("HH:MM")
+        self._end_entry.set_placeholder_text(_("HH:MM"))
         self._end_entry.set_max_width_chars(6)
         self._end_entry.connect("changed", self._on_time_changed)
         end_focus = Gtk.EventControllerFocus()
@@ -302,7 +303,7 @@ class TimeTrackingView(Gtk.Box):
         calc_box.set_margin_top(8)
 
         dur_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
-        dur_box.append(Gtk.Label(label="Dauer", xalign=0))
+        dur_box.append(Gtk.Label(label=_("Dauer"), xalign=0))
         self._duration_label = Gtk.Label(label="—", xalign=0)
         self._duration_label.add_css_class("title-4")
         dur_box.append(self._duration_label)
@@ -310,7 +311,7 @@ class TimeTrackingView(Gtk.Box):
         calc_box.append(dur_box)
 
         amt_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
-        amt_box.append(Gtk.Label(label="Betrag", xalign=0))
+        amt_box.append(Gtk.Label(label=_("Betrag"), xalign=0))
         self._amount_label = Gtk.Label(label="—", xalign=0)
         self._amount_label.add_css_class("title-4")
         amt_box.append(self._amount_label)
@@ -358,7 +359,7 @@ class TimeTrackingView(Gtk.Box):
             child = next_child
 
         if not grouped:
-            lbl = Gtk.Label(label="Keine Einträge in diesem Monat")
+            lbl = Gtk.Label(label=_("Keine Einträge in diesem Monat"))
             lbl.add_css_class("dim-label")
             lbl.set_margin_top(40)
             self._day_list_box.append(lbl)
@@ -501,10 +502,10 @@ class TimeTrackingView(Gtk.Box):
 
     def _setup_context_menu(self, row, entry):
         menu = Gio.Menu()
-        menu.append("Bearbeiten", f"entry.edit-{entry['id']}")
-        menu.append("Löschen", f"entry.delete-{entry['id']}")
-        menu.append("Duplizieren", f"entry.duplicate-{entry['id']}")
-        menu.append("Fortsetzen", f"entry.resume-{entry['id']}")
+        menu.append(_("Bearbeiten"), f"entry.edit-{entry['id']}")
+        menu.append(_("Löschen"), f"entry.delete-{entry['id']}")
+        menu.append(_("Duplizieren"), f"entry.duplicate-{entry['id']}")
+        menu.append(_("Fortsetzen"), f"entry.resume-{entry['id']}")
 
         popover = Gtk.PopoverMenu.new_from_model(menu)
         popover.set_parent(row)
@@ -703,11 +704,11 @@ class TimeTrackingView(Gtk.Box):
 
     def _confirm_delete(self, entry_id):
         dialog = Adw.AlertDialog(
-            heading="Eintrag löschen?",
-            body="Dieser Eintrag wird unwiderruflich gelöscht.",
+            heading=_("Eintrag löschen?"),
+            body=_("Dieser Eintrag wird unwiderruflich gelöscht."),
         )
-        dialog.add_response("cancel", "Abbrechen")
-        dialog.add_response("delete", "Löschen")
+        dialog.add_response("cancel", _("Abbrechen"))
+        dialog.add_response("delete", _("Löschen"))
         dialog.set_response_appearance("delete", Adw.ResponseAppearance.DESTRUCTIVE)
         dialog.connect("response", self._on_delete_confirmed, entry_id)
         dialog.present(self.get_root())
@@ -736,10 +737,10 @@ class TimeTrackingView(Gtk.Box):
         projects = ProjectRepository.get_all()
         if not projects:
             dialog = Adw.AlertDialog(
-                heading="Kein Projekt vorhanden",
-                body="Bitte erstelle zuerst einen Kunden und ein Projekt unter Konfiguration.",
+                heading=_("Kein Projekt vorhanden"),
+                body=_("Bitte erstelle zuerst einen Kunden und ein Projekt unter Konfiguration."),
             )
-            dialog.add_response("ok", "OK")
+            dialog.add_response("ok", _("OK"))
             dialog.present(self.get_root())
             return
 
@@ -789,19 +790,19 @@ class TimeTrackingView(Gtk.Box):
         projects = ProjectRepository.get_all()
         if not projects:
             dialog = Adw.AlertDialog(
-                heading="Kein Projekt vorhanden",
-                body="Bitte erstelle zuerst einen Kunden und ein Projekt unter Konfiguration.",
+                heading=_("Kein Projekt vorhanden"),
+                body=_("Bitte erstelle zuerst einen Kunden und ein Projekt unter Konfiguration."),
             )
-            dialog.add_response("ok", "OK")
+            dialog.add_response("ok", _("OK"))
             dialog.present(self.get_root())
             return
 
         dialog = Adw.AlertDialog(
-            heading="Timer starten",
-            body="Projekt für den Timer auswählen:",
+            heading=_("Timer starten"),
+            body=_("Projekt für den Timer auswählen:"),
         )
-        dialog.add_response("cancel", "Abbrechen")
-        dialog.add_response("start", "Starten")
+        dialog.add_response("cancel", _("Abbrechen"))
+        dialog.add_response("start", _("Starten"))
         dialog.set_response_appearance("start", Adw.ResponseAppearance.SUGGESTED)
 
         # Dialog content
@@ -819,7 +820,7 @@ class TimeTrackingView(Gtk.Box):
 
         # Description entry
         desc_entry = Gtk.Entry()
-        desc_entry.set_placeholder_text("Was arbeitest du?")
+        desc_entry.set_placeholder_text(_("Was arbeitest du?"))
         content_box.append(desc_entry)
 
         dialog.set_extra_child(content_box)

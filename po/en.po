@@ -1,0 +1,300 @@
+# TimeWorm English Translation
+# Copyright (C) 2026 TBE
+# Tom Behrends, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: TimeWorm 1.0\n"
+"PO-Revision-Date: 2026-02-22 19:00+0100\n"
+"Last-Translator: Tom Behrends\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# Months
+msgid "Januar"
+msgstr "January"
+
+msgid "Februar"
+msgstr "February"
+
+msgid "März"
+msgstr "March"
+
+msgid "April"
+msgstr "April"
+
+msgid "Mai"
+msgstr "May"
+
+msgid "Juni"
+msgstr "June"
+
+msgid "Juli"
+msgstr "July"
+
+msgid "August"
+msgstr "August"
+
+msgid "September"
+msgstr "September"
+
+msgid "Oktober"
+msgstr "October"
+
+msgid "November"
+msgstr "November"
+
+msgid "Dezember"
+msgstr "December"
+
+# Weekdays
+msgid "Mo"
+msgstr "Mon"
+
+msgid "Di"
+msgstr "Tue"
+
+msgid "Mi"
+msgstr "Wed"
+
+msgid "Do"
+msgstr "Thu"
+
+msgid "Fr"
+msgstr "Fri"
+
+msgid "Sa"
+msgstr "Sat"
+
+msgid "So"
+msgstr "Sun"
+
+# Navigation
+msgid "Zeiterfassung"
+msgstr "Time Tracking"
+
+msgid "Auswertungen"
+msgstr "Reports"
+
+msgid "Konfiguration"
+msgstr "Settings"
+
+# Fields
+msgid "Kunde"
+msgstr "Customer"
+
+msgid "Projekt"
+msgstr "Project"
+
+msgid "Datum"
+msgstr "Date"
+
+msgid "Start"
+msgstr "Start"
+
+msgid "Ende"
+msgstr "End"
+
+msgid "Stunden"
+msgstr "Hours"
+
+msgid "€/h"
+msgstr "€/h"
+
+msgid "Beschreibung"
+msgstr "Description"
+
+msgid "Betrag"
+msgstr "Amount"
+
+msgid "Betrag (€)"
+msgstr "Amount (€)"
+
+msgid "Dauer"
+msgstr "Duration"
+
+msgid "Notizen"
+msgstr "Notes"
+
+msgid "Von"
+msgstr "From"
+
+msgid "Bis"
+msgstr "To"
+
+msgid "Einträge"
+msgstr "Entries"
+
+# Placeholders
+msgid "TT.MM.JJJJ"
+msgstr "DD.MM.YYYY"
+
+msgid "HH:MM"
+msgstr "HH:MM"
+
+msgid "Kurzbeschreibung..."
+msgstr "Short description..."
+
+msgid "Was arbeitest du?"
+msgstr "What are you working on?"
+
+msgid "Kundenname"
+msgstr "Customer name"
+
+msgid "Projektname"
+msgstr "Project name"
+
+# Buttons & Actions
+msgid "Speichern"
+msgstr "Save"
+
+msgid "Abbrechen"
+msgstr "Cancel"
+
+msgid "Erstellen"
+msgstr "Create"
+
+msgid "Löschen"
+msgstr "Delete"
+
+msgid "Bearbeiten"
+msgstr "Edit"
+
+msgid "Duplizieren"
+msgstr "Duplicate"
+
+msgid "Fortsetzen"
+msgstr "Resume"
+
+msgid "Aktivieren"
+msgstr "Activate"
+
+msgid "Deaktivieren"
+msgstr "Deactivate"
+
+msgid "(deaktiviert)"
+msgstr "(deactivated)"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Starten"
+msgstr "Start"
+
+msgid "+ Eintrag"
+msgstr "+ Entry"
+
+msgid "▶ Start"
+msgstr "▶ Start"
+
+msgid "+ Neuer Kunde"
+msgstr "+ New Customer"
+
+msgid "+ Neues Projekt"
+msgstr "+ New Project"
+
+# Dialogs
+msgid "Neuer Kunde"
+msgstr "New Customer"
+
+msgid "Name und Farbe für den neuen Kunden:"
+msgstr "Name and color for the new customer:"
+
+msgid "Farbe:"
+msgstr "Color:"
+
+msgid "Kunde bearbeiten"
+msgstr "Edit Customer"
+
+msgid "Neues Projekt"
+msgstr "New Project"
+
+msgid "Name und Stundensatz:"
+msgstr "Name and hourly rate:"
+
+msgid "Stundensatz (€):"
+msgstr "Hourly rate (€):"
+
+msgid "Quantisierung (h):"
+msgstr "Quantization (h):"
+
+msgid "Projekt bearbeiten"
+msgstr "Edit Project"
+
+msgid "Kein Kunde"
+msgstr "No Customer"
+
+msgid "Bitte erstelle zuerst einen Kunden."
+msgstr "Please create a customer first."
+
+msgid "Kein Projekt vorhanden"
+msgstr "No Project Available"
+
+msgid "Bitte erstelle zuerst einen Kunden und ein Projekt unter Konfiguration."
+msgstr "Please create a customer and project in Settings first."
+
+msgid "Eintrag löschen?"
+msgstr "Delete Entry?"
+
+msgid "Dieser Eintrag wird unwiderruflich gelöscht."
+msgstr "This entry will be permanently deleted."
+
+msgid "Timer starten"
+msgstr "Start Timer"
+
+msgid "Projekt für den Timer auswählen:"
+msgstr "Select project for the timer:"
+
+msgid "Eintrag auswählen"
+msgstr "Select an entry"
+
+# Reports
+msgid "Alle Kunden"
+msgstr "All Customers"
+
+msgid "Kunde:"
+msgstr "Customer:"
+
+msgid "Keine Einträge in diesem Monat"
+msgstr "No entries this month"
+
+msgid "Keine Projekte für diesen Kunden"
+msgstr "No projects for this customer"
+
+msgid "GESAMT"
+msgstr "TOTAL"
+
+msgid "Export gespeichert: {}"
+msgstr "Export saved: {}"
+
+# Export / PDF
+msgid "Zeiteinträge"
+msgstr "Time Entries"
+
+msgid "Zusammenfassung"
+msgstr "Summary"
+
+msgid "Stundennachweis"
+msgstr "Timesheet"
+
+msgid "Zeitraum"
+msgstr "Period"
+
+msgid "Zusammenfassung nach Kunde"
+msgstr "Summary by Customer"
+
+msgid "Kunde / Projekt"
+msgstr "Customer / Project"
+
+msgid "Gesamt"
+msgstr "Total"
+
+msgid "Einzelnachweise"
+msgstr "Detail Records"
+
+# Settings
+msgid "Kunden"
+msgstr "Customers"
+

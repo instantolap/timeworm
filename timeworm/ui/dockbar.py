@@ -2,6 +2,7 @@ import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Gtk, GLib
+from ..i18n import _
 
 
 class Dockbar(Gtk.Box):
@@ -19,9 +20,9 @@ class Dockbar(Gtk.Box):
         self._on_switch = on_switch
 
         items = [
-            ("time-tracking", "preferences-system-time-symbolic", "Zeiterfassung"),
-            ("reports", "utilities-system-monitor-symbolic", "Auswertungen"),
-            ("settings", "preferences-system-symbolic", "Konfiguration"),
+            ("time-tracking", "preferences-system-time-symbolic", _("Zeiterfassung")),
+            ("reports", "utilities-system-monitor-symbolic", _("Auswertungen")),
+            ("settings", "preferences-system-symbolic", _("Konfiguration")),
         ]
 
         for name, icon, tooltip in items:

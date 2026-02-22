@@ -1,0 +1,47 @@
+{
+    "app-id": "de.tbe.timeworm",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "47",
+    "sdk": "org.gnome.Sdk",
+    "command": "timeworm",
+    "finish-args": [
+        "--share=ipc",
+        "--socket=wayland",
+        "--socket=fallback-x11",
+        "--filesystem=home"
+    ],
+    "modules": [
+        {
+            "name": "python-deps",
+            "buildsystem": "simple",
+            "build-commands": [
+                "pip3 install --no-index --find-links=. --prefix=/app openpyxl reportlab"
+            ],
+            "sources": [
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/openpyxl/openpyxl-3.1.2.tar.gz",
+                    "sha256": ""
+                }
+            ]
+        },
+        {
+            "name": "timeworm",
+            "buildsystem": "simple",
+            "build-commands": [
+                "pip3 install --prefix=/app --no-deps .",
+                "install -Dm644 data/icons/hicolor/scalable/apps/de.tbe.timeworm.svg /app/share/icons/hicolor/scalable/apps/de.tbe.timeworm.svg",
+                "install -Dm644 de.tbe.timeworm.desktop /app/share/applications/de.tbe.timeworm.desktop",
+                "install -Dm644 de.tbe.timeworm.metainfo.xml /app/share/metainfo/de.tbe.timeworm.metainfo.xml",
+                "mkdir -p /app/share/locale",
+                "cp -r po/locale/* /app/share/locale/"
+            ],
+            "sources": [
+                {
+                    "type": "dir",
+                    "path": "."
+                }
+            ]
+        }
+    ]
+}

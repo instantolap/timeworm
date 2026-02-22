@@ -4,10 +4,11 @@ gi.require_version('Adw', '1')
 from gi.repository import Gtk, Adw, Gdk, Gio
 from datetime import datetime
 from ..repository import TimeEntryRepository, ProjectRepository, CustomerRepository, SettingsRepository
+from ..i18n import _
 
 MONTH_NAMES = [
-    "", "Januar", "Februar", "März", "April", "Mai", "Juni",
-    "Juli", "August", "September", "Oktober", "November", "Dezember"
+    "", _("Januar"), _("Februar"), _("März"), _("April"), _("Mai"), _("Juni"),
+    _("Juli"), _("August"), _("September"), _("Oktober"), _("November"), _("Dezember")
 ]
 
 
@@ -66,7 +67,7 @@ class ReportsView(Gtk.Box):
         filter_bar.set_margin_end(12)
         filter_bar.set_margin_top(4)
         filter_bar.set_margin_bottom(4)
-        filter_bar.append(Gtk.Label(label="Kunde:"))
+        filter_bar.append(Gtk.Label(label=_("Kunde:")))
         self._cust_filter = Gtk.DropDown()
         self._cust_filter_model = Gtk.StringList()
         self._cust_filter.set_model(self._cust_filter_model)
@@ -136,7 +137,7 @@ class ReportsView(Gtk.Box):
         self._cust_filter_ids = [None] + [c['id'] for c in customers]
         while self._cust_filter_model.get_n_items() > 0:
             self._cust_filter_model.remove(0)
-        self._cust_filter_model.append("Alle Kunden")
+        self._cust_filter_model.append(_("Alle Kunden"))
         for c in customers:
             self._cust_filter_model.append(c['name'])
         if prev_idx < len(self._cust_filter_ids):
@@ -174,7 +175,7 @@ class ReportsView(Gtk.Box):
         project_summary = TimeEntryRepository.get_summary(start, end, customer_id=customer_id)
 
         if not customer_summary:
-            lbl = Gtk.Label(label="Keine Einträge in diesem Monat")
+            lbl = Gtk.Label(label=_("Keine Einträge in diesem Monat"))
             lbl.add_css_class("dim-label")
             lbl.set_margin_top(40)
             self._report_box.append(lbl)
@@ -243,7 +244,7 @@ class ReportsView(Gtk.Box):
         # Grand total
         total_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         total_box.set_margin_top(12)
-        total_lbl = Gtk.Label(label="GESAMT", xalign=0)
+        total_lbl = Gtk.Label(label=_("GESAMT"), xalign=0)
         total_lbl.add_css_class("title-3")
         total_lbl.set_hexpand(True)
         total_box.append(total_lbl)
@@ -299,7 +300,7 @@ class ReportsView(Gtk.Box):
         else:
             export_pdf(filepath, start, end, customer_id=customer_id)
 
-        toast = Adw.Toast(title=f"Export gespeichert: {filepath}")
+        toast = Adw.Toast(title=_("Export gespeichert: {}").format(filepath))
         window = self.get_root()
         if hasattr(window, '_toast_overlay'):
             window._toast_overlay.add_toast(toast)

@@ -3,6 +3,7 @@ gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Gtk, Adw, Gdk
 from ..repository import CustomerRepository, ProjectRepository
+from ..i18n import _
 
 
 class SettingsView(Gtk.Box):
@@ -39,13 +40,13 @@ class SettingsView(Gtk.Box):
 
         cust_toolbar = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         cust_toolbar.set_margin_bottom(8)
-        cust_title = Gtk.Label(label="Kunden")
+        cust_title = Gtk.Label(label=_("Kunden"))
         cust_title.add_css_class("title-3")
         cust_title.set_hexpand(True)
         cust_title.set_halign(Gtk.Align.START)
         cust_toolbar.append(cust_title)
 
-        add_cust_btn = Gtk.Button(label="+ Neuer Kunde")
+        add_cust_btn = Gtk.Button(label=_("+ Neuer Kunde"))
         add_cust_btn.add_css_class("suggested-action")
         add_cust_btn.connect("clicked", self._on_add_customer)
         cust_toolbar.append(add_cust_btn)
@@ -72,7 +73,7 @@ class SettingsView(Gtk.Box):
         proj_toolbar.set_margin_bottom(8)
 
         # Customer filter dropdown
-        proj_toolbar.append(Gtk.Label(label="Kunde:"))
+        proj_toolbar.append(Gtk.Label(label=_("Kunde:")))
         self._cust_filter = Gtk.DropDown()
         self._cust_filter_model = Gtk.StringList()
         self._cust_filter.set_model(self._cust_filter_model)
@@ -84,7 +85,7 @@ class SettingsView(Gtk.Box):
         spacer.set_hexpand(True)
         proj_toolbar.append(spacer)
 
-        add_proj_btn = Gtk.Button(label="+ Neues Projekt")
+        add_proj_btn = Gtk.Button(label=_("+ Neues Projekt"))
         add_proj_btn.add_css_class("suggested-action")
         add_proj_btn.connect("clicked", self._on_add_project)
         proj_toolbar.append(add_proj_btn)
@@ -138,14 +139,14 @@ class SettingsView(Gtk.Box):
                 del_btn.set_valign(Gtk.Align.CENTER)
                 del_btn.set_has_frame(False)
                 del_btn.add_css_class("error")
-                del_btn.set_tooltip_text("Deaktivieren")
+                del_btn.set_tooltip_text(_("Deaktivieren"))
                 del_btn.connect("clicked", self._on_deactivate_customer, cust['id'])
                 row.add_suffix(del_btn)
             else:
                 act_btn = Gtk.Button(icon_name="view-reveal-symbolic")
                 act_btn.set_valign(Gtk.Align.CENTER)
                 act_btn.set_has_frame(False)
-                act_btn.set_tooltip_text("Aktivieren")
+                act_btn.set_tooltip_text(_("Aktivieren"))
                 act_btn.connect("clicked", self._on_activate_customer, cust['id'])
                 row.add_suffix(act_btn)
 
@@ -163,20 +164,20 @@ class SettingsView(Gtk.Box):
 
     def _on_add_customer(self, _btn):
         dialog = Adw.AlertDialog(
-            heading="Neuer Kunde",
-            body="Name und Farbe für den neuen Kunden:",
+            heading=_("Neuer Kunde"),
+            body=_("Name und Farbe für den neuen Kunden:"),
         )
-        dialog.add_response("cancel", "Abbrechen")
-        dialog.add_response("create", "Erstellen")
+        dialog.add_response("cancel", _("Abbrechen"))
+        dialog.add_response("create", _("Erstellen"))
         dialog.set_response_appearance("create", Adw.ResponseAppearance.SUGGESTED)
 
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         name_entry = Gtk.Entry()
-        name_entry.set_placeholder_text("Kundenname")
+        name_entry.set_placeholder_text(_("Kundenname"))
         box.append(name_entry)
 
         color_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
-        color_box.append(Gtk.Label(label="Farbe:"))
+        color_box.append(Gtk.Label(label=_("Farbe:")))
         color_btn = Gtk.ColorDialogButton(dialog=Gtk.ColorDialog())
         rgba = Gdk.RGBA()
         rgba.parse("#3584e4")
@@ -200,11 +201,11 @@ class SettingsView(Gtk.Box):
 
     def _on_edit_customer(self, _btn, cust):
         dialog = Adw.AlertDialog(
-            heading="Kunde bearbeiten",
+            heading=_("Kunde bearbeiten"),
             body=f"Kunde: {cust['name']}",
         )
-        dialog.add_response("cancel", "Abbrechen")
-        dialog.add_response("save", "Speichern")
+        dialog.add_response("cancel", _("Abbrechen"))
+        dialog.add_response("save", _("Speichern"))
         dialog.set_response_appearance("save", Adw.ResponseAppearance.SUGGESTED)
 
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
@@ -213,7 +214,7 @@ class SettingsView(Gtk.Box):
         box.append(name_entry)
 
         color_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
-        color_box.append(Gtk.Label(label="Farbe:"))
+        color_box.append(Gtk.Label(label=_("Farbe:")))
         color_btn = Gtk.ColorDialogButton(dialog=Gtk.ColorDialog())
         rgba = Gdk.RGBA()
         rgba.parse(cust.get('color', '#3584e4'))
@@ -270,7 +271,7 @@ class SettingsView(Gtk.Box):
             child = nxt
 
         if not projects:
-            lbl = Gtk.Label(label="Keine Projekte für diesen Kunden")
+            lbl = Gtk.Label(label=_("Keine Projekte für diesen Kunden"))
             lbl.add_css_class("dim-label")
             lbl.set_margin_top(20)
             row = Gtk.ListBoxRow(selectable=False)
@@ -282,7 +283,7 @@ class SettingsView(Gtk.Box):
             rate_str = f"{proj['hourly_rate']:,.2f}\u2009€/h".replace(",", "X").replace(".", ",").replace("X", ".")
             row = Adw.ActionRow(title=proj['name'], subtitle=rate_str)
             if not proj['active']:
-                row.add_suffix(Gtk.Label(label="(deaktiviert)"))
+                row.add_suffix(Gtk.Label(label=_("(deaktiviert)")))
                 row.add_css_class("dim-label")
 
             edit_btn = Gtk.Button(icon_name="document-edit-symbolic")
@@ -296,14 +297,14 @@ class SettingsView(Gtk.Box):
                 del_btn.set_valign(Gtk.Align.CENTER)
                 del_btn.set_has_frame(False)
                 del_btn.add_css_class("error")
-                del_btn.set_tooltip_text("Deaktivieren")
+                del_btn.set_tooltip_text(_("Deaktivieren"))
                 del_btn.connect("clicked", self._on_deactivate_project, proj['id'])
                 row.add_suffix(del_btn)
             else:
                 act_btn = Gtk.Button(icon_name="view-reveal-symbolic")
                 act_btn.set_valign(Gtk.Align.CENTER)
                 act_btn.set_has_frame(False)
-                act_btn.set_tooltip_text("Aktivieren")
+                act_btn.set_tooltip_text(_("Aktivieren"))
                 act_btn.connect("clicked", self._on_activate_project, proj['id'])
                 row.add_suffix(act_btn)
 
@@ -311,7 +312,7 @@ class SettingsView(Gtk.Box):
 
     def _on_add_project(self, _btn):
         if not self._cust_filter_ids:
-            dialog = Adw.AlertDialog(heading="Kein Kunde", body="Bitte erstelle zuerst einen Kunden.")
+            dialog = Adw.AlertDialog(heading=_("Kein Kunde"), body=_("Bitte erstelle zuerst einen Kunden."))
             dialog.add_response("ok", "OK")
             dialog.present(self.get_root())
             return
@@ -320,20 +321,20 @@ class SettingsView(Gtk.Box):
         customer_id = self._cust_filter_ids[idx]
 
         dialog = Adw.AlertDialog(
-            heading="Neues Projekt",
-            body="Name und Stundensatz:",
+            heading=_("Neues Projekt"),
+            body=_("Name und Stundensatz:"),
         )
-        dialog.add_response("cancel", "Abbrechen")
-        dialog.add_response("create", "Erstellen")
+        dialog.add_response("cancel", _("Abbrechen"))
+        dialog.add_response("create", _("Erstellen"))
         dialog.set_response_appearance("create", Adw.ResponseAppearance.SUGGESTED)
 
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         name_entry = Gtk.Entry()
-        name_entry.set_placeholder_text("Projektname")
+        name_entry.set_placeholder_text(_("Projektname"))
         box.append(name_entry)
 
         rate_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
-        rate_box.append(Gtk.Label(label="Stundensatz (€):"))
+        rate_box.append(Gtk.Label(label=_("Stundensatz (€):")))
         rate_entry = Gtk.Entry()
         rate_entry.set_text("0.00")
         rate_entry.set_max_width_chars(8)
@@ -341,7 +342,7 @@ class SettingsView(Gtk.Box):
         box.append(rate_box)
 
         quantum_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
-        quantum_box.append(Gtk.Label(label="Quantisierung (h):"))
+        quantum_box.append(Gtk.Label(label=_("Quantisierung (h):")))
         quantum_entry = Gtk.Entry()
         quantum_entry.set_text("0.25")
         quantum_entry.set_max_width_chars(8)
@@ -371,11 +372,11 @@ class SettingsView(Gtk.Box):
 
     def _on_edit_project(self, _btn, proj):
         dialog = Adw.AlertDialog(
-            heading="Projekt bearbeiten",
+            heading=_("Projekt bearbeiten"),
             body=f"Projekt: {proj['name']}",
         )
-        dialog.add_response("cancel", "Abbrechen")
-        dialog.add_response("save", "Speichern")
+        dialog.add_response("cancel", _("Abbrechen"))
+        dialog.add_response("save", _("Speichern"))
         dialog.set_response_appearance("save", Adw.ResponseAppearance.SUGGESTED)
 
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
@@ -384,7 +385,7 @@ class SettingsView(Gtk.Box):
         box.append(name_entry)
 
         rate_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
-        rate_box.append(Gtk.Label(label="Stundensatz (€):"))
+        rate_box.append(Gtk.Label(label=_("Stundensatz (€):")))
         rate_entry = Gtk.Entry()
         rate_entry.set_text(str(proj['hourly_rate']))
         rate_entry.set_max_width_chars(8)
@@ -392,7 +393,7 @@ class SettingsView(Gtk.Box):
         box.append(rate_box)
 
         quantum_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
-        quantum_box.append(Gtk.Label(label="Quantisierung (h):"))
+        quantum_box.append(Gtk.Label(label=_("Quantisierung (h):")))
         quantum_entry = Gtk.Entry()
         quantum_entry.set_text(str(proj.get('time_quantum', 0.25)))
         quantum_entry.set_max_width_chars(8)

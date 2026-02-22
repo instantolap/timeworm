@@ -1,6 +1,7 @@
 import csv
 from datetime import datetime
 from typing import Optional
+from ..i18n import _
 
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment
@@ -36,8 +37,8 @@ def export_csv(filepath: str, start_date: str, end_date: str,
     entries, _, _ = _get_report_data(start_date, end_date, project_id, customer_id)
     with open(filepath, 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f, delimiter=';')
-        writer.writerow(['Kunde', 'Projekt', 'Datum', 'Start', 'Ende',
-                         'Stunden', '€/h', 'Betrag', 'Beschreibung'])
+        writer.writerow([_('Kunde'), _('Projekt'), _('Datum'), _('Start'), _('Ende'),
+                         _('Stunden'), _('€/h'), _('Betrag'), _('Beschreibung')])
         for e in entries:
             start = datetime.fromisoformat(e['start_time'])
             end = datetime.fromisoformat(e['end_time'])
@@ -70,9 +71,9 @@ def export_excel(filepath: str, start_date: str, end_date: str,
 
     # --- Detail sheet ---
     ws = wb.active
-    ws.title = "Zeiteinträge"
-    headers = ['Kunde', 'Projekt', 'Datum', 'Start', 'Ende',
-               'Stunden', '€/h', 'Betrag (€)', 'Beschreibung']
+    ws.title = _("Zeiteinträge")
+    headers = [_('Kunde'), _('Projekt'), _('Datum'), _('Start'), _('Ende'),
+               _('Stunden'), _('€/h'), _('Betrag (€)'), _('Beschreibung')]
     for col, h in enumerate(headers, 1):
         cell = ws.cell(row=1, column=col, value=h)
         cell.font = header_font
@@ -100,8 +101,8 @@ def export_excel(filepath: str, start_date: str, end_date: str,
         ws.column_dimensions[col[0].column_letter].width = 16
 
     # --- Summary sheet ---
-    ws2 = wb.create_sheet("Zusammenfassung")
-    sum_headers = ['Kunde', 'Projekt', 'Stunden', '€/h', 'Betrag (€)', 'Einträge']
+    ws2 = wb.create_sheet(_("Zusammenfassung"))
+    sum_headers = [_('Kunde'), _('Projekt'), _('Stunden'), _('€/h'), _('Betrag (€)'), _('Einträge')]
     for col, h in enumerate(sum_headers, 1):
         cell = ws2.cell(row=1, column=col, value=h)
         cell.font = header_font
@@ -169,7 +170,7 @@ def export_pdf(filepath: str, start_date: str, end_date: str,
         'InvoiceTitle', parent=styles['Title'],
         fontSize=18, spaceAfter=6 * mm
     )
-    elements.append(Paragraph("Stundennachweis", title_style))
+    elements.append(Paragraph(_("Stundennachweis"), title_style))
 
     # Period — end_date is exclusive (first of next month), show last day of range
     start_dt = datetime.fromisoformat(start_date)
@@ -177,7 +178,7 @@ def export_pdf(filepath: str, start_date: str, end_date: str,
     from datetime import timedelta
     last_day = end_dt - timedelta(days=1)
     period = (
-        f"Zeitraum: {start_dt.strftime('%d.%m.%Y')} \u2013 "
+        _("Zeitraum") + ": " + f"{start_dt.strftime('%d.%m.%Y')} \u2013 "
         f"{last_day.strftime('%d.%m.%Y')}"
     )
     elements.append(Paragraph(period, styles['Normal']))
@@ -185,7 +186,7 @@ def export_pdf(filepath: str, start_date: str, end_date: str,
 
     # --- Summary by customer ---
     if customer_summary:
-        elements.append(Paragraph("Zusammenfassung nach Kunde", styles['Heading2']))
+        elements.append(Paragraph(_("Zusammenfassung nach Kunde"), styles['Heading2']))
 
         sum_cell = ParagraphStyle('SumCell', parent=styles['Normal'],
                                    fontSize=8, leading=10)
@@ -194,8 +195,8 @@ def export_pdf(filepath: str, start_date: str, end_date: str,
         sum_hdr = ParagraphStyle('SumHdr', parent=sum_cell_bold,
                                   textColor=colors.white)
 
-        sum_data = [[Paragraph('Kunde / Projekt', sum_hdr),
-                     Paragraph('Stunden', sum_hdr),
+        sum_data = [[Paragraph(_('Kunde / Projekt'), sum_hdr),
+                     Paragraph(_('Stunden'), sum_hdr),
                      Paragraph('\u20ac/h', sum_hdr),
                      Paragraph('Betrag (\u20ac)', sum_hdr)]]
         total_hours = 0.0
@@ -223,7 +224,7 @@ def export_pdf(filepath: str, start_date: str, end_date: str,
                     Paragraph(f"{pamount:.2f}", sum_cell),
                 ])
 
-        sum_data.append([Paragraph('Gesamt', sum_cell_bold), Paragraph(f"{total_hours:.2f}", sum_cell_bold), Paragraph('', sum_cell), Paragraph(f"{total_amount:.2f}", sum_cell_bold)])
+        sum_data.append([Paragraph(_('Gesamt'), sum_cell_bold), Paragraph(f"{total_hours:.2f}", sum_cell_bold), Paragraph('', sum_cell), Paragraph(f"{total_amount:.2f}", sum_cell_bold)])
 
         # Full page width: A4=210mm - 2*20mm margins = 170mm
         page_w = 170 * mm
@@ -245,7 +246,7 @@ def export_pdf(filepath: str, start_date: str, end_date: str,
 
     # --- Detail table ---
     if entries:
-        elements.append(Paragraph("Einzelnachweise", styles['Heading2']))
+        elements.append(Paragraph(_("Einzelnachweise"), styles['Heading2']))
 
         # Cell style for wrapping text
         cell_style = ParagraphStyle('CellWrap', parent=styles['Normal'],
@@ -255,14 +256,14 @@ def export_pdf(filepath: str, start_date: str, end_date: str,
                                           textColor=colors.white)
 
         detail_data = [[
-            Paragraph('Kunde', cell_style_bold),
-            Paragraph('Projekt', cell_style_bold),
-            Paragraph('Datum', cell_style_bold),
-            Paragraph('Von', cell_style_bold),
-            Paragraph('Bis', cell_style_bold),
-            Paragraph('Stunden', cell_style_bold),
-            Paragraph('Betrag (€)', cell_style_bold),
-            Paragraph('Beschreibung', cell_style_bold),
+            Paragraph(_('Kunde'), cell_style_bold),
+            Paragraph(_('Projekt'), cell_style_bold),
+            Paragraph(_('Datum'), cell_style_bold),
+            Paragraph(_('Von'), cell_style_bold),
+            Paragraph(_('Bis'), cell_style_bold),
+            Paragraph(_('Stunden'), cell_style_bold),
+            Paragraph(_('Betrag (€)'), cell_style_bold),
+            Paragraph(_('Beschreibung'), cell_style_bold),
         ]]
         for e in entries:
             start = datetime.fromisoformat(e['start_time'])

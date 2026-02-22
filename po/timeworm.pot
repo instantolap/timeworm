@@ -1,0 +1,400 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2026-02-22 18:55+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: timeworm/export/exporter.py:40 timeworm/export/exporter.py:75
+#: timeworm/export/exporter.py:105 timeworm/export/exporter.py:259
+#: timeworm/ui/time_tracking.py:235
+msgid "Kunde"
+msgstr ""
+
+#: timeworm/export/exporter.py:40 timeworm/export/exporter.py:75
+#: timeworm/export/exporter.py:105 timeworm/export/exporter.py:260
+#: timeworm/ui/time_tracking.py:244
+msgid "Projekt"
+msgstr ""
+
+#: timeworm/export/exporter.py:40 timeworm/export/exporter.py:75
+#: timeworm/export/exporter.py:261 timeworm/ui/time_tracking.py:252
+msgid "Datum"
+msgstr ""
+
+#: timeworm/export/exporter.py:40 timeworm/export/exporter.py:75
+#: timeworm/ui/time_tracking.py:274
+msgid "Start"
+msgstr ""
+
+#: timeworm/export/exporter.py:40 timeworm/export/exporter.py:75
+#: timeworm/ui/time_tracking.py:287
+msgid "Ende"
+msgstr ""
+
+#: timeworm/export/exporter.py:41 timeworm/export/exporter.py:76
+#: timeworm/export/exporter.py:105
+msgid "€/h"
+msgstr ""
+
+#: timeworm/export/exporter.py:41 timeworm/export/exporter.py:76
+#: timeworm/export/exporter.py:105 timeworm/export/exporter.py:199
+#: timeworm/export/exporter.py:264
+msgid "Stunden"
+msgstr ""
+
+#: timeworm/export/exporter.py:41 timeworm/export/exporter.py:76
+#: timeworm/export/exporter.py:266 timeworm/ui/time_tracking.py:220
+msgid "Beschreibung"
+msgstr ""
+
+#: timeworm/export/exporter.py:41 timeworm/ui/time_tracking.py:314
+msgid "Betrag"
+msgstr ""
+
+#: timeworm/export/exporter.py:74
+msgid "Zeiteinträge"
+msgstr ""
+
+#: timeworm/export/exporter.py:76 timeworm/export/exporter.py:105
+#: timeworm/export/exporter.py:265
+msgid "Betrag (€)"
+msgstr ""
+
+#: timeworm/export/exporter.py:104
+msgid "Zusammenfassung"
+msgstr ""
+
+#: timeworm/export/exporter.py:105
+msgid "Einträge"
+msgstr ""
+
+#: timeworm/export/exporter.py:173
+msgid "Stundennachweis"
+msgstr ""
+
+#: timeworm/export/exporter.py:181
+msgid "Zeitraum"
+msgstr ""
+
+#: timeworm/export/exporter.py:189
+msgid "Zusammenfassung nach Kunde"
+msgstr ""
+
+#: timeworm/export/exporter.py:198
+msgid "Kunde / Projekt"
+msgstr ""
+
+#: timeworm/export/exporter.py:227
+msgid "Gesamt"
+msgstr ""
+
+#: timeworm/export/exporter.py:249
+msgid "Einzelnachweise"
+msgstr ""
+
+#: timeworm/export/exporter.py:262
+msgid "Von"
+msgstr ""
+
+#: timeworm/export/exporter.py:263
+msgid "Bis"
+msgstr ""
+
+#: timeworm/ui/dockbar.py:23
+msgid "Zeiterfassung"
+msgstr ""
+
+#: timeworm/ui/dockbar.py:24
+msgid "Auswertungen"
+msgstr ""
+
+#: timeworm/ui/dockbar.py:25
+msgid "Konfiguration"
+msgstr ""
+
+#: timeworm/ui/reports.py:10 timeworm/ui/time_tracking.py:10
+msgid "April"
+msgstr ""
+
+#: timeworm/ui/reports.py:10 timeworm/ui/time_tracking.py:10
+msgid "Februar"
+msgstr ""
+
+#: timeworm/ui/reports.py:10 timeworm/ui/time_tracking.py:10
+msgid "Januar"
+msgstr ""
+
+#: timeworm/ui/reports.py:10 timeworm/ui/time_tracking.py:10
+msgid "Juni"
+msgstr ""
+
+#: timeworm/ui/reports.py:10 timeworm/ui/time_tracking.py:10
+msgid "Mai"
+msgstr ""
+
+#: timeworm/ui/reports.py:10 timeworm/ui/time_tracking.py:10
+msgid "März"
+msgstr ""
+
+#: timeworm/ui/reports.py:11 timeworm/ui/time_tracking.py:11
+msgid "August"
+msgstr ""
+
+#: timeworm/ui/reports.py:11 timeworm/ui/time_tracking.py:11
+msgid "Dezember"
+msgstr ""
+
+#: timeworm/ui/reports.py:11 timeworm/ui/time_tracking.py:11
+msgid "Juli"
+msgstr ""
+
+#: timeworm/ui/reports.py:11 timeworm/ui/time_tracking.py:11
+msgid "November"
+msgstr ""
+
+#: timeworm/ui/reports.py:11 timeworm/ui/time_tracking.py:11
+msgid "Oktober"
+msgstr ""
+
+#: timeworm/ui/reports.py:11 timeworm/ui/time_tracking.py:11
+msgid "September"
+msgstr ""
+
+#: timeworm/ui/reports.py:70 timeworm/ui/settings.py:76
+msgid "Kunde:"
+msgstr ""
+
+#: timeworm/ui/reports.py:140
+msgid "Alle Kunden"
+msgstr ""
+
+#: timeworm/ui/reports.py:178 timeworm/ui/time_tracking.py:362
+msgid "Keine Einträge in diesem Monat"
+msgstr ""
+
+#: timeworm/ui/reports.py:247
+msgid "GESAMT"
+msgstr ""
+
+#: timeworm/ui/reports.py:303
+msgid "Export gespeichert: {}"
+msgstr ""
+
+#: timeworm/ui/settings.py:43
+msgid "Kunden"
+msgstr ""
+
+#: timeworm/ui/settings.py:49
+msgid "+ Neuer Kunde"
+msgstr ""
+
+#: timeworm/ui/settings.py:88
+msgid "+ Neues Projekt"
+msgstr ""
+
+#: timeworm/ui/settings.py:142 timeworm/ui/settings.py:300
+msgid "Deaktivieren"
+msgstr ""
+
+#: timeworm/ui/settings.py:149 timeworm/ui/settings.py:307
+msgid "Aktivieren"
+msgstr ""
+
+#: timeworm/ui/settings.py:167
+msgid "Neuer Kunde"
+msgstr ""
+
+#: timeworm/ui/settings.py:168
+msgid "Name und Farbe für den neuen Kunden:"
+msgstr ""
+
+#: timeworm/ui/settings.py:170 timeworm/ui/settings.py:207
+#: timeworm/ui/settings.py:327 timeworm/ui/settings.py:378
+#: timeworm/ui/time_tracking.py:710 timeworm/ui/time_tracking.py:804
+msgid "Abbrechen"
+msgstr ""
+
+#: timeworm/ui/settings.py:171 timeworm/ui/settings.py:328
+msgid "Erstellen"
+msgstr ""
+
+#: timeworm/ui/settings.py:176
+msgid "Kundenname"
+msgstr ""
+
+#: timeworm/ui/settings.py:180 timeworm/ui/settings.py:217
+msgid "Farbe:"
+msgstr ""
+
+#: timeworm/ui/settings.py:204
+msgid "Kunde bearbeiten"
+msgstr ""
+
+#: timeworm/ui/settings.py:208 timeworm/ui/settings.py:379
+#: timeworm/ui/time_tracking.py:208
+msgid "Speichern"
+msgstr ""
+
+#: timeworm/ui/settings.py:274
+msgid "Keine Projekte für diesen Kunden"
+msgstr ""
+
+#: timeworm/ui/settings.py:286
+msgid "(deaktiviert)"
+msgstr ""
+
+#: timeworm/ui/settings.py:315
+msgid "Bitte erstelle zuerst einen Kunden."
+msgstr ""
+
+#: timeworm/ui/settings.py:315
+msgid "Kein Kunde"
+msgstr ""
+
+#: timeworm/ui/settings.py:324
+msgid "Neues Projekt"
+msgstr ""
+
+#: timeworm/ui/settings.py:325
+msgid "Name und Stundensatz:"
+msgstr ""
+
+#: timeworm/ui/settings.py:333
+msgid "Projektname"
+msgstr ""
+
+#: timeworm/ui/settings.py:337 timeworm/ui/settings.py:388
+msgid "Stundensatz (€):"
+msgstr ""
+
+#: timeworm/ui/settings.py:345 timeworm/ui/settings.py:396
+msgid "Quantisierung (h):"
+msgstr ""
+
+#: timeworm/ui/settings.py:375
+msgid "Projekt bearbeiten"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:13
+msgid "Di"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:13
+msgid "Do"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:13
+msgid "Fr"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:13
+msgid "Mi"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:13
+msgid "Mo"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:13
+msgid "Sa"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:13
+msgid "So"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:108
+msgid "+ Eintrag"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:113
+msgid "▶ Start"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:189
+msgid "Eintrag auswählen"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:222
+msgid "Kurzbeschreibung..."
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:226
+msgid "Notizen"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:255
+msgid "TT.MM.JJJJ"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:276 timeworm/ui/time_tracking.py:289
+msgid "HH:MM"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:306
+msgid "Dauer"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:505
+msgid "Bearbeiten"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:506 timeworm/ui/time_tracking.py:711
+msgid "Löschen"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:507
+msgid "Duplizieren"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:508
+msgid "Fortsetzen"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:707
+msgid "Eintrag löschen?"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:708
+msgid "Dieser Eintrag wird unwiderruflich gelöscht."
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:740 timeworm/ui/time_tracking.py:793
+msgid "Kein Projekt vorhanden"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:741 timeworm/ui/time_tracking.py:794
+msgid "Bitte erstelle zuerst einen Kunden und ein Projekt unter Konfiguration."
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:743 timeworm/ui/time_tracking.py:796
+msgid "OK"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:801
+msgid "Timer starten"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:802
+msgid "Projekt für den Timer auswählen:"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:805
+msgid "Starten"
+msgstr ""
+
+#: timeworm/ui/time_tracking.py:823
+msgid "Was arbeitest du?"
+msgstr ""
+

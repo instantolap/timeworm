@@ -1,10 +1,15 @@
 [Desktop Entry]
 Type=Application
 Name=TimeWorm
-Comment=Zeiterfassung
-Exec=/data/projects/tbe/timeworm/.venv/bin/timeworm
+Name[de]=TimeWorm
+GenericName=Time Tracker
+GenericName[de]=Zeiterfassung
+Comment=Simple time tracking for freelancers
+Comment[de]=Einfache Zeiterfassung für Freelancer
+Exec=timeworm
 Icon=de.tbe.timeworm
 Terminal=false
 Categories=Office;ProjectManagement;
 StartupWMClass=de.tbe.timeworm
 Keywords=time;tracking;hours;invoice;
+Keywords[de]=zeit;erfassung;stunden;rechnung;

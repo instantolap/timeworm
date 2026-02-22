@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>de.tbe.timeworm</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <name>TimeWorm</name>
+  <name xml:lang="de">TimeWorm</name>
+  <summary>Simple time tracking for freelancers</summary>
+  <summary xml:lang="de">Einfache Zeiterfassung für Freelancer</summary>
+  <description>
+    <p>TimeWorm is a lightweight GTK4 time tracking application designed for freelancers and small teams. Track time per customer and project with live timers or manual entries.</p>
+    <p xml:lang="de">TimeWorm ist eine schlanke GTK4-Zeiterfassungs-App für Freelancer und kleine Teams. Erfasse Zeiten pro Kunde und Projekt mit Live-Timer oder manuellen Einträgen.</p>
+    <p>Features include:</p>
+    <ul>
+      <li>Customer and project management with hourly rates</li>
+      <li>Live timer and manual time entry</li>
+      <li>Time quantization (billing increments)</li>
+      <li>Monthly reports with charts</li>
+      <li>Export to Excel, CSV and PDF</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">de.tbe.timeworm.desktop</launchable>
+  <url type="homepage">https://github.com/tombehrends/timeworm</url>
+  <developer id="de.tbe">
+    <name>Tom Behrends</name>
+  </developer>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="1.0.0" date="2026-02-22">
+      <description>
+        <p>Initial release with full time tracking, reporting and export.</p>
+      </description>
+    </release>
+  </releases>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Time tracking view</caption>
+      <image>https://raw.githubusercontent.com/tombehrends/timeworm/main/screenshots/tracking.png</image>
+    </screenshot>
+  </screenshots>
+</component>

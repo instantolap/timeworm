@@ -6,6 +6,7 @@ gi.require_version('Adw', '1')
 from gi.repository import Gtk, Adw, Gdk, Gio, GLib
 
 from .db import init_db
+from .i18n import setup_i18n, _
 from .ui.dockbar import Dockbar, get_dockbar_css
 from .ui.time_tracking import TimeTrackingView
 from .ui.reports import ReportsView
@@ -113,6 +114,7 @@ class TimeWormApp(Adw.Application):
 
 
 def main():
+    setup_i18n()
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     app = TimeWormApp()
     app.run(sys.argv)
