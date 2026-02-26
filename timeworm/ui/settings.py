@@ -119,11 +119,13 @@ class SettingsView(Gtk.Box):
             row = Adw.ActionRow(title=cust['name'])
 
             # Color indicator
-            color_dot = Gtk.DrawingArea()
-            color_dot.set_size_request(16, 16)
-            color_dot.set_valign(Gtk.Align.CENTER)
-            color_dot.set_draw_func(self._draw_dot, cust.get('color', '#3584e4'))
-            row.add_prefix(color_dot)
+            color_bar = Gtk.Box()
+            color_bar.set_size_request(6, -1)
+            color_str = cust.get('color', '#3584e4')
+            css_prov = Gtk.CssProvider()
+            css_prov.load_from_string(f"box {{ background-color: {color_str}; border-radius: 3px; min-height: 32px; }}")
+            color_bar.get_style_context().add_provider(css_prov, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+            row.add_prefix(color_bar)
 
             # Edit button
             edit_btn = Gtk.Button(icon_name="document-edit-symbolic")
@@ -151,6 +153,13 @@ class SettingsView(Gtk.Box):
         rgba.parse(color_str)
         cr.set_source_rgba(rgba.red, rgba.green, rgba.blue, rgba.alpha)
         cr.arc(width / 2, height / 2, min(width, height) / 2, 0, 3.14159 * 2)
+        cr.fill()
+
+    def _draw_color_bar(self, area, cr, width, height, color_str):
+        rgba = Gdk.RGBA()
+        rgba.parse(color_str)
+        cr.set_source_rgba(rgba.red, rgba.green, rgba.blue, rgba.alpha)
+        cr.rectangle(0, 0, width, height)
         cr.fill()
 
     def _on_add_customer(self, _btn):
