@@ -457,12 +457,11 @@ class TimeTrackingView(Gtk.Box):
         box.set_margin_start(4)
         box.set_margin_end(8)
 
-        # Color bar
-        color_bar = Gtk.DrawingArea()
-        color_bar.set_size_request(4, 36)
+        # Color bar via CSS border-left on the row
         color_str = entry.get('color', '#3584e4')
-        color_bar.set_draw_func(self._draw_color_bar, color_str)
-        box.append(color_bar)
+        css_provider = Gtk.CssProvider()
+        css_provider.load_from_string(f"row {{ border-left: 4px solid {color_str}; }}")
+        row.get_style_context().add_provider(css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
         # Info
         info_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
