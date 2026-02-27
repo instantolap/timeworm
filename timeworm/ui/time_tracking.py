@@ -457,11 +457,14 @@ class TimeTrackingView(Gtk.Box):
         box.set_margin_start(4)
         box.set_margin_end(8)
 
-        # Color bar via CSS border-left on the row
+        # Color indicator
+        color_bar = Gtk.Box()
+        color_bar.set_size_request(6, -1)
         color_str = entry.get('color', '#3584e4')
         css_provider = Gtk.CssProvider()
-        css_provider.load_from_string(f"row {{ border-left: 4px solid {color_str}; }}")
-        row.get_style_context().add_provider(css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        css_provider.load_from_string(f"box {{ background-color: {color_str}; border-radius: 3px; min-height: 32px; }}")
+        color_bar.get_style_context().add_provider(css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        box.append(color_bar)
 
         # Info
         info_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
@@ -568,6 +571,13 @@ class TimeTrackingView(Gtk.Box):
     def _on_entry_selected(self, listbox, row):
         if row is None:
             return
+        # Deselect rows in all other day listboxes
+        expander = self._day_list_box.get_first_child()
+        while expander:
+            other_box = expander.get_child()
+            if other_box is not None and other_box != listbox:
+                other_box.unselect_all()
+            expander = expander.get_next_sibling()
         entry = row._entry_data
         self._select_entry(entry)
 
