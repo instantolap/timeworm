@@ -427,8 +427,8 @@ class TimeTrackingView(Gtk.Box):
         expander = Gtk.Expander()
         expander.set_label_widget(header_box)
         expander.set_expanded(expanded)
-        expander.set_margin_start(4)
-        expander.set_margin_end(4)
+        expander.set_margin_start(12)
+        expander.set_margin_end(12)
         expander.set_margin_top(10)
         expander.set_margin_bottom(2)
 
@@ -499,7 +499,9 @@ class TimeTrackingView(Gtk.Box):
 
         # Duration (quantized)
         dur_lbl = Gtk.Label(label=_format_duration(hours))
+        dur_lbl.add_css_class("dim-label")
         dur_lbl.add_css_class("caption")
+        dur_lbl.set_valign(Gtk.Align.END)
         box.append(dur_lbl)
 
         row.set_child(box)
