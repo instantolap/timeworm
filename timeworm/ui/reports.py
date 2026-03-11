@@ -287,17 +287,25 @@ class ReportsView(Gtk.Box):
         cr.fill()
 
     def _on_export(self, _btn, fmt):
+        import re
         start, end = self._get_date_range()
         customer_id = self._get_selected_customer_id()
 
         dialog = Gtk.FileDialog()
         month_str = f"{self._current_year}-{self._current_month:02d}"
-        if fmt == "xlsx":
-            dialog.set_initial_name(f"timeworm-{month_str}.xlsx")
-        elif fmt == "csv":
-            dialog.set_initial_name(f"timeworm-{month_str}.csv")
+        if customer_id is not None:
+            idx = self._cust_filter.get_selected()
+            raw_name = self._cust_filter_model.get_string(idx) or "kunde"
+            safe_name = re.sub(r'[^\w\-]', '_', raw_name).strip('_').lower()
+            base = f"{safe_name}-{month_str}"
         else:
-            dialog.set_initial_name(f"timeworm-{month_str}.pdf")
+            base = f"timeworm-{month_str}"
+        if fmt == "xlsx":
+            dialog.set_initial_name(f"{base}.xlsx")
+        elif fmt == "csv":
+            dialog.set_initial_name(f"{base}.csv")
+        else:
+            dialog.set_initial_name(f"{base}.pdf")
 
         # Restore last export folder
         last_folder = SettingsRepository.get("export_folder")
