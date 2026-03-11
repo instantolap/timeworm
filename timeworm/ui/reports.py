@@ -101,6 +101,15 @@ class ReportsView(Gtk.Box):
         export_bar.set_margin_bottom(8)
         export_bar.set_halign(Gtk.Align.END)
 
+        export_bar.append(Gtk.Label(label=_("Monate:")))
+        self._months_spin = Gtk.SpinButton()
+        self._months_spin.set_range(1, 3)
+        self._months_spin.set_increments(1, 1)
+        self._months_spin.set_value(1)
+        self._months_spin.set_digits(0)
+        self._months_spin.set_size_request(50, -1)
+        export_bar.append(self._months_spin)
+
         for label, fmt in [(_("Excel exportieren"), "xlsx"), (_("CSV exportieren"), "csv"), (_("PDF exportieren"), "pdf")]:
             btn = Gtk.Button(label=label)
             btn.connect("clicked", self._on_export, fmt)
@@ -286,13 +295,37 @@ class ReportsView(Gtk.Box):
         cr.arc(width / 2, height / 2, min(width, height) / 2, 0, 3.14159 * 2)
         cr.fill()
 
+    def _get_export_date_range(self):
+        """Return (start, end) spanning `_months_spin` months back from current month."""
+        n_months = int(self._months_spin.get_value())
+        y, m = self._current_year, self._current_month
+        # start = first day of (current month - (n_months - 1))
+        start_m = m - (n_months - 1)
+        start_y = y
+        while start_m < 1:
+            start_m += 12
+            start_y -= 1
+        start = f"{start_y:04d}-{start_m:02d}-01T00:00:00"
+        # end = first day of next month after current
+        if m == 12:
+            end = f"{y + 1:04d}-01-01T00:00:00"
+        else:
+            end = f"{y:04d}-{m + 1:02d}-01T00:00:00"
+        return start, end
+
     def _on_export(self, _btn, fmt):
         import re
-        start, end = self._get_date_range()
+        start, end = self._get_export_date_range()
         customer_id = self._get_selected_customer_id()
+        n_months = int(self._months_spin.get_value())
 
         dialog = Gtk.FileDialog()
-        month_str = f"{self._current_year}-{self._current_month:02d}"
+        if n_months > 1:
+            # start month to current month range
+            start_y, start_m = int(start[:4]), int(start[5:7])
+            month_str = f"{start_y}-{start_m:02d}_{self._current_year}-{self._current_month:02d}"
+        else:
+            month_str = f"{self._current_year}-{self._current_month:02d}"
         if customer_id is not None:
             idx = self._cust_filter.get_selected()
             raw_name = self._cust_filter_model.get_string(idx) or "kunde"
