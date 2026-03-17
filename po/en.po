@@ -340,3 +340,6 @@ msgstr "Delete customer"
 
 msgid "Kundenname existiert bereits"
 msgstr "Customer name already exists"
+
+msgid "-- Bitte wählen --"
+msgstr "-- Please select --"

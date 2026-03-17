@@ -398,3 +398,8 @@ msgstr ""
 msgid "Was arbeitest du?"
 msgstr ""
 
+#: timeworm/ui/time_tracking.py:605 timeworm/ui/time_tracking.py:640
+#: timeworm/ui/time_tracking.py:872
+msgid "-- Bitte wählen --"
+msgstr ""
+

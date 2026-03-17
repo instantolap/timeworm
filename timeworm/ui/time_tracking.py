@@ -94,6 +94,7 @@ class TimeTrackingView(Gtk.Box):
         super().__init__(orientation=Gtk.Orientation.VERTICAL)
         self._timer_id = None
         self._selected_entry_id = None
+        self._is_new_entry = False
         self._ignore_detail_changes = False
         self._build_ui()
         self._load_month()
@@ -207,10 +208,10 @@ class TimeTrackingView(Gtk.Box):
         action_bar = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         action_bar.set_halign(Gtk.Align.END)
 
-        save_btn = Gtk.Button(label=_("Speichern"))
-        save_btn.add_css_class("suggested-action")
-        save_btn.connect("clicked", self._on_save_detail)
-        action_bar.append(save_btn)
+        self._save_btn = Gtk.Button(label=_("Speichern"))
+        self._save_btn.add_css_class("suggested-action")
+        self._save_btn.connect("clicked", self._on_save_detail)
+        action_bar.append(self._save_btn)
 
         del_btn = Gtk.Button(icon_name="user-trash-symbolic")
         del_btn.add_css_class("destructive-action")
@@ -247,6 +248,7 @@ class TimeTrackingView(Gtk.Box):
         self._project_dropdown = Gtk.DropDown()
         self._project_model = Gtk.StringList()
         self._project_dropdown.set_model(self._project_model)
+        self._project_dropdown.connect("notify::selected", self._on_project_changed)
         self._project_ids = []
         self._detail_box.append(self._project_dropdown)
 
@@ -582,6 +584,7 @@ class TimeTrackingView(Gtk.Box):
         self._select_entry(entry)
 
     def _select_entry(self, entry):
+        self._is_new_entry = False
         self._selected_entry_id = entry['id']
         self._placeholder.set_visible(False)
         self._detail_box.set_visible(True)
@@ -596,16 +599,19 @@ class TimeTrackingView(Gtk.Box):
 
         # Populate customer dropdown
         customers = CustomerRepository.get_all()
-        self._customer_ids = [c['id'] for c in customers]
+        self._customer_ids = [None] + [c['id'] for c in customers]
         while self._customer_model.get_n_items() > 0:
             self._customer_model.remove(0)
+        self._customer_model.append(_("-- Bitte wählen --"))
         for c in customers:
             self._customer_model.append(c['name'])
 
         # Select current customer
         cust_id = entry.get('customer_id')
-        if cust_id in self._customer_ids:
+        if cust_id and cust_id in self._customer_ids:
             self._customer_dropdown.set_selected(self._customer_ids.index(cust_id))
+        else:
+            self._customer_dropdown.set_selected(0)
 
         # Populate project dropdown for this customer
         self._refresh_project_dropdown(cust_id, entry.get('project_id'))
@@ -623,26 +629,41 @@ class TimeTrackingView(Gtk.Box):
             self._end_entry.set_text("")
 
         self._ignore_detail_changes = False
+        self._update_save_sensitivity()
         self._update_calculated_fields()
 
     def _refresh_project_dropdown(self, customer_id, select_project_id=None):
         projects = ProjectRepository.get_by_customer(customer_id) if customer_id else ProjectRepository.get_all()
-        self._project_ids = [p['id'] for p in projects]
+        self._project_ids = [None] + [p['id'] for p in projects]
         while self._project_model.get_n_items() > 0:
             self._project_model.remove(0)
+        self._project_model.append(_("-- Bitte wählen --"))
         for p in projects:
             self._project_model.append(p['name'])
         if select_project_id and select_project_id in self._project_ids:
             self._project_dropdown.set_selected(self._project_ids.index(select_project_id))
-        elif self._project_ids:
+        else:
             self._project_dropdown.set_selected(0)
 
     def _on_customer_changed(self, dropdown, _pspec):
         if self._ignore_detail_changes:
             return
         idx = dropdown.get_selected()
-        if idx < len(self._customer_ids):
+        if idx > 0 and idx < len(self._customer_ids):
             self._refresh_project_dropdown(self._customer_ids[idx])
+        else:
+            self._refresh_project_dropdown(None)
+
+    def _on_project_changed(self, dropdown, _pspec):
+        if self._ignore_detail_changes:
+            return
+        self._update_save_sensitivity()
+        self._update_calculated_fields()
+
+    def _update_save_sensitivity(self):
+        proj_idx = self._project_dropdown.get_selected()
+        can_save = proj_idx > 0 and proj_idx < len(self._project_ids)
+        self._save_btn.set_sensitive(can_save)
 
     def _on_time_focus_leave(self, _controller, entry):
         text = entry.get_text().strip()
@@ -673,7 +694,7 @@ class TimeTrackingView(Gtk.Box):
             rate = 0
             quantum = 0.25
             currency = '€'
-            if proj_idx != Gtk.INVALID_LIST_POSITION and proj_idx < len(self._project_ids):
+            if proj_idx > 0 and proj_idx < len(self._project_ids):
                 proj = ProjectRepository.get_by_id(self._project_ids[proj_idx])
                 if proj:
                     rate = proj['hourly_rate']
@@ -688,7 +709,7 @@ class TimeTrackingView(Gtk.Box):
 
     # --- Detail actions ---
     def _on_save_detail(self, _btn):
-        if not self._selected_entry_id:
+        if not self._is_new_entry and not self._selected_entry_id:
             return
 
         # Parse date
@@ -712,24 +733,39 @@ class TimeTrackingView(Gtk.Box):
             end_dt += timedelta(days=1)
 
         proj_idx = self._project_dropdown.get_selected()
-        if proj_idx == Gtk.INVALID_LIST_POSITION or proj_idx >= len(self._project_ids):
+        if proj_idx == 0 or proj_idx >= len(self._project_ids):
             return
         project_id = self._project_ids[proj_idx]
 
         buf = self._note_view.get_buffer()
         note = buf.get_text(buf.get_start_iter(), buf.get_end_iter(), False)
 
-        TimeEntryRepository.update(
-            self._selected_entry_id,
-            project_id=project_id,
-            start_time=start_dt.isoformat(),
-            end_time=end_dt.isoformat(),
-            note=note,
-            description=self._desc_entry.get_text().strip(),
-        )
+        if self._is_new_entry:
+            TimeEntryRepository.create_manual(
+                project_id,
+                start_dt.isoformat(),
+                end_dt.isoformat(),
+                note=note,
+                description=self._desc_entry.get_text().strip(),
+            )
+            self._is_new_entry = False
+        else:
+            TimeEntryRepository.update(
+                self._selected_entry_id,
+                project_id=project_id,
+                start_time=start_dt.isoformat(),
+                end_time=end_dt.isoformat(),
+                note=note,
+                description=self._desc_entry.get_text().strip(),
+            )
         self._load_month()
 
     def _on_delete_detail(self, _btn):
+        if self._is_new_entry:
+            self._is_new_entry = False
+            self._detail_box.set_visible(False)
+            self._placeholder.set_visible(True)
+            return
         if self._selected_entry_id:
             self._confirm_delete(self._selected_entry_id)
 
@@ -781,31 +817,22 @@ class TimeTrackingView(Gtk.Box):
         start = now.replace(minute=minute, second=0, microsecond=0)
         end = start + timedelta(hours=1)
 
-        project = projects[0]
-        entry_id = TimeEntryRepository.create_manual(
-            project['id'],
-            start.isoformat(),
-            end.isoformat(),
-            note='',
-            description='',
-        )
-        self._load_month()
+        # Show detail panel without creating DB entry yet
+        self._is_new_entry = True
+        self._selected_entry_id = None
+        self._placeholder.set_visible(False)
+        self._detail_box.set_visible(True)
 
-        # Select the new entry
         entry = {
-            'id': entry_id,
-            'project_id': project['id'],
-            'project_name': project['name'],
-            'customer_name': project['customer_name'],
-            'customer_id': project['customer_id'],
-            'hourly_rate': project['hourly_rate'],
-            'color': project['color'],
+            'id': None,
+            'project_id': None,
+            'customer_id': None,
             'start_time': start.isoformat(),
             'end_time': end.isoformat(),
             'note': '',
             'description': '',
         }
-        self._select_entry(entry)
+        self._populate_detail(entry)
 
     # --- Timer ---
     def _on_timer_toggle(self, _btn):
@@ -842,11 +869,13 @@ class TimeTrackingView(Gtk.Box):
         # Project selection dropdown
         dropdown = Gtk.DropDown()
         model = Gtk.StringList()
-        p_ids = []
+        model.append(_("-- Bitte wählen --"))
+        p_ids = [None]
         for p in projects:
             model.append(f"{p['name']} ({p['customer_name']})")
             p_ids.append(p['id'])
         dropdown.set_model(model)
+        dropdown.set_selected(0)
         content_box.append(dropdown)
 
         # Description entry
@@ -862,7 +891,7 @@ class TimeTrackingView(Gtk.Box):
     def _on_start_timer_response(self, dialog, response, dropdown, p_ids, desc_entry):
         if response == "start":
             idx = dropdown.get_selected()
-            if idx < len(p_ids):
+            if idx > 0 and idx < len(p_ids):
                 TimeEntryRepository.stop_running()
                 description = desc_entry.get_text().strip()
                 TimeEntryRepository.start(p_ids[idx], description=description)

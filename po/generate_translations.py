@@ -79,6 +79,7 @@ TRANSLATIONS = {
             "CSV exportieren": "Exporter CSV",
             "PDF exportieren": "Exporter PDF",
             "⏹ Stop": "⏹ Arrêter", "Projekte": "Projets", "läuft...": "en cours...", "Satz": "Taux", "Betrag": "Montant",
+            "-- Bitte wählen --": "-- Veuillez choisir --",
         }
     },
     "es": {
@@ -139,6 +140,7 @@ TRANSLATIONS = {
             "Einzelnachweise": "Registros detallados", "Kunden": "Clientes",
             "Excel exportieren": "Exportar Excel", "CSV exportieren": "Exportar CSV", "PDF exportieren": "Exportar PDF",
             "⏹ Stop": "⏹ Detener", "Projekte": "Proyectos", "läuft...": "en curso...", "Satz": "Tarifa", "Betrag": "Importe",
+            "-- Bitte wählen --": "-- Por favor seleccione --",
         }
     },
     "pt_BR": {
@@ -199,6 +201,7 @@ TRANSLATIONS = {
             "Einzelnachweise": "Registros detalhados", "Kunden": "Clientes",
             "Excel exportieren": "Exportar Excel", "CSV exportieren": "Exportar CSV", "PDF exportieren": "Exportar PDF",
             "⏹ Stop": "⏹ Parar", "Projekte": "Projetos", "läuft...": "em andamento...", "Satz": "Taxa", "Betrag": "Valor",
+            "-- Bitte wählen --": "-- Por favor selecione --",
         }
     },
     "nl": {
@@ -259,6 +262,7 @@ TRANSLATIONS = {
             "Einzelnachweise": "Detailoverzicht", "Kunden": "Klanten",
             "Excel exportieren": "Excel exporteren", "CSV exportieren": "CSV exporteren", "PDF exportieren": "PDF exporteren",
             "⏹ Stop": "⏹ Stop", "Projekte": "Projecten", "läuft...": "loopt...", "Satz": "Tarief", "Betrag": "Bedrag",
+            "-- Bitte wählen --": "-- Selecteer a.u.b. --",
         }
     },
     "ja": {
@@ -319,6 +323,7 @@ TRANSLATIONS = {
             "Einzelnachweise": "明細", "Kunden": "顧客",
             "Excel exportieren": "Excelエクスポート", "CSV exportieren": "CSVエクスポート", "PDF exportieren": "PDFエクスポート",
             "⏹ Stop": "⏹ 停止", "Projekte": "プロジェクト", "läuft...": "計測中...", "Satz": "単価", "Betrag": "金額",
+            "-- Bitte wählen --": "-- 選択してください --",
         }
     },
     "ko": {
@@ -379,6 +384,7 @@ TRANSLATIONS = {
             "Einzelnachweise": "상세 기록", "Kunden": "고객",
             "Excel exportieren": "Excel 내보내기", "CSV exportieren": "CSV 내보내기", "PDF exportieren": "PDF 내보내기",
             "⏹ Stop": "⏹ 중지", "Projekte": "프로젝트", "läuft...": "진행 중...", "Satz": "단가", "Betrag": "금액",
+            "-- Bitte wählen --": "-- 선택해 주세요 --",
         }
     },
     "zh_CN": {
@@ -439,6 +445,7 @@ TRANSLATIONS = {
             "Einzelnachweise": "明细记录", "Kunden": "客户",
             "Excel exportieren": "导出Excel", "CSV exportieren": "导出CSV", "PDF exportieren": "导出PDF",
             "⏹ Stop": "⏹ 停止", "Projekte": "项目", "läuft...": "计时中...", "Satz": "单价", "Betrag": "金额",
+            "-- Bitte wählen --": "-- 请选择 --",
         }
     },
 }
